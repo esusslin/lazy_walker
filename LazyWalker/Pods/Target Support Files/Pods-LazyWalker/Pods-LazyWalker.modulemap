@@ -1,0 +1,6 @@
+framework module Pods_LazyWalker {
+  umbrella header "Pods-LazyWalker-umbrella.h"
+
+  export *
+  module * { export * }
+}
