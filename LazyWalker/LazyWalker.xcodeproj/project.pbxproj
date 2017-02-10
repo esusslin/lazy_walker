@@ -1,0 +1,678 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		65425D64557598EC5BA4470E /* Pods_LazyWalker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0620AD0CD8E5B64ADB3B71 /* Pods_LazyWalker.framework */; };
+		E2838A731E4D3631006DFCEE /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; };
+		E2838A741E4D3631006DFCEE /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */; };
+		E2F0D08A1E4D28CF00BB4CBE /* mapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */; };
+		E2F0D08D1E4D28CF00BB4CBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */; };
+		E2F0D0901E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D08E1E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld */; };
+		E2F0D0921E4D28CF00BB4CBE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2F0D0911E4D28CF00BB4CBE /* Assets.xcassets */; };
+		E2F0D0951E4D28CF00BB4CBE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2F0D0931E4D28CF00BB4CBE /* LaunchScreen.storyboard */; };
+		E2F0D0A01E4D28CF00BB4CBE /* LazyWalkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D09F1E4D28CF00BB4CBE /* LazyWalkerTests.swift */; };
+		E2F0D0AB1E4D28CF00BB4CBE /* LazyWalkerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0AA1E4D28CF00BB4CBE /* LazyWalkerUITests.swift */; };
+		E2F0D0BC1E4D2B1C00BB4CBE /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E2F0D09C1E4D28CF00BB4CBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2F0D07C1E4D28CF00BB4CBE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E2F0D0831E4D28CF00BB4CBE;
+			remoteInfo = LazyWalker;
+		};
+		E2F0D0A71E4D28CF00BB4CBE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2F0D07C1E4D28CF00BB4CBE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E2F0D0831E4D28CF00BB4CBE;
+			remoteInfo = LazyWalker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E2838A751E4D3631006DFCEE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E2838A741E4D3631006DFCEE /* Mapbox.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		92422D6CE5754326C85157D2 /* Pods-LazyWalker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LazyWalker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LazyWalker/Pods-LazyWalker.debug.xcconfig"; sourceTree = "<group>"; };
+		CF0620AD0CD8E5B64ADB3B71 /* Pods_LazyWalker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LazyWalker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2F0D0841E4D28CF00BB4CBE /* LazyWalker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LazyWalker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mapVC.swift; sourceTree = "<group>"; };
+		E2F0D08C1E4D28CF00BB4CBE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E2F0D08F1E4D28CF00BB4CBE /* LazyWalker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LazyWalker.xcdatamodel; sourceTree = "<group>"; };
+		E2F0D0911E4D28CF00BB4CBE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E2F0D0941E4D28CF00BB4CBE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E2F0D0961E4D28CF00BB4CBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E2F0D09B1E4D28CF00BB4CBE /* LazyWalkerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LazyWalkerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2F0D09F1E4D28CF00BB4CBE /* LazyWalkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyWalkerTests.swift; sourceTree = "<group>"; };
+		E2F0D0A11E4D28CF00BB4CBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E2F0D0A61E4D28CF00BB4CBE /* LazyWalkerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LazyWalkerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2F0D0AA1E4D28CF00BB4CBE /* LazyWalkerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyWalkerUITests.swift; sourceTree = "<group>"; };
+		E2F0D0AC1E4D28CF00BB4CBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
+		F7DCB020A892D7E93FD67CFB /* Pods-LazyWalker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LazyWalker.release.xcconfig"; path = "Pods/Target Support Files/Pods-LazyWalker/Pods-LazyWalker.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E2F0D0811E4D28CF00BB4CBE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2F0D0BC1E4D2B1C00BB4CBE /* Mapbox.framework in Frameworks */,
+				65425D64557598EC5BA4470E /* Pods_LazyWalker.framework in Frameworks */,
+				E2838A731E4D3631006DFCEE /* Mapbox.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2F0D0981E4D28CF00BB4CBE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2F0D0A31E4D28CF00BB4CBE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1AE8485BB1766DDEA5452F08 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				92422D6CE5754326C85157D2 /* Pods-LazyWalker.debug.xcconfig */,
+				F7DCB020A892D7E93FD67CFB /* Pods-LazyWalker.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		A5117C685792B46B452CD2BB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CF0620AD0CD8E5B64ADB3B71 /* Pods_LazyWalker.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E2F0D07B1E4D28CF00BB4CBE = {
+			isa = PBXGroup;
+			children = (
+				E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */,
+				E2F0D0861E4D28CF00BB4CBE /* LazyWalker */,
+				E2F0D09E1E4D28CF00BB4CBE /* LazyWalkerTests */,
+				E2F0D0A91E4D28CF00BB4CBE /* LazyWalkerUITests */,
+				E2F0D0851E4D28CF00BB4CBE /* Products */,
+				1AE8485BB1766DDEA5452F08 /* Pods */,
+				A5117C685792B46B452CD2BB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E2F0D0851E4D28CF00BB4CBE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E2F0D0841E4D28CF00BB4CBE /* LazyWalker.app */,
+				E2F0D09B1E4D28CF00BB4CBE /* LazyWalkerTests.xctest */,
+				E2F0D0A61E4D28CF00BB4CBE /* LazyWalkerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E2F0D0861E4D28CF00BB4CBE /* LazyWalker */ = {
+			isa = PBXGroup;
+			children = (
+				E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */,
+				E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */,
+				E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */,
+				E2F0D0911E4D28CF00BB4CBE /* Assets.xcassets */,
+				E2F0D0931E4D28CF00BB4CBE /* LaunchScreen.storyboard */,
+				E2F0D0961E4D28CF00BB4CBE /* Info.plist */,
+				E2F0D08E1E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld */,
+			);
+			path = LazyWalker;
+			sourceTree = "<group>";
+		};
+		E2F0D09E1E4D28CF00BB4CBE /* LazyWalkerTests */ = {
+			isa = PBXGroup;
+			children = (
+				E2F0D09F1E4D28CF00BB4CBE /* LazyWalkerTests.swift */,
+				E2F0D0A11E4D28CF00BB4CBE /* Info.plist */,
+			);
+			path = LazyWalkerTests;
+			sourceTree = "<group>";
+		};
+		E2F0D0A91E4D28CF00BB4CBE /* LazyWalkerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E2F0D0AA1E4D28CF00BB4CBE /* LazyWalkerUITests.swift */,
+				E2F0D0AC1E4D28CF00BB4CBE /* Info.plist */,
+			);
+			path = LazyWalkerUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E2F0D0831E4D28CF00BB4CBE /* LazyWalker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E2F0D0AF1E4D28CF00BB4CBE /* Build configuration list for PBXNativeTarget "LazyWalker" */;
+			buildPhases = (
+				D6EDABEE77AB9041C53F97DA /* [CP] Check Pods Manifest.lock */,
+				E2F0D0801E4D28CF00BB4CBE /* Sources */,
+				E2F0D0811E4D28CF00BB4CBE /* Frameworks */,
+				E2F0D0821E4D28CF00BB4CBE /* Resources */,
+				E2F0D0BA1E4D296400BB4CBE /* ShellScript */,
+				057FBFA6DF4A9C55A1A401F8 /* [CP] Embed Pods Frameworks */,
+				3EC8544787A2E1AD5A1C4B1A /* [CP] Copy Pods Resources */,
+				E2838A751E4D3631006DFCEE /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LazyWalker;
+			productName = LazyWalker;
+			productReference = E2F0D0841E4D28CF00BB4CBE /* LazyWalker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E2F0D09A1E4D28CF00BB4CBE /* LazyWalkerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E2F0D0B21E4D28CF00BB4CBE /* Build configuration list for PBXNativeTarget "LazyWalkerTests" */;
+			buildPhases = (
+				E2F0D0971E4D28CF00BB4CBE /* Sources */,
+				E2F0D0981E4D28CF00BB4CBE /* Frameworks */,
+				E2F0D0991E4D28CF00BB4CBE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E2F0D09D1E4D28CF00BB4CBE /* PBXTargetDependency */,
+			);
+			name = LazyWalkerTests;
+			productName = LazyWalkerTests;
+			productReference = E2F0D09B1E4D28CF00BB4CBE /* LazyWalkerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E2F0D0A51E4D28CF00BB4CBE /* LazyWalkerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E2F0D0B51E4D28CF00BB4CBE /* Build configuration list for PBXNativeTarget "LazyWalkerUITests" */;
+			buildPhases = (
+				E2F0D0A21E4D28CF00BB4CBE /* Sources */,
+				E2F0D0A31E4D28CF00BB4CBE /* Frameworks */,
+				E2F0D0A41E4D28CF00BB4CBE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E2F0D0A81E4D28CF00BB4CBE /* PBXTargetDependency */,
+			);
+			name = LazyWalkerUITests;
+			productName = LazyWalkerUITests;
+			productReference = E2F0D0A61E4D28CF00BB4CBE /* LazyWalkerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E2F0D07C1E4D28CF00BB4CBE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Emmet Susslin";
+				TargetAttributes = {
+					E2F0D0831E4D28CF00BB4CBE = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = KF8E33TYLJ;
+						ProvisioningStyle = Automatic;
+					};
+					E2F0D09A1E4D28CF00BB4CBE = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = KF8E33TYLJ;
+						ProvisioningStyle = Automatic;
+						TestTargetID = E2F0D0831E4D28CF00BB4CBE;
+					};
+					E2F0D0A51E4D28CF00BB4CBE = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = KF8E33TYLJ;
+						ProvisioningStyle = Automatic;
+						TestTargetID = E2F0D0831E4D28CF00BB4CBE;
+					};
+				};
+			};
+			buildConfigurationList = E2F0D07F1E4D28CF00BB4CBE /* Build configuration list for PBXProject "LazyWalker" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E2F0D07B1E4D28CF00BB4CBE;
+			productRefGroup = E2F0D0851E4D28CF00BB4CBE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E2F0D0831E4D28CF00BB4CBE /* LazyWalker */,
+				E2F0D09A1E4D28CF00BB4CBE /* LazyWalkerTests */,
+				E2F0D0A51E4D28CF00BB4CBE /* LazyWalkerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E2F0D0821E4D28CF00BB4CBE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2F0D0951E4D28CF00BB4CBE /* LaunchScreen.storyboard in Resources */,
+				E2F0D0921E4D28CF00BB4CBE /* Assets.xcassets in Resources */,
+				E2F0D08D1E4D28CF00BB4CBE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2F0D0991E4D28CF00BB4CBE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2F0D0A41E4D28CF00BB4CBE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		057FBFA6DF4A9C55A1A401F8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LazyWalker/Pods-LazyWalker-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3EC8544787A2E1AD5A1C4B1A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LazyWalker/Pods-LazyWalker-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D6EDABEE77AB9041C53F97DA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		E2F0D0BA1E4D296400BB4CBE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework/strip-frameworks.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E2F0D0801E4D28CF00BB4CBE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2F0D08A1E4D28CF00BB4CBE /* mapVC.swift in Sources */,
+				E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */,
+				E2F0D0901E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2F0D0971E4D28CF00BB4CBE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2F0D0A01E4D28CF00BB4CBE /* LazyWalkerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2F0D0A21E4D28CF00BB4CBE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2F0D0AB1E4D28CF00BB4CBE /* LazyWalkerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E2F0D09D1E4D28CF00BB4CBE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E2F0D0831E4D28CF00BB4CBE /* LazyWalker */;
+			targetProxy = E2F0D09C1E4D28CF00BB4CBE /* PBXContainerItemProxy */;
+		};
+		E2F0D0A81E4D28CF00BB4CBE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E2F0D0831E4D28CF00BB4CBE /* LazyWalker */;
+			targetProxy = E2F0D0A71E4D28CF00BB4CBE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E2F0D08C1E4D28CF00BB4CBE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E2F0D0931E4D28CF00BB4CBE /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E2F0D0941E4D28CF00BB4CBE /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E2F0D0AD1E4D28CF00BB4CBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E2F0D0AE1E4D28CF00BB4CBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E2F0D0B01E4D28CF00BB4CBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92422D6CE5754326C85157D2 /* Pods-LazyWalker.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KF8E33TYLJ;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = LazyWalker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = esusslin.LazyWalker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		E2F0D0B11E4D28CF00BB4CBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F7DCB020A892D7E93FD67CFB /* Pods-LazyWalker.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KF8E33TYLJ;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = LazyWalker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = esusslin.LazyWalker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		E2F0D0B31E4D28CF00BB4CBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = KF8E33TYLJ;
+				INFOPLIST_FILE = LazyWalkerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = esusslin.LazyWalkerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LazyWalker.app/LazyWalker";
+			};
+			name = Debug;
+		};
+		E2F0D0B41E4D28CF00BB4CBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = KF8E33TYLJ;
+				INFOPLIST_FILE = LazyWalkerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = esusslin.LazyWalkerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LazyWalker.app/LazyWalker";
+			};
+			name = Release;
+		};
+		E2F0D0B61E4D28CF00BB4CBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = KF8E33TYLJ;
+				INFOPLIST_FILE = LazyWalkerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = esusslin.LazyWalkerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = LazyWalker;
+			};
+			name = Debug;
+		};
+		E2F0D0B71E4D28CF00BB4CBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = KF8E33TYLJ;
+				INFOPLIST_FILE = LazyWalkerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = esusslin.LazyWalkerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = LazyWalker;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E2F0D07F1E4D28CF00BB4CBE /* Build configuration list for PBXProject "LazyWalker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2F0D0AD1E4D28CF00BB4CBE /* Debug */,
+				E2F0D0AE1E4D28CF00BB4CBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E2F0D0AF1E4D28CF00BB4CBE /* Build configuration list for PBXNativeTarget "LazyWalker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2F0D0B01E4D28CF00BB4CBE /* Debug */,
+				E2F0D0B11E4D28CF00BB4CBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E2F0D0B21E4D28CF00BB4CBE /* Build configuration list for PBXNativeTarget "LazyWalkerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2F0D0B31E4D28CF00BB4CBE /* Debug */,
+				E2F0D0B41E4D28CF00BB4CBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E2F0D0B51E4D28CF00BB4CBE /* Build configuration list for PBXNativeTarget "LazyWalkerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2F0D0B61E4D28CF00BB4CBE /* Debug */,
+				E2F0D0B71E4D28CF00BB4CBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E2F0D08E1E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E2F0D08F1E4D28CF00BB4CBE /* LazyWalker.xcdatamodel */,
+			);
+			currentVersion = E2F0D08F1E4D28CF00BB4CBE /* LazyWalker.xcdatamodel */;
+			path = LazyWalker.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = E2F0D07C1E4D28CF00BB4CBE /* Project object */;
+}
