@@ -8,53 +8,28 @@
 
 import UIKit
 import CoreData
-import CoreLocation
+
 import GoogleMaps
 import GooglePlaces
 import Mapbox
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    // This is shared singleton var for all classes 
+    open static let shared = UIApplication.shared.delegate as! AppDelegate
 
     var window: UIWindow?
     
-    var locationManager: CLLocationManager?
-    var coordinate: CLLocationCoordinate2D?
-
-
+    // Init location handler
+    let locationHandler = LocationHandler()
+    
+    /// All application methods starts here:
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
-        locationManagerStart()
+        // On app launch start location update
+        locationHandler.locationManagerStart()
         return true
     }
-    
-    
-    //MARK: LocationManager functions
-    
-    func locationManagerStart() {
-        if locationManager == nil {
-            print("init locationManager")
-            locationManager = CLLocationManager()
-            //            locationManager!.delegate = self
-            locationManager!.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager!.requestWhenInUseAuthorization()
-        }
-        
-        print("have location manager")
-        locationManager!.startUpdatingLocation()
-        
-    }
-    
-    func locationManagerStop() {
-        locationManager!.stopUpdatingLocation()
-    }
-    
-    // MARK: CLLocation Delegate
-    
-    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
-        
-        coordinate = newLocation.coordinate
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -79,6 +54,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
     }
 
-   
-}
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		65425D64557598EC5BA4470E /* Pods_LazyWalker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF0620AD0CD8E5B64ADB3B71 /* Pods_LazyWalker.framework */; };
+		9DB786691E4EF63D002A0CF9 /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB786681E4EF63D002A0CF9 /* LocationHandler.swift */; };
 		E2838A731E4D3631006DFCEE /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; };
 		E2838A741E4D3631006DFCEE /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		92422D6CE5754326C85157D2 /* Pods-LazyWalker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LazyWalker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LazyWalker/Pods-LazyWalker.debug.xcconfig"; sourceTree = "<group>"; };
+		9DB786681E4EF63D002A0CF9 /* LocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		CF0620AD0CD8E5B64ADB3B71 /* Pods_LazyWalker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LazyWalker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2F0D0841E4D28CF00BB4CBE /* LazyWalker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LazyWalker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +112,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9DB786661E4EF48C002A0CF9 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */,
+				E2F0D0931E4D28CF00BB4CBE /* LaunchScreen.storyboard */,
+			);
+			name = Storyboard;
+			sourceTree = "<group>";
+		};
+		9DB786671E4EF4B9002A0CF9 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				E2F0D0961E4D28CF00BB4CBE /* Info.plist */,
+				E2F0D08E1E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld */,
+			);
+			name = "Support Files";
+			sourceTree = "<group>";
+		};
 		A5117C685792B46B452CD2BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,13 +164,12 @@
 		E2F0D0861E4D28CF00BB4CBE /* LazyWalker */ = {
 			isa = PBXGroup;
 			children = (
+				9DB786661E4EF48C002A0CF9 /* Storyboard */,
+				9DB786671E4EF4B9002A0CF9 /* Support Files */,
 				E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */,
+				9DB786681E4EF63D002A0CF9 /* LocationHandler.swift */,
 				E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */,
-				E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */,
 				E2F0D0911E4D28CF00BB4CBE /* Assets.xcassets */,
-				E2F0D0931E4D28CF00BB4CBE /* LaunchScreen.storyboard */,
-				E2F0D0961E4D28CF00BB4CBE /* Info.plist */,
-				E2F0D08E1E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld */,
 			);
 			path = LazyWalker;
 			sourceTree = "<group>";
@@ -379,6 +398,7 @@
 				E2F0D08A1E4D28CF00BB4CBE /* mapVC.swift in Sources */,
 				E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */,
 				E2F0D0901E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld in Sources */,
+				9DB786691E4EF63D002A0CF9 /* LocationHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,15 +17,10 @@ import Alamofire
 
 
 class mapVC: UIViewController, MGLMapViewDelegate {
-    
-    //    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    
-    
-    
-    let locationManager = CLLocationManager()
+    // Use shared instance, we should only have one location manager instance
+    let locationManager = AppDelegate.shared.locationHandler.locationManager
     
     var latitude: Double?
-    
     var longitude: Double?
     
     var coordinates1 = [CLLocationCoordinate2D]()
@@ -33,7 +28,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     var coordinates3 = [CLLocationCoordinate2D]()
     
     var coordString1 = [String]()
-    
     var coordString2 = [String]()
     var coordString3 = [String]()
     
@@ -43,8 +37,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         
         mapView.delegate = self
         
@@ -68,15 +60,11 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     func getGraphopper() {
         
-        
-        
         let theString = "https://graphhopper.com/api/1/route?point=37.784785,-122.397684&point=37.739474,-122.470126&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=454360ab-e1b4-4944-874c-e439b9b8a6c1"
         
         Alamofire.request(theString).responseJSON { response in
            
-            
             if let JSON = response.result.value as! [String:AnyObject]! {
-                
 //                let json = try JSONSerialization.jsonObject(with: JSON!, options:.allowFragments) as! [String:AnyObject]
                 
                 let paths = JSON["paths"] as! [[String: AnyObject]]!
@@ -84,33 +72,22 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                 print(paths!.count)
                 
                 let pathss = paths!
-                
-//                print(pathss)
-//                print(paths!)
+
                 for path in pathss {
                     let points = path["points"]! as! AnyObject!
                     let coords = points?["coordinates"] as! NSArray!
                     var linecoords = [CLLocationCoordinate2D]()
                     var elevations = [Double]()
-                    
-//                    print(coords!)
-//                    print(coords!.count)
-                    
-//                    print(coords![0][2])
                     let arry = coords![0] as! NSArray
                     
-//                        print(coords!.first)
-                    
-                     let arry2 = coords![coords!.count - 1] as! NSArray
-//                    print(coords!)
+                    let arry2 = coords![coords!.count - 1] as! NSArray
+
                     let beg = arry[2] as! Double
                     let end = arry2[2] as! Double
-//
+
                     let avg = (beg + end) / 2
                     
                     for coord in coords! {
-//                        print(coord)
-                        //                            print(coord.count)
                         
                         let coordAry = coord as! NSArray
                         let lat = coordAry[1]
@@ -126,7 +103,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                         
                     }
                     
-                                            print(elevations)
+                    print(elevations)
                     print("*******************")
                     print(elevations.count)
                     print("*******************")
@@ -142,7 +119,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                     print("*******************")
                     print("min/max =" + "\(min) " + " \(max)  start/stop=" + "\(beg) " + " \(end)")
                     print("*******************")
-
+                    
                     let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
                     let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
                     
@@ -150,7 +127,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                     self.mapView.addAnnotation(shape)
                 }
             }
-            }
         }
+    }
     
 }
