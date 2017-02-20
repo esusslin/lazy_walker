@@ -17,30 +17,24 @@ import Alamofire
 
 class mapVC: UIViewController, MGLMapViewDelegate {
     
-    //    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    
     
     
     let locationManager = CLLocationManager()
     
-    var latitude: Double?
+    var latitude = Double()
+    var longitude = Double()
     
-    var longitude: Double?
+    var destination = CLLocationCoordinate2D()
     
+    // FOR ALL ROUTES
     var paths = [[String:Any]]()
     
-    var avgs = [Double]()
-    var firstHts = [Double]()
-    var secondHts = [Double]()
-    var thirdHts = [Double]()
-    var shortestHts = [Double]()
+    // UNIQUE VALUES OF EACH ROUTE
     
     var ascend = [Double]()
-    
     var descend = [Double]()
-    
     var distance = [Double]()
-    var polylines = [MGLPolyline]()
+
 
     @IBOutlet var mapView: MGLMapView!
     
@@ -50,13 +44,12 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         let currentLocation = locationManager.location
         
-        self.latitude = currentLocation?.coordinate.latitude
-        self.longitude = currentLocation?.coordinate.longitude
+        self.latitude = (currentLocation?.coordinate.latitude)!
+        self.longitude = (currentLocation?.coordinate.longitude)!
         
-        print(self.latitude!)
-        print(self.longitude!)
+        print(self.latitude)
+        print(self.longitude)
 
-        
         
         // map stuff
         
@@ -68,7 +61,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        mapView.setCenter(CLLocationCoordinate2D(latitude: (self.latitude!), longitude: (self.longitude!)), zoomLevel: 4, animated: false)
+        mapView.setCenter(CLLocationCoordinate2D(latitude: (self.latitude), longitude: (self.longitude)), zoomLevel: 4, animated: false)
         
        
         
@@ -77,16 +70,20 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     func getGraphopper() {
         
-        let theString = "https://graphhopper.com/api/1/route?point=37.784785,-122.397684&point=37.739474,-122.470126&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=454360ab-e1b4-4944-874c-e439b9b8a6c1"
+        let theString = "https://graphhopper.com/api/1/route?point=37.784785,-122.397684&point=37.739474,-122.470126&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=454360ab-e1b4-4944-874c-e439b9b8a6c1"
+        
         
         Alamofire.request(theString).responseJSON { response in
         
+                print(response)
             
             if let JSON = response.result.value as? [String:Any] {
                 
                 let paths = JSON["paths"] as! [[String:Any]]
                 
                 for path in paths {
+                    
+                    print(path["heading"])
                     
                     let points = path["points"] as? [String:Any]
                     let coords = points?["coordinates"] as! NSArray!
@@ -107,92 +104,55 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             
             }
         }
-    
-    
 
     
     func flattestRoute() {
 
-        // Assess Distance for shortest route
+        // ASSESS DISTANCE FOR SHORTEST
+
+        let sortedDistance = self.distance.sorted()
+
+        let shortest = self.distance.index(of: sortedDistance[0])!
+//        printShortest(index: shortest)
         
-        print("DISTANCE:")
-        print(self.distance)
+        
+        
+        // Asses ascension for least demanding route
+        
+        print("Ascension values:")
+        print(self.ascend)
         
         let sortedAscend = self.ascend.sorted()
-        let sortedDistance = self.distance.sorted()
-        print("SORTED DISTANCE:")
-        print(sortedDistance)
+
+        print("Sorted Ascension values:")
+        print(sortedAscend)
         
-    
-        let shortest = self.distance.index(of: sortedDistance[0])!
-        let flattest = self.ascend.index(of: sortedAscend[0])!
+        //FIFTH:
+        let fiveflattest = self.ascend.index(of: sortedAscend[4])!
+        printFifth(index: fiveflattest)
         
-//        print(shortest)
-//
-        printShortest(index: shortest)
-        
-        let twoflattest = self.ascend.index(of: sortedAscend[1])!
-        
-        printFirst(index: flattest)
-        
-        let threeflattest = self.ascend.index(of: sortedAscend[2])!
-        
-        printSecond(index: twoflattest)
-        
+        //FOURTH:
         let fourflattest = self.ascend.index(of: sortedAscend[3])!
+        printFourth(index: fourflattest)
         
+        //THIRD:
+        let threeflattest = self.ascend.index(of: sortedAscend[2])!
         printThird(index: threeflattest)
         
-        let fiveflattest = self.ascend.index(of: sortedAscend[4])!
-        
-//        printFourth(index: fourshortest)
-        
-        let sixshortest = self.ascend.index(of: sortedAscend[5])!
-        
-//        printFifth(index: fiveshortest)
-        
-        let sevenshortest = self.ascend.index(of: sortedAscend[6])!
-        
-//        printSixth(index: sixshortest)
-        
-    
-//        printSeventh(index: sevenshortest)
+        //SECOND:
+        let twoflattest = self.ascend.index(of: sortedAscend[1])!
+        printSecond(index: twoflattest)
         
         
-//        // Asses ascension for least demanding route
-//
-//        let sortedAscend = self.ascend.sorted()
-//        
-//        print(sortedAscend)
-//
-//        let first = self.ascend.index(of: sortedAscend[0])!
-//        
-//        print("FIRST!")
-//        print(first)
-//        print(self.distance[first])
-//
-//        printFirst(index: first)
-//        
-//        let second = self.ascend.index(of: sortedAscend[1])!
-//        
-//        print("SECOND!")
-//        print(second)
-//        print(self.distance[second])
-//
-//        printSecond(index: second)
-//        
-//        
-//        let third = self.ascend.index(of: sortedAscend[2])!
-//        
-//        print("THIRD!")
-//        print(third)
-//        print(self.distance[third])
-//
-//        printThird(index: third)
-//        
-//        printShortest(index: shortest)
+        // FIRST:
+        let flattest = self.ascend.index(of: sortedAscend[0])!
+        printFirst(index: flattest)
 
     }
+    
+    
+    
+    // PRINT SHORTEST ROUTE:
     
     func printShortest(index: Int) {
         
@@ -211,10 +171,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let lat = coordAry[1]
             let lng = coordAry[0]
             
-            let ht = coordAry[2] as! Double
-            
-            self.shortestHts.append(ht)
-            
             let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
             
             linecoords.append(coordpoint)
@@ -225,11 +181,13 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         shape.title = "shortest"
         
-        self.polylines.append(shape)
-        
         self.mapView.addAnnotation(shape)
         
     }
+    
+    
+    
+    // PRINT FLATTEST ROUTES!
 
     
     func printFirst(index: Int) {
@@ -252,8 +210,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                                 
                                 let ht = coordAry[2] as! Double
                                 
-                                self.firstHts.append(ht)
-        
                                 let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
                                 
                                 linecoords.append(coordpoint)
@@ -263,8 +219,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                     let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
         
                     shape.title = "first"
-        
-        self.polylines.append(shape)
         
                    self.mapView.addAnnotation(shape)
 
@@ -286,10 +240,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let lat = coordAry[1]
             let lng = coordAry[0]
             
-            let ht = coordAry[2] as! Double
-            
-            self.secondHts.append(ht)
-            
             let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
             
             linecoords.append(coordpoint)
@@ -301,8 +251,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         shape.title = "second"
         
         self.mapView.addAnnotation(shape)
-        self.polylines.append(shape)
-        
+
     }
     
     func printThird(index: Int) {
@@ -321,10 +270,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let lat = coordAry[1]
             let lng = coordAry[0]
             
-            let ht = coordAry[2] as! Double
-            
-            self.thirdHts.append(ht)
-            
             let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
             
             linecoords.append(coordpoint)
@@ -335,175 +280,75 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         shape.title = "third"
         
-        self.polylines.append(shape)
-        
-//        goPolylines()
-        
        self.mapView.addAnnotation(shape)
 
         
     }
     
-    func printFourth(index: Int) {
-        
-        let path = self.paths[index]
-        
-        //        print(path)
-        
-        let points = path["points"]! as! AnyObject!
-        let coords = points?["coordinates"] as! NSArray!
-        var linecoords = [CLLocationCoordinate2D]()
-        for coord in coords! {
+        func printFourth(index: Int) {
             
-            let coordAry = coord as! NSArray
-            let lat = coordAry[1]
-            let lng = coordAry[0]
-            
-            let ht = coordAry[2] as! Double
-            
-            self.firstHts.append(ht)
-            
-            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
-            
-            linecoords.append(coordpoint)
-            
-        }
-        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
-        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
-        
-        shape.title = "fourth"
-        
-        self.polylines.append(shape)
-        
-        self.mapView.addAnnotation(shape)
-        
-    }
+            print("fourthflattest:")
+            print(index)
     
-    func printFifth(index: Int) {
-        
-        let path = self.paths[index]
-        
-        //        print(path)
-        
-        let points = path["points"]! as! AnyObject!
-        let coords = points?["coordinates"] as! NSArray!
-        var linecoords = [CLLocationCoordinate2D]()
-        for coord in coords! {
-            
-            let coordAry = coord as! NSArray
-            let lat = coordAry[1]
-            let lng = coordAry[0]
-            
-            let ht = coordAry[2] as! Double
-            
-            self.firstHts.append(ht)
-            
-            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
-            
-            linecoords.append(coordpoint)
-            
-        }
-        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
-        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
-        
-        shape.title = "fifth"
-        
-        self.polylines.append(shape)
-        
-        self.mapView.addAnnotation(shape)
-        
-    }
+            let path = self.paths[index]
     
-    func printSixth(index: Int) {
-        
-        let path = self.paths[index]
-        
-        //        print(path)
-        
-        let points = path["points"]! as! AnyObject!
-        let coords = points?["coordinates"] as! NSArray!
-        var linecoords = [CLLocationCoordinate2D]()
-        for coord in coords! {
-            
-            let coordAry = coord as! NSArray
-            let lat = coordAry[1]
-            let lng = coordAry[0]
-            
-            let ht = coordAry[2] as! Double
-            
-            self.firstHts.append(ht)
-            
-            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
-            
-            linecoords.append(coordpoint)
-            
-        }
-        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
-        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
-        
-        shape.title = "sixth"
-        
-        self.polylines.append(shape)
-        
-        self.mapView.addAnnotation(shape)
-        
-    }
+            //        print(path)
     
-    func printSeventh(index: Int) {
-        
-        let path = self.paths[index]
-        
-        //        print(path)
-        
-        let points = path["points"]! as! AnyObject!
-        let coords = points?["coordinates"] as! NSArray!
-        var linecoords = [CLLocationCoordinate2D]()
-        for coord in coords! {
-            
-            let coordAry = coord as! NSArray
-            let lat = coordAry[1]
-            let lng = coordAry[0]
-            
-            let ht = coordAry[2] as! Double
-            
-            self.firstHts.append(ht)
-            
-            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
-            
-            linecoords.append(coordpoint)
-            
-        }
-        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
-        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
-        
-        shape.title = "seventh"
-        
-        self.polylines.append(shape)
-        
-        self.mapView.addAnnotation(shape)
-        
-    }
+            let points = path["points"]! as! AnyObject!
+            let coords = points?["coordinates"] as! NSArray!
+            var linecoords = [CLLocationCoordinate2D]()
+            for coord in coords! {
+    
+                let coordAry = coord as! NSArray
+                let lat = coordAry[1]
+                let lng = coordAry[0]
 
+                let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
     
-//    func goPolylines() {
-//
-//        print("boner")
-//
-//        print(self.polylines)
-//
-//        let polypower = MGLMultiPolyline(polylines: self.polylines)
-//
-//        print(polypower)
-//
-//        self.mapView.addAnnotation(polypower)
-//    }
+                linecoords.append(coordpoint)
     
+            }
+            let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
+            let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
     
+            shape.title = "fourth"
     
+            self.mapView.addAnnotation(shape)
     
+        }
     
+        func printFifth(index: Int) {
+            
+            print("fifthflattest:")
+            print(index)
     
+            let path = self.paths[index]
     
+            //        print(path)
+    
+            let points = path["points"]! as! AnyObject!
+            let coords = points?["coordinates"] as! NSArray!
+            var linecoords = [CLLocationCoordinate2D]()
+            for coord in coords! {
+    
+                let coordAry = coord as! NSArray
+                let lat = coordAry[1]
+                let lng = coordAry[0]
+
+                let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+    
+                linecoords.append(coordpoint)
+    
+            }
+            let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
+            let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
+    
+            shape.title = "fifth"
+    
+            self.mapView.addAnnotation(shape)
+    
+        }
+
     
     
     func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
@@ -521,44 +366,48 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         
         if (annotation.title == "first" && annotation is MGLPolyline) {
+            
+            print("green")
+            
             // Mapbox cyan
             return .green
         }
         if (annotation.title == "second" && annotation is MGLPolyline) {
             
+            print("green-yellow")
             
             // Mapbox cyan
             return UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
         
         if (annotation.title == "third" && annotation is MGLPolyline) {
+            
+            print("total-yellow")
+            
             // Mapbox cyan
              return UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
         
         if (annotation.title == "fourth" && annotation is MGLPolyline) {
+            
+            print("total-yellow")
+            
             // Mapbox cyan
-            return UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
-        }
-        if (annotation.title == "fifth" && annotation is MGLPolyline) {
-            // Mapbox cyan
-            return UIColor(red: 255.0/255.0, green: 170.0/255.0, blue: 0.0/255.0, alpha: 1)
+            return UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
         
-        if (annotation.title == "sixth" && annotation is MGLPolyline) {
+        if (annotation.title == "fifth" && annotation is MGLPolyline) {
+            
+            print("total-yellow")
+            
             // Mapbox cyan
-            return UIColor(red: 225.0/255.0, green: 85.0/255.0, blue: 120.0/255.0, alpha: 1)
+            return UIColor(red: 255.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
-            
-        if (annotation.title == "seventh" && annotation is MGLPolyline) {
-            
-            return UIColor(red: 255.0/255.0, green: 0.0/255, blue: 0.0/255.0, alpha: 1)
-            // Mapbox cya
-//            return UIColor(red: 255.0, green: 255.0, blue: 120.0, alpha: 1)
-        }
-            
+     
+        
         if (annotation.title == "shortest" && annotation is MGLPolyline) {
             
+            print("red")
             
             return .red
         }
@@ -567,8 +416,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         {
             return .brown
         }
-        
-
 
     }
     
@@ -581,23 +428,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
     }
-    
-//    
-//    func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
-//        // Set the alpha for all shape annotations to 1 (full opacity)
-//        return 1
-//    }
-//    
-//    func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
-//        // Set the line width for polyline annotations
-//        return 5.0
-//    }
-//    
-//    func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-//        // Give our polyline a unique color by checking for its `title` property
-//        return UIColor.red
-//    }
-//    
     
     
 }
