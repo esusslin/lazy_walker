@@ -25,6 +25,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     var longitude = Double()
     
     var destination = CLLocationCoordinate2D()
+    var destinationDirection = Double()
     
     // FOR ALL ROUTES
     var paths = [[String:Any]]()
@@ -63,7 +64,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         mapView.setCenter(CLLocationCoordinate2D(latitude: (self.latitude), longitude: (self.longitude)), zoomLevel: 4, animated: false)
         
-       
+       bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.739474, longitude: -122.470126))
         
         getGraphopper()
     }
@@ -75,15 +76,13 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         Alamofire.request(theString).responseJSON { response in
         
-                print(response)
+            
             
             if let JSON = response.result.value as? [String:Any] {
                 
                 let paths = JSON["paths"] as! [[String:Any]]
                 
                 for path in paths {
-                    
-                    print(path["heading"])
                     
                     let points = path["points"] as? [String:Any]
                     let coords = points?["coordinates"] as! NSArray!
@@ -113,19 +112,18 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         let sortedDistance = self.distance.sorted()
 
         let shortest = self.distance.index(of: sortedDistance[0])!
-//        printShortest(index: shortest)
         
         
         
         // Asses ascension for least demanding route
         
-        print("Ascension values:")
-        print(self.ascend)
+//        print("Ascension values:")
+//        print(self.ascend)
         
         let sortedAscend = self.ascend.sorted()
 
-        print("Sorted Ascension values:")
-        print(sortedAscend)
+//        print("Sorted Ascension values:")
+//        print(sortedAscend)
         
         //FIFTH:
         let fiveflattest = self.ascend.index(of: sortedAscend[4])!
@@ -156,8 +154,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     func printShortest(index: Int) {
         
-        print("shortest:")
-        print(index)
+//        print("shortest:")
+//        print(index)
         let path = self.paths[index]
         
         print("boner")
@@ -192,8 +190,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     func printFirst(index: Int) {
         
-        print("flattest:")
-        print(index)
+//        print("flattest:")
+//        print(index)
         
         let path = self.paths[index]
         
@@ -226,8 +224,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     func printSecond(index: Int) {
         
-        print("secondflattest:")
-        print(index)
+//        print("secondflattest:")
+//        print(index)
         
         let path = self.paths[index]
         
@@ -256,8 +254,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     func printThird(index: Int) {
         
-        print("thirdflattest:")
-        print(index)
+//        print("thirdflattest:")
+//        print(index)
         
         let path = self.paths[index]
         
@@ -287,8 +285,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
         func printFourth(index: Int) {
             
-            print("fourthflattest:")
-            print(index)
+//            print("fourthflattest:")
+//            print(index)
     
             let path = self.paths[index]
     
@@ -319,8 +317,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
         func printFifth(index: Int) {
             
-            print("fifthflattest:")
-            print(index)
+//            print("fifthflattest:")
+//            print(index)
     
             let path = self.paths[index]
     
@@ -420,10 +418,55 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     }
     
     
+    
+    // DIRECTIONAL BEARING:
+    
+    func DegreesToRadians(degrees: Double ) -> Double {
+        return degrees * M_PI / 180
+    }
+    
+    func RadiansToDegrees(radians: Double) -> Double {
+        return radians * 180 / M_PI
+    }
+    
+    func bearingToLocationRadian(destinationLocation:CLLocation) -> Double {
+        
+        let lat1 = DegreesToRadians(degrees: self.latitude)
+        let lon1 = DegreesToRadians(degrees: self.longitude)
+        
+        let lat2 = DegreesToRadians(degrees: destinationLocation.coordinate.latitude);
+        let lon2 = DegreesToRadians(degrees: destinationLocation.coordinate.longitude);
+        
+        let dLon = lon2 - lon1
+        
+        let y = sin(dLon) * cos(lat2);
+        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
+        let radiansBearing = atan2(y, x)
+        
+        return radiansBearing
+    }
+    
+    func bearingToLocationDegrees(destinationLocation:CLLocation) -> Double{
+        let heading = RadiansToDegrees(radians: bearingToLocationRadian(destinationLocation: destinationLocation))
+        print("HEADING THIS DIRECTION:")
+        print(heading)
+        
+        let degrees = (360.0 + heading) as! Double!
+        
+        print("DEGREES")
+        print(degrees)
+        
+        self.destinationDirection = degrees!
+        
+        return heading
+    }
+    
+    
+    // MAP CAMERA
 
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
     
-        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 6000, pitch: 60, heading: 230)
+        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 6000, pitch: 60, heading: (self.destinationDirection))
         
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
