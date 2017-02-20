@@ -64,14 +64,34 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         mapView.setCenter(CLLocationCoordinate2D(latitude: (self.latitude), longitude: (self.longitude)), zoomLevel: 4, animated: false)
         
-       bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.739474, longitude: -122.470126))
+        self.destination = CLLocationCoordinate2D(latitude: 37.785733, longitude: -122.437765)
+        
+       bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.785733, longitude: -122.437765))
         
         getGraphopper()
     }
     
     func getGraphopper() {
         
-        let theString = "https://graphhopper.com/api/1/route?point=37.784785,-122.397684&point=37.739474,-122.470126&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=454360ab-e1b4-4944-874c-e439b9b8a6c1"
+        let destination = self.destination
+        
+        let destLat = destination.latitude
+        let destLong = destination.longitude
+        
+        print(destLat)
+        print(destLong)
+        
+        let originString = "\(self.latitude)," + "\(self.longitude)"
+        
+        let deString = "\(destLat)," + "\(destLong)"
+        
+        let pointstring = originString + "&point=" + deString
+        
+        print(pointstring)
+        
+        let theString = "https://graphhopper.com/api/1/route?point=" + pointstring + "&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=454360ab-e1b4-4944-874c-e439b9b8a6c1"
+        
+        print(theString)
         
         
         Alamofire.request(theString).responseJSON { response in
@@ -80,7 +100,12 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             
             if let JSON = response.result.value as? [String:Any] {
                 
+                print(response)
+                
                 let paths = JSON["paths"] as! [[String:Any]]
+                
+                print("path options:")
+                print(paths.count)
                 
                 for path in paths {
                     
@@ -126,16 +151,21 @@ class mapVC: UIViewController, MGLMapViewDelegate {
 //        print(sortedAscend)
         
         //FIFTH:
+    
+            
         let fiveflattest = self.ascend.index(of: sortedAscend[4])!
         printFifth(index: fiveflattest)
         
         //FOURTH:
         let fourflattest = self.ascend.index(of: sortedAscend[3])!
         printFourth(index: fourflattest)
+
         
         //THIRD:
         let threeflattest = self.ascend.index(of: sortedAscend[2])!
         printThird(index: threeflattest)
+            
+       
         
         //SECOND:
         let twoflattest = self.ascend.index(of: sortedAscend[1])!
@@ -467,6 +497,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
     
         let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 6000, pitch: 60, heading: (self.destinationDirection))
+        
+        
         
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
