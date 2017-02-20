@@ -22,6 +22,38 @@ class scrapsViewController: UIViewController {
     }
     
     
+    
+//    func printShortest(index: Int) {
+//        
+//        //        print("shortest:")
+//        //        print(index)
+//        let path = self.paths[index]
+//        
+//        print("boner")
+//        
+//        let points = path["points"]! as! AnyObject!
+//        let coords = points?["coordinates"] as! NSArray!
+//        var linecoords = [CLLocationCoordinate2D]()
+//        for coord in coords! {
+//            
+//            let coordAry = coord as! NSArray
+//            let lat = coordAry[1]
+//            let lng = coordAry[0]
+//            
+//            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+//            
+//            linecoords.append(coordpoint)
+//            
+//        }
+//        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
+//        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
+//        
+//        shape.title = "shortest"
+//        
+//        self.mapView.addAnnotation(shape)
+//        
+//    }
+//    
 //    func elevaluation(paths: [[String:Any]]) {
 //        
 //        for path in paths {
@@ -76,6 +108,146 @@ class scrapsViewController: UIViewController {
 //            
 //        }
 //        self.flattestRoute()
+//        
+//    }
+//    
+//    func printFourth(index: Int) {
+//        
+//        let path = self.paths[index]
+//        
+//        //        print(path)
+//        
+//        let points = path["points"]! as! AnyObject!
+//        let coords = points?["coordinates"] as! NSArray!
+//        var linecoords = [CLLocationCoordinate2D]()
+//        for coord in coords! {
+//            
+//            let coordAry = coord as! NSArray
+//            let lat = coordAry[1]
+//            let lng = coordAry[0]
+//            
+//            let ht = coordAry[2] as! Double
+//            
+//            self.firstHts.append(ht)
+//            
+//            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+//            
+//            linecoords.append(coordpoint)
+//            
+//        }
+//        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
+//        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
+//        
+//        shape.title = "fourth"
+//        
+//        self.polylines.append(shape)
+//        
+//        self.mapView.addAnnotation(shape)
+//        
+//    }
+//    
+//    func printFifth(index: Int) {
+//        
+//        let path = self.paths[index]
+//        
+//        //        print(path)
+//        
+//        let points = path["points"]! as! AnyObject!
+//        let coords = points?["coordinates"] as! NSArray!
+//        var linecoords = [CLLocationCoordinate2D]()
+//        for coord in coords! {
+//            
+//            let coordAry = coord as! NSArray
+//            let lat = coordAry[1]
+//            let lng = coordAry[0]
+//            
+//            let ht = coordAry[2] as! Double
+//            
+//            self.firstHts.append(ht)
+//            
+//            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+//            
+//            linecoords.append(coordpoint)
+//            
+//        }
+//        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
+//        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
+//        
+//        shape.title = "fifth"
+//        
+//        self.polylines.append(shape)
+//        
+//        self.mapView.addAnnotation(shape)
+//        
+//    }
+//    
+//    func printSixth(index: Int) {
+//        
+//        let path = self.paths[index]
+//        
+//        //        print(path)
+//        
+//        let points = path["points"]! as! AnyObject!
+//        let coords = points?["coordinates"] as! NSArray!
+//        var linecoords = [CLLocationCoordinate2D]()
+//        for coord in coords! {
+//            
+//            let coordAry = coord as! NSArray
+//            let lat = coordAry[1]
+//            let lng = coordAry[0]
+//            
+//            let ht = coordAry[2] as! Double
+//            
+//            self.firstHts.append(ht)
+//            
+//            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+//            
+//            linecoords.append(coordpoint)
+//            
+//        }
+//        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
+//        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
+//        
+//        shape.title = "sixth"
+//        
+//        self.polylines.append(shape)
+//        
+//        self.mapView.addAnnotation(shape)
+//        
+//    }
+//    
+//    func printSeventh(index: Int) {
+//        
+//        let path = self.paths[index]
+//        
+//        //        print(path)
+//        
+//        let points = path["points"]! as! AnyObject!
+//        let coords = points?["coordinates"] as! NSArray!
+//        var linecoords = [CLLocationCoordinate2D]()
+//        for coord in coords! {
+//            
+//            let coordAry = coord as! NSArray
+//            let lat = coordAry[1]
+//            let lng = coordAry[0]
+//            
+//            let ht = coordAry[2] as! Double
+//            
+//            self.firstHts.append(ht)
+//            
+//            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+//            
+//            linecoords.append(coordpoint)
+//            
+//        }
+//        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
+//        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
+//        
+//        shape.title = "seventh"
+//        
+//        self.polylines.append(shape)
+//        
+//        self.mapView.addAnnotation(shape)
 //        
 //    }
 
