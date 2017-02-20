@@ -9,8 +9,6 @@
 import UIKit
 import CoreData
 import CoreLocation
-import GoogleMaps
-import GooglePlaces
 import Mapbox
 
 @UIApplicationMain
