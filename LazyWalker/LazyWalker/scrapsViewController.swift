@@ -22,6 +22,38 @@ class scrapsViewController: UIViewController {
     }
     
     
+    
+//    func printShortest(index: Int) {
+//        
+//        //        print("shortest:")
+//        //        print(index)
+//        let path = self.paths[index]
+//        
+//        print("boner")
+//        
+//        let points = path["points"]! as! AnyObject!
+//        let coords = points?["coordinates"] as! NSArray!
+//        var linecoords = [CLLocationCoordinate2D]()
+//        for coord in coords! {
+//            
+//            let coordAry = coord as! NSArray
+//            let lat = coordAry[1]
+//            let lng = coordAry[0]
+//            
+//            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+//            
+//            linecoords.append(coordpoint)
+//            
+//        }
+//        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
+//        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
+//        
+//        shape.title = "shortest"
+//        
+//        self.mapView.addAnnotation(shape)
+//        
+//    }
+//    
 //    func elevaluation(paths: [[String:Any]]) {
 //        
 //        for path in paths {

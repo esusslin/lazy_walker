@@ -179,54 +179,13 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     }
     
     
-    
-    // PRINT SHORTEST ROUTE:
-    
-    func printShortest(index: Int) {
-        
-//        print("shortest:")
-//        print(index)
-        let path = self.paths[index]
-        
-        print("boner")
-        
-        let points = path["points"]! as! AnyObject!
-        let coords = points?["coordinates"] as! NSArray!
-        var linecoords = [CLLocationCoordinate2D]()
-        for coord in coords! {
-            
-            let coordAry = coord as! NSArray
-            let lat = coordAry[1]
-            let lng = coordAry[0]
-            
-            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
-            
-            linecoords.append(coordpoint)
-            
-        }
-        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
-        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
-        
-        shape.title = "shortest"
-        
-        self.mapView.addAnnotation(shape)
-        
-    }
-    
-    
-    
     // PRINT FLATTEST ROUTES!
 
     
     func printFirst(index: Int) {
         
-//        print("flattest:")
-//        print(index)
-        
         let path = self.paths[index]
-        
-//        print(path)
-        
+
         let points = path["points"]! as! AnyObject!
                 let coords = points?["coordinates"] as! NSArray!
                             var linecoords = [CLLocationCoordinate2D]()
@@ -249,13 +208,10 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                     shape.title = "first"
         
                    self.mapView.addAnnotation(shape)
-
+                   mapView.selectAnnotation(shape, animated: true)
     }
     
     func printSecond(index: Int) {
-        
-//        print("secondflattest:")
-//        print(index)
         
         let path = self.paths[index]
         
@@ -279,7 +235,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         shape.title = "second"
         
         self.mapView.addAnnotation(shape)
-
+        mapView.selectAnnotation(shape, animated: true)
     }
     
     func printThird(index: Int) {
@@ -308,16 +264,14 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         shape.title = "third"
         
-       self.mapView.addAnnotation(shape)
+        self.mapView.addAnnotation(shape)
+        mapView.selectAnnotation(shape, animated: true)
 
         
     }
     
         func printFourth(index: Int) {
-            
-//            print("fourthflattest:")
-//            print(index)
-    
+
             let path = self.paths[index]
     
             //        print(path)
@@ -342,6 +296,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             shape.title = "fourth"
     
             self.mapView.addAnnotation(shape)
+            mapView.selectAnnotation(shape, animated: true)
     
         }
     
@@ -357,11 +312,28 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let points = path["points"]! as! AnyObject!
             let coords = points?["coordinates"] as! NSArray!
             var linecoords = [CLLocationCoordinate2D]()
+            
+            var pointAnnotations = [CustomPointAnnotation]()
+            
+
             for coord in coords! {
-    
+                
                 let coordAry = coord as! NSArray
                 let lat = coordAry[1]
                 let lng = coordAry[0]
+                
+                let count = pointAnnotations.count + 1
+                let point = CustomPointAnnotation(coordinate: CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees), title: "Custom Point Annotation \(count)", subtitle: nil)
+                
+                // Set the custom `image` and `reuseIdentifier` properties, later used in the `mapView:imageForAnnotation:` delegate method.
+                // Create a unique reuse identifier for each new annotation image.
+                point.reuseIdentifier = "customAnnotation\(count)"
+                // This dot image grows in size as more annotations are added to the array.
+                point.image = UIImage(named: "dot")                // Append each annotation to the array, which will be added to the map all at once.
+                pointAnnotations.append(point)
+                
+                mapView.addAnnotations(pointAnnotations)
+
 
                 let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
     
@@ -374,8 +346,67 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             shape.title = "fifth"
     
             self.mapView.addAnnotation(shape)
+            
+            mapView.selectAnnotation(shape, animated: true)
     
         }
+    
+    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        // Try to reuse the existing ‘pisa’ annotation image, if it exists.
+        
+        var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "dot")
+        
+        if annotationImage == nil {
+            // Leaning Tower of Pisa by Stefan Spieler from the Noun Project.
+            var image = UIImage(named: "dot")!
+            
+        
+            
+            // The anchor point of an annotation is currently always the center. To
+            // shift the anchor point to the bottom of the annotation, the image
+            // asset includes transparent bottom padding equal to the original image
+            // height.
+            //
+            // To make this padding non-interactive, we create another image object
+            // with a custom alignment rect that excludes the padding.
+            image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
+            
+            
+            // Initialize the ‘pisa’ annotation image with the UIImage we just loaded.
+            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "dot")
+        }
+        
+        return annotationImage
+    }
+    
+    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+        return true
+    }
+    
+    func mapView(_ mapView: MGLMapView, leftCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
+        if (annotation.title! != nil) {
+            // Callout height is fixed; width expands to fit its content.
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
+            label.textAlignment = .right
+            label.textColor = UIColor(red: 0.81, green: 0.71, blue: 0.23, alpha: 1)
+            label.text = "金閣寺"
+            
+            return label
+        }
+        
+        return nil
+    }
+    
+    func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
+        return UIButton(type: .detailDisclosure)
+    }
+    
+    func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
+        // Hide the callout view.
+        mapView.deselectAnnotation(annotation, animated: false)
+        
+        UIAlertView(title: annotation.title!!, message: "A lovely (if touristy) place.", delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
+    }
 
     
     
@@ -505,4 +536,24 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     }
     
     
+}
+
+
+
+class CustomPointAnnotation: NSObject, MGLAnnotation {
+    
+    // As a reimplementation of the MGLAnnotation protocol, we have to add mutable coordinate and (sub)title properties ourselves.
+    var coordinate: CLLocationCoordinate2D
+    var title: String?
+    var subtitle: String?
+    
+    // Custom properties that we will use to customize the annotation's image.
+    var image: UIImage?
+    var reuseIdentifier: String?
+    
+    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?) {
+        self.coordinate = coordinate
+        self.title = title
+        self.subtitle = subtitle
+    }
 }
