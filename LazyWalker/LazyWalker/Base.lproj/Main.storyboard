@@ -44,7 +44,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="NbR-eI-LMq"/>
                     <connections>
-                        <outlet property="mapView" destination="SIk-mV-Ame" id="ks2-ly-oMP"/>
+                        <outlet property="mapView" destination="SIk-mV-Ame" id="UIX-6G-DHJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p4j-5e-ECV" userLabel="First Responder" sceneMemberID="firstResponder"/>
