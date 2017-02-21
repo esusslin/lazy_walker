@@ -462,9 +462,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         }
         
         self.mapView.addAnnotation(shape)
-        
-        
         }
+
     
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
         return UIButton(type: .detailDisclosure)
@@ -475,6 +474,72 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         mapView.deselectAnnotation(annotation, animated: false)
         
         UIAlertView(title: annotation.title!!, message: "A lovely (if touristy) place.", delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
+    }
+    
+    func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
+        
+        let catchtitle = String()
+        
+        let poly = mapView.annotations?.filter { annotation in
+            
+            return (annotation.title??.localizedCaseInsensitiveContains("BOLD") == true)
+            
+        }
+        
+        
+        
+        let first = poly?.first!
+        
+        mapView.removeAnnotation(first!)
+        
+        let name = first!.title!
+        
+        if (name == "fifthlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "fifthline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+        
+        if (name == "fourthlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "fourthline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+
+        
+        if (name == "thirdlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "thirdline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+
+        
+        if (name == "secondlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "secondline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+
+        
+        if (name == "firstlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "firstline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+
+        
+        
+
     }
 
     
