@@ -5,6 +5,10 @@ target 'LazyWalker' do
 
    pod 'Alamofire', '~> 4.3'
 
-   'pod CardboardSDK' 
+   pod 'PureLayout', '~> 2.0.5'
+
+   
+   pod 'Charts', '~> 3.0.1'
+   pod 'RealmSwift', '~> 2.0.2'
 
 end
