@@ -40,6 +40,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     @IBOutlet var mapView: MGLMapView!
     
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,9 +66,11 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         mapView.setCenter(CLLocationCoordinate2D(latitude: (self.latitude), longitude: (self.longitude)), zoomLevel: 4, animated: false)
         
-        self.destination = CLLocationCoordinate2D(latitude: 37.785733, longitude: -122.437765)
         
-       bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.785733, longitude: -122.437765))
+    
+        self.destination = CLLocationCoordinate2D(latitude: 37.759505, longitude: -122.432606)
+        
+       bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.759505, longitude: -122.432606))
         
         getGraphopper()
     }
@@ -112,6 +116,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                     let points = path["points"] as? [String:Any]
                     let coords = points?["coordinates"] as! NSArray!
                     var linecoords = [CLLocationCoordinate2D]()
+                    
+                    print(coords?.count)
                     var elevations = [Double]()
                     
                     self.ascend.append((path["ascend"] as? Double)!)
@@ -137,9 +143,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         let sortedDistance = self.distance.sorted()
 
         let shortest = self.distance.index(of: sortedDistance[0])!
-        
-        
-        
+
         // Asses ascension for least demanding route
         
 //        print("Ascension values:")
@@ -152,9 +156,13 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         //FIFTH:
     
+        if (self.paths.count > 4) {
             
+        
         let fiveflattest = self.ascend.index(of: sortedAscend[4])!
         printFifth(index: fiveflattest)
+            
+            }
         
         //FOURTH:
         let fourflattest = self.ascend.index(of: sortedAscend[3])!
@@ -203,6 +211,14 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                                 linecoords.append(coordpoint)
                                 
                             }
+        
+                    for (index, _) in linecoords.enumerated() {
+                            if index == 0 { continue } // skip first
+                            self.split(linecoords[index - 1], linecoords[index], "0")
+                    }
+
+        
+        
                     let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
                     let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
         
@@ -233,6 +249,15 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             linecoords.append(coordpoint)
             
         }
+        
+        for (index, _) in linecoords.enumerated() {
+            if index == 0 { continue } // skip first
+            self.split(linecoords[index - 1], linecoords[index], "1")
+        }
+
+        
+        
+        
         let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
         let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
         
@@ -266,6 +291,13 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             linecoords.append(coordpoint)
             
         }
+        
+        for (index, _) in linecoords.enumerated() {
+            if index == 0 { continue } // skip first
+            self.split(linecoords[index - 1], linecoords[index], "2")
+        }
+
+        
         let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
         let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
         
@@ -287,6 +319,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let coords = points?["coordinates"] as! NSArray!
             var linecoords = [CLLocationCoordinate2D]()
             for coord in coords! {
+                
     
                 let coordAry = coord as! NSArray
                 let lat = coordAry[1]
@@ -300,6 +333,15 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                 linecoords.append(coordpoint)
     
             }
+            
+            
+            for (index, _) in linecoords.enumerated() {
+                if index == 0 { continue } // skip first
+                self.split(linecoords[index - 1], linecoords[index], "3")
+            }
+
+            
+            
             let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
             let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
     
@@ -337,6 +379,13 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                 linecoords.append(coordpoint)
     
             }
+            
+            for (index, _) in linecoords.enumerated() {
+                if index == 0 { continue } // skip first
+                self.split(linecoords[index - 1], linecoords[index], "4")
+            }
+            
+            
             let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
             let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
     
@@ -388,8 +437,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             
                     let title = annotation.title!
             
-                    print("BIG TEST TRUE/FALSE:")
-                    print(boldline(title: title!))
+                    boldline(title: title!)
             
             // Callout height is fixed; width expands to fit its content.
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
@@ -486,8 +534,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             
         }
         
-        
-        
         let first = poly?.first!
         
         mapView.removeAnnotation(first!)
@@ -537,9 +583,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             self.mapView.addAnnotation(shape)
         }
 
-        
-        
-
     }
 
     
@@ -556,7 +599,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         if ((annotation.title!.localizedCaseInsensitiveContains("BOLD") == true) && annotation is MGLPolyline) {
             
-            return 8.0
+            return 12.0
         }
                 else
         {
@@ -682,10 +725,14 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     }
     
     
+    // PRIVATE FUNCTIONS:
+    
     
     private func add(coordinate: CLLocationCoordinate2D, id: String) {
         DispatchQueue.main.async {
             // Unowned reference to self to prevent retain cycle
+            
+            
             [unowned self] in
             let point = MGLPointAnnotation()
             point.coordinate = coordinate
@@ -693,6 +740,32 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             point.subtitle = "\(coordinate.latitude) / \(coordinate.longitude)"
             self.mapView.addAnnotation(point)
         }
+    }
+    
+    private func split(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D, _ id: String) {
+        
+        print("BONER!")
+        if distance(from, to) > 40 { // THRESHOLD is 200m
+            let middle = mid(from, to)
+            add(coordinate: middle, id: id)
+            split(from, middle, id)
+            split(middle, to, id)
+        }
+        
+        add(coordinate: from, id: id)
+        add(coordinate: to, id: id)
+    }
+    
+    private func distance(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> Double {
+        let fromLoc = CLLocation(latitude: from.latitude, longitude: from.longitude)
+        let toLoc = CLLocation(latitude: to.latitude, longitude: to.longitude)
+        return fromLoc.distance(from: toLoc)
+    }
+    
+    private func mid(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
+        let latitude = (from.latitude + to.latitude) / 2
+        let longitude = (from.longitude + to.longitude) / 2
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
     
