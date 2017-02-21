@@ -21,7 +21,16 @@ class scrapsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //            print("BIG TEST TRUE/FALSE:")
+    //            print(boldline(title: title!))
     
+    
+    //    func boldline(title: String) {
+    //
+    //        mapView.annotations?.filter { annotation in
+    //            return (annotation.title??.localizedCaseInsensitiveContains(title) == true)
+    //        }
+    //    }
     
 //    func printShortest(index: Int) {
 //        
