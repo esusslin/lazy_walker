@@ -40,6 +40,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     @IBOutlet var mapView: MGLMapView!
     
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,9 +66,11 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         mapView.setCenter(CLLocationCoordinate2D(latitude: (self.latitude), longitude: (self.longitude)), zoomLevel: 4, animated: false)
         
-        self.destination = CLLocationCoordinate2D(latitude: 37.785733, longitude: -122.437765)
         
-       bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.785733, longitude: -122.437765))
+    
+        self.destination = CLLocationCoordinate2D(latitude: 37.759505, longitude: -122.432606)
+        
+       bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.759505, longitude: -122.432606))
         
         getGraphopper()
     }
@@ -112,6 +116,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                     let points = path["points"] as? [String:Any]
                     let coords = points?["coordinates"] as! NSArray!
                     var linecoords = [CLLocationCoordinate2D]()
+                    
+                    print(coords?.count)
                     var elevations = [Double]()
                     
                     self.ascend.append((path["ascend"] as? Double)!)
@@ -137,9 +143,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         let sortedDistance = self.distance.sorted()
 
         let shortest = self.distance.index(of: sortedDistance[0])!
-        
-        
-        
+
         // Asses ascension for least demanding route
         
 //        print("Ascension values:")
@@ -152,9 +156,13 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         //FIFTH:
     
+        if (self.paths.count > 4) {
             
+        
         let fiveflattest = self.ascend.index(of: sortedAscend[4])!
         printFifth(index: fiveflattest)
+            
+            }
         
         //FOURTH:
         let fourflattest = self.ascend.index(of: sortedAscend[3])!
@@ -194,18 +202,27 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                                 let coordAry = coord as! NSArray
                                 let lat = coordAry[1]
                                 let lng = coordAry[0]
+                                let point = CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
                                 
-                                let ht = coordAry[2] as! Double
+                                add(coordinate: point, id: "0")
                                 
                                 let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
                                 
                                 linecoords.append(coordpoint)
                                 
                             }
+        
+                    for (index, _) in linecoords.enumerated() {
+                            if index == 0 { continue } // skip first
+                            self.split(linecoords[index - 1], linecoords[index], "0")
+                    }
+
+        
+        
                     let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
                     let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
         
-                    shape.title = "first"
+                    shape.title = "firstline"
         
                    self.mapView.addAnnotation(shape)
                    mapView.selectAnnotation(shape, animated: true)
@@ -223,16 +240,28 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let coordAry = coord as! NSArray
             let lat = coordAry[1]
             let lng = coordAry[0]
+            let point = CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
+            
+            add(coordinate: point, id: "1")
             
             let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
             
             linecoords.append(coordpoint)
             
         }
+        
+        for (index, _) in linecoords.enumerated() {
+            if index == 0 { continue } // skip first
+            self.split(linecoords[index - 1], linecoords[index], "1")
+        }
+
+        
+        
+        
         let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
         let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
         
-        shape.title = "second"
+        shape.title = "secondline"
         
         self.mapView.addAnnotation(shape)
         mapView.selectAnnotation(shape, animated: true)
@@ -253,16 +282,26 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let coordAry = coord as! NSArray
             let lat = coordAry[1]
             let lng = coordAry[0]
+            let point = CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
+            
+            add(coordinate: point, id: "2")
             
             let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
             
             linecoords.append(coordpoint)
             
         }
+        
+        for (index, _) in linecoords.enumerated() {
+            if index == 0 { continue } // skip first
+            self.split(linecoords[index - 1], linecoords[index], "2")
+        }
+
+        
         let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
         let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
         
-        shape.title = "third"
+        shape.title = "thirdline"
         
         self.mapView.addAnnotation(shape)
         mapView.selectAnnotation(shape, animated: true)
@@ -280,20 +319,33 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let coords = points?["coordinates"] as! NSArray!
             var linecoords = [CLLocationCoordinate2D]()
             for coord in coords! {
+                
     
                 let coordAry = coord as! NSArray
                 let lat = coordAry[1]
                 let lng = coordAry[0]
+                let point = CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
+                
+                add(coordinate: point, id: "3")
 
                 let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
     
                 linecoords.append(coordpoint)
     
             }
+            
+            
+            for (index, _) in linecoords.enumerated() {
+                if index == 0 { continue } // skip first
+                self.split(linecoords[index - 1], linecoords[index], "3")
+            }
+
+            
+            
             let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
             let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
     
-            shape.title = "fourth"
+            shape.title = "fourthline"
     
             self.mapView.addAnnotation(shape)
             mapView.selectAnnotation(shape, animated: true)
@@ -301,10 +353,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         }
     
         func printFifth(index: Int) {
-            
-//            print("fifthflattest:")
-//            print(index)
-    
+
             let path = self.paths[index]
     
             //        print(path)
@@ -313,7 +362,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let coords = points?["coordinates"] as! NSArray!
             var linecoords = [CLLocationCoordinate2D]()
             
-            var pointAnnotations = [CustomPointAnnotation]()
+//            var pointAnnotations = [CustomPointAnnotation]()
             
 
             for coord in coords! {
@@ -321,35 +370,35 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                 let coordAry = coord as! NSArray
                 let lat = coordAry[1]
                 let lng = coordAry[0]
+                let point = CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
                 
-                let count = pointAnnotations.count + 1
-                let point = CustomPointAnnotation(coordinate: CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees), title: "Custom Point Annotation \(count)", subtitle: nil)
-                
-                // Set the custom `image` and `reuseIdentifier` properties, later used in the `mapView:imageForAnnotation:` delegate method.
-                // Create a unique reuse identifier for each new annotation image.
-                point.reuseIdentifier = "customAnnotation\(count)"
-                // This dot image grows in size as more annotations are added to the array.
-                point.image = UIImage(named: "dot")                // Append each annotation to the array, which will be added to the map all at once.
-                pointAnnotations.append(point)
-                
-                mapView.addAnnotations(pointAnnotations)
-
+                add(coordinate: point, id: "4")
 
                 let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
     
                 linecoords.append(coordpoint)
     
             }
+            
+            for (index, _) in linecoords.enumerated() {
+                if index == 0 { continue } // skip first
+                self.split(linecoords[index - 1], linecoords[index], "4")
+            }
+            
+            
             let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
             let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
     
-            shape.title = "fifth"
+            shape.title = "fifthline"
     
             self.mapView.addAnnotation(shape)
             
             mapView.selectAnnotation(shape, animated: true)
     
         }
+    
+    
+    
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         // Try to reuse the existing ‘pisa’ annotation image, if it exists.
@@ -373,7 +422,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             
             
             // Initialize the ‘pisa’ annotation image with the UIImage we just loaded.
-            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "dot")
+            annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "dot1")
         }
         
         return annotationImage
@@ -385,6 +434,11 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, leftCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
         if (annotation.title! != nil) {
+            
+                    let title = annotation.title!
+            
+                    boldline(title: title!)
+            
             // Callout height is fixed; width expands to fit its content.
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
             label.textAlignment = .right
@@ -397,6 +451,68 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         return nil
     }
     
+
+    
+    func boldline(title: String) {
+        
+        let num = Int(title)!
+        
+        let sortedAscend = self.ascend.sorted()
+        
+        let index = self.ascend.index(of: sortedAscend[num])!
+        
+        let theindex = sortedAscend.index(of: ascend[index])!
+        
+        print("INDEX:")
+        print(index)
+        
+        let path = self.paths[index]
+
+//        print(num)
+        
+        
+        
+        let points = path["points"]! as! AnyObject!
+        let coords = points?["coordinates"] as! NSArray!
+        var linecoords = [CLLocationCoordinate2D]()
+        for coord in coords! {
+            
+            let coordAry = coord as! NSArray
+            let lat = coordAry[1]
+            let lng = coordAry[0]
+            
+            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+            
+            linecoords.append(coordpoint)
+            
+        }
+        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
+        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
+        
+        if (theindex == 0) {
+            shape.title = "firstlineBOLD"
+        }
+        
+        if (theindex == 1) {
+            shape.title = "secondlineBOLD"
+        }
+        
+        if (theindex == 2) {
+            shape.title = "thirdlineBOLD"
+        }
+        
+        if (theindex == 3) {
+            shape.title = "fourthlineBOLD"
+        }
+        
+        if (theindex == 4) {
+            shape.title = "fifthlineBOLD"
+        }
+        
+        self.mapView.addAnnotation(shape)
+        }
+
+    
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
         return UIButton(type: .detailDisclosure)
     }
@@ -406,6 +522,67 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         mapView.deselectAnnotation(annotation, animated: false)
         
         UIAlertView(title: annotation.title!!, message: "A lovely (if touristy) place.", delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
+    }
+    
+    func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
+        
+        let catchtitle = String()
+        
+        let poly = mapView.annotations?.filter { annotation in
+            
+            return (annotation.title??.localizedCaseInsensitiveContains("BOLD") == true)
+            
+        }
+        
+        let first = poly?.first!
+        
+        mapView.removeAnnotation(first!)
+        
+        let name = first!.title!
+        
+        if (name == "fifthlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "fifthline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+        
+        if (name == "fourthlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "fourthline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+
+        
+        if (name == "thirdlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "thirdline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+
+        
+        if (name == "secondlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "secondline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+
+        
+        if (name == "firstlineBOLD") {
+            let shape = first as! MGLPolyline
+            shape.title = "firstline"
+            
+            print(shape.title)
+            self.mapView.addAnnotation(shape)
+        }
+
     }
 
     
@@ -417,21 +594,33 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
         // Set the line width for polyline annotations
+        print("ANNOTATION TITLE:")
+        print(annotation.title!)
+        
+        if ((annotation.title!.localizedCaseInsensitiveContains("BOLD") == true) && annotation is MGLPolyline) {
+            
+            return 12.0
+        }
+                else
+        {
+
         return 4.0
+        }
+    
     }
     
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
         // Give our polyline a unique color by checking for its `title` property
         
         
-        if (annotation.title == "first" && annotation is MGLPolyline) {
+        if ((annotation.title == "firstline" || annotation.title == "firstlineBOLD") && annotation is MGLPolyline) {
             
             print("green")
             
             // Mapbox cyan
             return .green
         }
-        if (annotation.title == "second" && annotation is MGLPolyline) {
+        if ((annotation.title == "secondline" || annotation.title == "secondlineBOLD") && annotation is MGLPolyline) {
             
             print("green-yellow")
             
@@ -439,25 +628,25 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             return UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
         
-        if (annotation.title == "third" && annotation is MGLPolyline) {
+        if ((annotation.title == "thirdline" || annotation.title == "thirdlineBOLD") && annotation is MGLPolyline) {
             
-            print("total-yellow")
+
             
             // Mapbox cyan
              return UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
         
-        if (annotation.title == "fourth" && annotation is MGLPolyline) {
+        if ((annotation.title == "fourthline" || annotation.title == "fourthlineBOLD") && annotation is MGLPolyline) {
             
-            print("total-yellow")
+
             
             // Mapbox cyan
             return UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
         
-        if (annotation.title == "fifth" && annotation is MGLPolyline) {
+        if ((annotation.title == "fifthline" || annotation.title == "fifthlineBOLD") && annotation is MGLPolyline) {
             
-            print("total-yellow")
+
             
             // Mapbox cyan
             return UIColor(red: 255.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 1)
@@ -536,24 +725,49 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     }
     
     
-}
-
-
-
-class CustomPointAnnotation: NSObject, MGLAnnotation {
+    // PRIVATE FUNCTIONS:
     
-    // As a reimplementation of the MGLAnnotation protocol, we have to add mutable coordinate and (sub)title properties ourselves.
-    var coordinate: CLLocationCoordinate2D
-    var title: String?
-    var subtitle: String?
     
-    // Custom properties that we will use to customize the annotation's image.
-    var image: UIImage?
-    var reuseIdentifier: String?
-    
-    init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?) {
-        self.coordinate = coordinate
-        self.title = title
-        self.subtitle = subtitle
+    private func add(coordinate: CLLocationCoordinate2D, id: String) {
+        DispatchQueue.main.async {
+            // Unowned reference to self to prevent retain cycle
+            
+            
+            [unowned self] in
+            let point = MGLPointAnnotation()
+            point.coordinate = coordinate
+            point.title = id
+            point.subtitle = "\(coordinate.latitude) / \(coordinate.longitude)"
+            self.mapView.addAnnotation(point)
+        }
     }
+    
+    private func split(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D, _ id: String) {
+        
+        print("BONER!")
+        if distance(from, to) > 40 { // THRESHOLD is 200m
+            let middle = mid(from, to)
+            add(coordinate: middle, id: id)
+            split(from, middle, id)
+            split(middle, to, id)
+        }
+        
+        add(coordinate: from, id: id)
+        add(coordinate: to, id: id)
+    }
+    
+    private func distance(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> Double {
+        let fromLoc = CLLocation(latitude: from.latitude, longitude: from.longitude)
+        let toLoc = CLLocation(latitude: to.latitude, longitude: to.longitude)
+        return fromLoc.distance(from: toLoc)
+    }
+    
+    private func mid(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
+        let latitude = (from.latitude + to.latitude) / 2
+        let longitude = (from.longitude + to.longitude) / 2
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    
+    
 }
+
