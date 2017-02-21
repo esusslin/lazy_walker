@@ -11,6 +11,8 @@
 		E2838A731E4D3631006DFCEE /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; };
 		E2838A741E4D3631006DFCEE /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2838A771E568BE8006DFCEE /* scrapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838A761E568BE8006DFCEE /* scrapsViewController.swift */; };
+		E28D7D661E5CCDE000EC44C9 /* pathAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */; };
+		E28D7D681E5CE05E00EC44C9 /* CustomCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */; };
 		E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */; };
 		E2F0D08A1E4D28CF00BB4CBE /* mapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */; };
 		E2F0D08D1E4D28CF00BB4CBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */; };
@@ -20,6 +22,7 @@
 		E2F0D0A01E4D28CF00BB4CBE /* LazyWalkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D09F1E4D28CF00BB4CBE /* LazyWalkerTests.swift */; };
 		E2F0D0AB1E4D28CF00BB4CBE /* LazyWalkerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0AA1E4D28CF00BB4CBE /* LazyWalkerUITests.swift */; };
 		E2F0D0BC1E4D2B1C00BB4CBE /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; };
+		E2FE28591E5CF86B0081FA0F /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2FE28581E5CF86B0081FA0F /* Charts.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,8 @@
 		92422D6CE5754326C85157D2 /* Pods-LazyWalker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LazyWalker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LazyWalker/Pods-LazyWalker.debug.xcconfig"; sourceTree = "<group>"; };
 		CF0620AD0CD8E5B64ADB3B71 /* Pods_LazyWalker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LazyWalker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2838A761E568BE8006DFCEE /* scrapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = scrapsViewController.swift; sourceTree = "<group>"; };
+		E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pathAnnotation.swift; sourceTree = "<group>"; };
+		E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCalloutView.swift; sourceTree = "<group>"; };
 		E2F0D0841E4D28CF00BB4CBE /* LazyWalker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LazyWalker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mapVC.swift; sourceTree = "<group>"; };
@@ -72,6 +77,7 @@
 		E2F0D0AA1E4D28CF00BB4CBE /* LazyWalkerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyWalkerUITests.swift; sourceTree = "<group>"; };
 		E2F0D0AC1E4D28CF00BB4CBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
+		E2FE28581E5CF86B0081FA0F /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = "../../../Library/Developer/Xcode/DerivedData/LazyWalker-akrrnatgzdpbqvaqbhkkolzucxdj/Build/Products/Debug-iphonesimulator/Charts/Charts.framework"; sourceTree = "<group>"; };
 		F7DCB020A892D7E93FD67CFB /* Pods-LazyWalker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LazyWalker.release.xcconfig"; path = "Pods/Target Support Files/Pods-LazyWalker/Pods-LazyWalker.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2FE28591E5CF86B0081FA0F /* Charts.framework in Frameworks */,
 				E2F0D0BC1E4D2B1C00BB4CBE /* Mapbox.framework in Frameworks */,
 				65425D64557598EC5BA4470E /* Pods_LazyWalker.framework in Frameworks */,
 				E2838A731E4D3631006DFCEE /* Mapbox.framework in Frameworks */,
@@ -115,6 +122,7 @@
 		A5117C685792B46B452CD2BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E2FE28581E5CF86B0081FA0F /* Charts.framework */,
 				CF0620AD0CD8E5B64ADB3B71 /* Pods_LazyWalker.framework */,
 			);
 			name = Frameworks;
@@ -148,6 +156,8 @@
 			children = (
 				E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */,
 				E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */,
+				E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */,
+				E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */,
 				E2838A761E568BE8006DFCEE /* scrapsViewController.swift */,
 				E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */,
 				E2F0D0911E4D28CF00BB4CBE /* Assets.xcassets */,
@@ -379,7 +389,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E28D7D681E5CE05E00EC44C9 /* CustomCalloutView.swift in Sources */,
 				E2838A771E568BE8006DFCEE /* scrapsViewController.swift in Sources */,
+				E28D7D661E5CCDE000EC44C9 /* pathAnnotation.swift in Sources */,
 				E2F0D08A1E4D28CF00BB4CBE /* mapVC.swift in Sources */,
 				E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */,
 				E2F0D0901E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld in Sources */,
