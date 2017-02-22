@@ -55,8 +55,8 @@ class CustomCalloutView: UIView, MGLCalloutView {
         
         let index = ascend.index(of: sortedAscend[num])!
         
-        let totalClimb = "Total uphill climb: " + "\(Int(sortedAscend[num]))" + " meters"
-        let distance = "Total distance: " + "\(Int(totalDistance[index]))" + " meters"
+        let totalClimb = "Climb: " + "\(Int(sortedAscend[num]))" + " meters"
+        let distance = "Distance: " + "\(Int(totalDistance[index]))" + " meters"
         
         
         
