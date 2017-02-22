@@ -6,7 +6,7 @@ target 'LazyWalker' do
    pod 'Alamofire', '~> 4.3'
 
    pod 'PureLayout', '~> 2.0.5'
-
+   pod 'SwiftCharts', '~> 0.5'
    
    pod 'Charts', '~> 3.0.1'
    pod 'RealmSwift', '~> 2.0.2'

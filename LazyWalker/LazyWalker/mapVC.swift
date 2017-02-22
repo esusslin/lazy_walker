@@ -13,7 +13,7 @@ import CoreData
 import Mapbox
 import Alamofire
 import Charts
-import RealmSwift
+import SwiftCharts
 
 //// GLOBALS
 
@@ -34,6 +34,18 @@ var ascend = [Double]()
 var descend = [Double]()
 var totalDistance = [Double]()
 
+var totalDistanceOverall = Double()
+
+// ALL COORDINATES
+
+var firstCoords = [NSArray]()
+var secondCoords = [NSArray]()
+var thirdCoords = [NSArray]()
+var fourthCoords = [NSArray]()
+var fifthCoords = [NSArray]()
+
+var pointArr : [(Double, Double)] = []
+
 
 class mapVC: UIViewController, MGLMapViewDelegate {
 
@@ -41,10 +53,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     @IBOutlet var mapView: MGLMapView!
     
     var customView = UIView()
-    
-    var chart = BarChartView()
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,12 +79,100 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 4, animated: false)
         
         
-    
-        destination = CLLocationCoordinate2D(latitude: 37.759505, longitude: -122.432606)
+        destination = CLLocationCoordinate2D(latitude: 37.765128, longitude: -122.430438)
         
-       bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.759505, longitude: -122.432606))
+        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.765128, longitude: -122.430438))
         
         getGraphopper()
+    }
+    
+    func addGraphicSubview(index: String) {
+        
+        let num = Int(index)!
+        
+        var pointsAry = [NSArray]()
+        var color = UIColor()
+        
+        if num == 0 {
+            pointsAry = firstCoords
+            color = .green
+        }
+        
+        if num == 1 {
+            pointsAry = secondCoords
+            color = UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
+        }
+        
+        if num == 2 {
+            pointsAry = thirdCoords
+            color = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
+        }
+        
+        if num == 3 {
+            pointsAry = fourthCoords
+            color = UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 0.0/255.0, alpha: 1)
+        }
+
+        if num == 4 {
+            pointsAry = fifthCoords
+            color = .red
+        }
+        
+        
+        
+        for point in pointsAry {
+            let dot = (point[0] as! Double, point[1] as! Double)
+            pointArr.append(dot as! (Double, Double))
+        }
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        
+        let width = self.view.frame.size.width
+        let height = self.view.frame.size.height
+        
+        
+        customView.frame = CGRect.init(x: 0, y: height - 150, width: screenSize.width - 30, height: 85)
+        
+        customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        customView.center.x = self.view.center.x
+        customView.layer.cornerRadius = customView.frame.size.width / 16
+        
+//        CGRect.init(x: 0, y: 0, width: screenSize.width - 50, height: 80),
+        
+        
+        
+        
+        let sortedAscend = ascend.sorted()
+        
+        print("totalDISTANCEOVERALL")
+        print(totalDistanceOverall)
+        print(pointArr)
+        
+        let chartConfig = ChartConfigXY(
+            xAxisConfig: ChartAxisConfig(from: 0, to: totalDistanceOverall as! Double, by: 2),
+            yAxisConfig: ChartAxisConfig(from: 0, to: sortedAscend[sortedAscend.count - 1] + 100, by: 2)
+        )
+        
+        let chart = LineChart(
+            frame: CGRect.init(x: 0, y: 50, width: screenSize.width - 35, height: 80),
+            chartConfig: chartConfig,
+            xTitle: "X axis",
+            yTitle: "Y axis",
+            lines: [
+                (chartPoints: pointArr, color: color),
+//                (chartPoints: [(2.0, 2.6), (4.2, 4.1), (7.3, 1.0), (8.1, 11.5), (14.0, 3.0)], color: .blue)
+            ]
+        )
+        
+        
+        
+//        chart.view.center = view.center
+        
+        self.customView.addSubview(chart.view)
+        
+//        chart.view.center = customView.center
+        
+        self.view.addSubview(customView)
     }
     
     func getGraphopper() {
@@ -86,8 +182,8 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         let destLat = destiny.latitude
         let destLong = destiny.longitude
         
-        print(destLat)
-        print(destLong)
+//        print(destLat)
+//        print(destLong)
         
         let originString = "\(latitude)," + "\(longitude)"
         
@@ -95,11 +191,11 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         let pointstring = originString + "&point=" + deString
         
-        print(pointstring)
+//        print(pointstring)
         
         let theString = "https://graphhopper.com/api/1/route?point=" + pointstring + "&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=454360ab-e1b4-4944-874c-e439b9b8a6c1"
-        
-        print(theString)
+//        
+//        print(theString)
         
         
         Alamofire.request(theString).responseJSON { response in
@@ -108,7 +204,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             
             if let JSON = response.result.value as? [String:Any] {
                 
-                print(response)
+             
                 
                 let pathss = JSON["paths"] as! [[String:Any]]
                 
@@ -119,16 +215,14 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                     
                     let points = path["points"] as? [String:Any]
                     let coords = points?["coordinates"] as! NSArray!
-                    var linecoords = [CLLocationCoordinate2D]()
-                    
-                    print(coords?.count)
+                   
                     var elevations = [Double]()
                     
                     ascend.append((path["ascend"] as? Double)!)
                     descend.append((path["descend"] as? Double)!)
                     totalDistance.append((path["distance"] as? Double)!)
                     
-                    print((path["descend"] as? Double)!)
+//                    print((path["descend"] as? Double)!)
 
                 
                 
@@ -180,13 +274,21 @@ class mapVC: UIViewController, MGLMapViewDelegate {
 
         let points = path["points"]! as! AnyObject!
                 let coords = points?["coordinates"] as! NSArray!
+        
+                    self.distanceElevation(points: coords!, id: id)
+
                             var linecoords = [CLLocationCoordinate2D]()
                             for coord in coords! {
         
                                 let coordAry = coord as! NSArray
                                 let lat = coordAry[1]
                                 let lng = coordAry[0]
+                                
+                                let ht = coordAry[2]
+                                
                                 let point = CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
+                                
+                                
                                 
                                 add(coordinate: point, id: id)
                                 
@@ -195,6 +297,9 @@ class mapVC: UIViewController, MGLMapViewDelegate {
                                 linecoords.append(coordpoint)
                                 
                             }
+        
+                    totalDistanceOverall = self.distance(linecoords.first!, linecoords.last!)
+
         
                     for (index, _) in linecoords.enumerated() {
                             if index == 0 { continue } // skip first
@@ -305,7 +410,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, calloutViewFor annotation: MGLAnnotation) -> UIView? {
         // Only show callouts for `Hello world!` annotation
         
-        self.addGraphicSubview()
+        self.addGraphicSubview(index: annotation.title!!)
         return CustomCalloutView(representedObject: annotation)
         
     }
@@ -331,7 +436,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
             label.textAlignment = .right
             label.textColor = UIColor(red: 0.81, green: 0.71, blue: 0.23, alpha: 1)
-            label.text = "\(sortedAscend[num])" + " total uphill climb"
+            label.text = "\(sortedAscend[num])" + " uphill climb"
             return label
         }
         
@@ -342,18 +447,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     
     ///// ANNOTATION PARTICULARS
-    
-    func addGraphicSubview() {
-        
-        let screenSize: CGRect = UIScreen.main.bounds
-        
-        chart.frame = CGRect.init(x: 0, y: 0, width: screenSize.width - 30, height: 100)
-        chart.backgroundColor = UIColor.white     //give color to the view
-        chart.center = self.view.center
-        self.view.addSubview(customView)
-    }
-    
-
     
     func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
         return UIButton(type: .detailDisclosure)
@@ -371,6 +464,18 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         
         let catchtitle = String()
+        
+        pointArr.removeAll()
+        
+        for v in self.customView.subviews{
+            
+                v.removeFromSuperview()
+            
+        }
+        
+        self.customView.removeFromSuperview()
+        
+        
         
         let poly = mapView.annotations?.filter { annotation in
             
@@ -547,7 +652,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         
         // Animate the camera movement over 5 seconds.
-        mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        mapView.setCamera(camera, withDuration: 10, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
     }
     
     
@@ -559,7 +664,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             // Unowned reference to self to prevent retain cycle
             
             
-            [unowned self] in
+
             let point = pathAnnotation()
             point.coordinate = coordinate
             point.title = id
@@ -579,7 +684,72 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         add(coordinate: from, id: id)
         add(coordinate: to, id: id)
+        
+        
     }
+    
+    private func distanceElevation(points: NSArray, id: String) {
+        
+        print("POINTS:")
+        print(points.count)
+        
+        var coordAry = [CLLocationCoordinate2D]()
+        
+        var htAry = [Double]()
+        
+        for point in points {
+        
+            let pointAry = point as! NSArray
+            
+            htAry.append(pointAry[2] as! Double)
+            
+            let coordinates = CLLocationCoordinate2D(latitude: pointAry[1] as! CLLocationDegrees, longitude: pointAry[0] as! CLLocationDegrees)
+
+            coordAry.append(coordinates)
+        }
+        
+        var distanceCounter = 0.0
+        
+        for (index, _) in coordAry.enumerated() {
+            
+            
+            
+            if index == 0 { continue } // skip first
+            
+            
+            let distance = self.distance(coordAry[index - 1], coordAry[index])
+            
+            distanceCounter += distance
+            
+            let point = [distanceCounter, htAry[index]] as! NSArray
+            
+            if id == "0" {
+                firstCoords.append(point)
+            }
+            if id == "1" {
+                secondCoords.append(point)
+            }
+            if id == "2" {
+                thirdCoords.append(point)
+            }
+
+            if id == "3" {
+                fourthCoords.append(point)
+            }
+
+            if id == "4" {
+                fifthCoords.append(point)
+            }
+
+
+        }
+    
+    
+//        let fromLoc = CLLocation(latitude: from.latitude, longitude: from.longitude)
+//        let toLoc = CLLocation(latitude: to.latitude, longitude: to.longitude)
+//        return fromLoc.distance(from: toLoc)
+    }
+
     
     private func distance(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> Double {
         let fromLoc = CLLocation(latitude: from.latitude, longitude: from.longitude)
