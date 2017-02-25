@@ -76,15 +76,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate {
         print(longitude)
         
         animateLaunch(image: UIImage(named: "people1")!)
-        
-        
-        getLazyBtn.frame.size.height = 36
-        getLazyBtn.frame.size.width = self.view.frame.size.width - 100
-        getLazyBtn.center.x = self.view.center.x
-        getLazyBtn.layer.cornerRadius = 8;
-        getLazyBtn.layer.borderWidth = 1;
-        getLazyBtn.layer.borderColor = UIColor.white.cgColor
-        
 
         
         // map stuff
@@ -97,7 +88,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate {
         
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 8, animated: false)
+        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
         
         destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
         
@@ -704,7 +695,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate {
         
         let decreaseSize = CABasicAnimation(keyPath: "bounds")
         decreaseSize.delegate = self
-        decreaseSize.duration = 6.0
+        decreaseSize.duration = 2.0
         decreaseSize.fromValue = NSValue(cgRect: mask!.bounds)
         decreaseSize.toValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 20, height: 20))
         

@@ -47,18 +47,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="people1" id="MLC-R4-bKo">
-                                <rect key="frame" x="123" y="269" width="128" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Laj-7a-1fU">
-                                <rect key="frame" x="16" y="516" width="343" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <state key="normal" title="Get Lazy">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                             <view contentMode="scaleToFill" misplaced="YES" id="2j4-FC-qKD" customClass="MGLMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -83,7 +71,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="NbR-eI-LMq"/>
                     <connections>
-                        <outlet property="getLazyBtn" destination="Laj-7a-1fU" id="Aju-jw-SWS"/>
                         <outlet property="logoImageview" destination="cni-Mk-ut4" id="frV-wO-UNg"/>
                         <outlet property="mapView" destination="2j4-FC-qKD" id="i2D-5n-mYd"/>
                         <outlet property="overlay" destination="TFh-rB-Eod" id="vQW-GV-uxZ"/>
