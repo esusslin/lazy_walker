@@ -50,10 +50,17 @@ var fifthCoords = [NSArray]()
 var pointArr : [(Double, Double)] = []
 
 
-class mapVC: UIViewController, MGLMapViewDelegate {
+class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate {
 
+    @IBOutlet weak var overlay: UIView!
+    @IBOutlet weak var logoImageview: UIImageView!
+    @IBOutlet weak var mapView: MGLMapView!
+    
+    @IBOutlet weak var getLazyBtn: UIButton!
+    
 
-    @IBOutlet var mapView: MGLMapView!
+    var mask: CALayer!
+    var animation: CABasicAnimation!
     
     var customView = UIView()
     
@@ -67,6 +74,17 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         print(latitude)
         print(longitude)
+        
+        animateLaunch(image: UIImage(named: "people1")!)
+        
+        
+        getLazyBtn.frame.size.height = 36
+        getLazyBtn.frame.size.width = self.view.frame.size.width - 100
+        getLazyBtn.center.x = self.view.center.x
+        getLazyBtn.layer.cornerRadius = 8;
+        getLazyBtn.layer.borderWidth = 1;
+        getLazyBtn.layer.borderColor = UIColor.white.cgColor
+        
 
         
         // map stuff
@@ -79,7 +97,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 10, animated: false)
+        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 8, animated: false)
         
         destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
         
@@ -91,8 +109,17 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.793591, longitude: -122.440243))
         
-        getGraphopper()
+//        getGraphopper()
     }
+    
+    
+//    @IBAction func iconLaunch(_ sender: UIButton) {
+//        
+//        animateLaunch(image: UIImage(named: "people1")!)
+//    }
+    
+    
+    
     
     func addGraphicSubview(index: String) {
         
@@ -153,7 +180,7 @@ class mapVC: UIViewController, MGLMapViewDelegate {
             yAxisConfig: ChartAxisConfig(from: 0, to: sortedAscend[sortedAscend.count - 1] + 100, by: 2)
         )
         
-        let chartdata = LineChartDataSet
+//        let chartdata = LineChartDataSet
         
         let chart = LineChart(
             frame: CGRect.init(x: 0, y: 50, width: screenSize.width - 35, height: 80),
@@ -639,7 +666,9 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     
     // MAP CAMERA
 
-    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+//    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+    
+    func adjustCameraForRoutes() {
     
         let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: totalDistanceOverall*1.7, pitch: 60, heading: (destinationDirection))
         
@@ -648,6 +677,70 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+    }
+    
+    
+    
+    // ANIMATIONS:
+    
+    func animateLaunch(image: UIImage) {
+        
+        //        self.view.backgroundColor = bgColor
+        
+        // Create and apply mask
+        
+        mask = CALayer()
+        mask.contents = image.cgImage
+        mask.bounds = CGRect(x: 0, y: 0, width: 128, height: 128)
+        mask.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        mask.position = CGPoint(x: mapView.frame.width / 2.0, y: mapView.frame.height / 2.0)
+        mapView.layer.mask = mask
+        
+        animateDecreaseSize()
+        
+    }
+    
+    func animateDecreaseSize() {
+        
+        let decreaseSize = CABasicAnimation(keyPath: "bounds")
+        decreaseSize.delegate = self
+        decreaseSize.duration = 6.0
+        decreaseSize.fromValue = NSValue(cgRect: mask!.bounds)
+        decreaseSize.toValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 20, height: 20))
+        
+        decreaseSize.fillMode = kCAFillModeForwards
+        decreaseSize.isRemovedOnCompletion = false
+        
+        mask.add(decreaseSize, forKey: "bounds")
+        
+        
+    }
+    
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        animateIncreaseSize()
+    }
+    
+    func animateIncreaseSize() {
+        
+        animation = CABasicAnimation(keyPath: "bounds")
+        animation.duration = 2.0
+        animation.fromValue = NSValue(cgRect: mask!.bounds)
+        animation.toValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 8000, height: 8000))
+        
+        animation.fillMode = kCAFillModeForwards
+        animation.isRemovedOnCompletion = false
+        
+        mask.add(animation, forKey: "bounds")
+        
+        // Fade out overlay
+        UIView.animate(withDuration: 2.0, animations: { () -> Void in
+            self.overlay.alpha = 0
+            self.logoImageview.alpha = 0
+            print("boner?")
+            
+        })
+        
+        
     }
     
     
