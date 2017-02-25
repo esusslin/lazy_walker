@@ -6,6 +6,8 @@
 //  Copyright © 2017 Emmet Susslin. All rights reserved.
 //
 
+// jared API: 372a9f91-e653-4793-a4e8-fb33663697db
+
 
 import UIKit
 import CoreLocation
@@ -23,6 +25,7 @@ var latitude = Double()
 var longitude = Double()
 
 var destination = CLLocationCoordinate2D()
+var origin = CLLocationCoordinate2D()
 var destinationDirection = Double()
 
 // FOR ALL ROUTES
@@ -76,12 +79,17 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 4, animated: false)
+        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 10, animated: false)
         
+        destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
         
-        destination = CLLocationCoordinate2D(latitude: 37.765128, longitude: -122.430438)
+        origin = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
-        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.765128, longitude: -122.430438))
+        totalDistanceOverall = self.distance(origin, destination)
+
+//        37.793591, -122.440243
+        
+        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.793591, longitude: -122.440243))
         
         getGraphopper()
     }
@@ -131,27 +139,21 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         let height = self.view.frame.size.height
         
         
-        customView.frame = CGRect.init(x: 0, y: height - 150, width: screenSize.width - 30, height: 85)
+        customView.frame = CGRect.init(x: 0, y: height - 200, width: screenSize.width - 30, height: 85)
         
         customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
         customView.center.x = self.view.center.x
         customView.layer.cornerRadius = customView.frame.size.width / 16
         
-//        CGRect.init(x: 0, y: 0, width: screenSize.width - 50, height: 80),
-        
-        
-        
-        
+
         let sortedAscend = ascend.sorted()
-        
-        print("totalDISTANCEOVERALL")
-        print(totalDistanceOverall)
-        print(pointArr)
         
         let chartConfig = ChartConfigXY(
             xAxisConfig: ChartAxisConfig(from: 0, to: totalDistanceOverall as! Double, by: 2),
             yAxisConfig: ChartAxisConfig(from: 0, to: sortedAscend[sortedAscend.count - 1] + 100, by: 2)
         )
+        
+        let chartdata = LineChartDataSet
         
         let chart = LineChart(
             frame: CGRect.init(x: 0, y: 50, width: screenSize.width - 35, height: 80),
@@ -166,8 +168,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         
         
-//        chart.view.center = view.center
-        
         self.customView.addSubview(chart.view)
         
 //        chart.view.center = customView.center
@@ -181,26 +181,20 @@ class mapVC: UIViewController, MGLMapViewDelegate {
         
         let destLat = destiny.latitude
         let destLong = destiny.longitude
-        
-//        print(destLat)
-//        print(destLong)
-        
+
         let originString = "\(latitude)," + "\(longitude)"
         
         let deString = "\(destLat)," + "\(destLong)"
         
         let pointstring = originString + "&point=" + deString
         
-//        print(pointstring)
-        
-        let theString = "https://graphhopper.com/api/1/route?point=" + pointstring + "&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=454360ab-e1b4-4944-874c-e439b9b8a6c1"
+        let theString = "https://graphhopper.com/api/1/route?point=" + pointstring + "&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=372a9f91-e653-4793-a4e8-fb33663697db"
 //        
-//        print(theString)
+        print(theString)
         
         
         Alamofire.request(theString).responseJSON { response in
         
-            
             
             if let JSON = response.result.value as? [String:Any] {
                 
@@ -647,12 +641,13 @@ class mapVC: UIViewController, MGLMapViewDelegate {
 
     func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
     
-        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 6000, pitch: 60, heading: (destinationDirection))
+        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: totalDistanceOverall*1.7, pitch: 60, heading: (destinationDirection))
         
-        
+        print("TOTAL DISTANCE")
+        print(totalDistanceOverall)
         
         // Animate the camera movement over 5 seconds.
-        mapView.setCamera(camera, withDuration: 10, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
     }
     
     
@@ -689,9 +684,6 @@ class mapVC: UIViewController, MGLMapViewDelegate {
     }
     
     private func distanceElevation(points: NSArray, id: String) {
-        
-        print("POINTS:")
-        print(points.count)
         
         var coordAry = [CLLocationCoordinate2D]()
         
