@@ -50,13 +50,21 @@ var fifthCoords = [NSArray]()
 var pointArr : [(Double, Double)] = []
 
 
-class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate {
+class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearchBarDelegate, UISearchResultsUpdating {
+    
+    
 
     @IBOutlet weak var overlay: UIView!
     @IBOutlet weak var logoImageview: UIImageView!
     @IBOutlet weak var mapView: MGLMapView!
     
-    @IBOutlet weak var getLazyBtn: UIButton!
+    @IBOutlet weak var searchBarView: UIView!
+    @IBOutlet weak var searchBtn: UIButton!
+
+
+    var searchController: UISearchController!
+//    var mySearchBar: UISearchBar!
+    @IBOutlet weak var mySearchBar: UISearchBar!
     
 
     var mask: CALayer!
@@ -75,7 +83,35 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate {
         print(latitude)
         print(longitude)
         
+        
+        // HERE WE GO
         animateLaunch(image: UIImage(named: "people1")!)
+
+        //SEARCHBARVIEW
+        
+//        configureSearchController()
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        
+        mySearchBar.alpha = 0
+        mySearchBar.frame = CGRect.init(x: 0, y: 100, width: screenSize.width - 30, height: 30)
+        mySearchBar.delegate = self
+        mySearchBar.center.x = self.view.center.x
+        mySearchBar.placeholder = "Where to?"
+        mySearchBar.layer.shadowColor = UIColor.black.cgColor
+        mySearchBar.layer.shadowOpacity = 0.2
+        mySearchBar.searchBarStyle = UISearchBarStyle.default
+        
+        searchBtn.frame = CGRect.init(x: 0, y: 100, width: mySearchBar.frame.size.width / 2, height: 30)
+        searchBtn.center.x = self.view.center.x
+        searchBtn.center.y = self.mySearchBar.center.y + 50
+        searchBtn.layer.cornerRadius = 8
+        searchBtn.layer.borderWidth = 1;
+        searchBtn.layer.borderColor = UIColor.white.cgColor
+        searchBtn.layer.shadowOpacity = 0.5
+        searchBtn.alpha = 0
+
+        
 
         
         // map stuff
@@ -92,6 +128,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate {
         
         destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
         
+        
         origin = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         totalDistanceOverall = self.distance(origin, destination)
@@ -103,13 +140,71 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate {
 //        getGraphopper()
     }
     
-    
-//    @IBAction func iconLaunch(_ sender: UIButton) {
+//    func configureSearchController() {
+//        // Initialize and perform a minimum configuration to the search controller.
+//        searchController = UISearchController(searchResultsController: nil)
+//        searchController.searchResultsUpdater = self
+//        searchController.dimsBackgroundDuringPresentation = false
+//        searchController.searchBar.placeholder = "Search here..."
+//        searchController.searchBar.delegate = self
+//        searchController.searchBar.sizeToFit()
 //        
-//        animateLaunch(image: UIImage(named: "people1")!)
+//        // Place the search bar view to the tableview headerview.
+//         self.customView.addSubview(searchController.searchBar)
 //    }
     
     
+    func searchBarShow() {
+
+        
+        UIView.animate(withDuration: 1, animations: {
+           self.mySearchBar.alpha = 0.6
+        }) { (true) in
+            UIView.animate(withDuration: 1, animations: {
+                self.customView.alpha = 1
+            }, completion: { (true) in
+                
+            })
+        }
+
+    }
+    
+    public func updateSearchResults(for searchController: UISearchController) {
+        
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+                    UIView.animate(withDuration: 1, animations: {
+                        self.searchBtn.alpha = 0.6
+                    }, completion: { (true) in
+                        print("BONER!")
+                    })
+    }
+    // called whenever text is changed.
+//    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+//        
+//        print("BONER!")
+//
+//            UIView.animate(withDuration: 1, animations: {
+//                self.searchBtn.alpha = 0.6
+//            }, completion: { (true) in
+//                print("BONER!")
+//            })
+//      
+//
+//    }
+//    
+//    // called when cancel button is clicked
+//    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+//            mySearchBar.text = ""
+//    }
+//    
+//    // called when search button is clicked
+//    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+//
+//        mySearchBar.text = ""
+//        self.view.endEditing(true)
+//    }
     
     
     func addGraphicSubview(index: String) {
@@ -724,12 +819,19 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate {
         mask.add(animation, forKey: "bounds")
         
         // Fade out overlay
-        UIView.animate(withDuration: 2.0, animations: { () -> Void in
+//        UIView.animate(withDuration: 2.0, animations: { () -> Void in
+//            self.overlay.alpha = 0
+//            self.logoImageview.alpha = 0
+//            print("boner?")
+//            
+//        })
+        
+        UIView.animate(withDuration: 2.0, animations: { 
             self.overlay.alpha = 0
             self.logoImageview.alpha = 0
-            print("boner?")
-            
-        })
+        }) { (true) in
+            self.searchBarShow()
+        }
         
         
     }

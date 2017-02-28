@@ -51,6 +51,20 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
+                                    <searchBar contentMode="redraw" id="aMq-By-qmM">
+                                        <rect key="frame" x="0.0" y="311" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </searchBar>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="vR4-hV-ldS">
+                                        <rect key="frame" x="164" y="318" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.025861378210000001" green="0.025861378210000001" blue="0.025861378210000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                        <state key="normal" title="Find Routes">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="cni-Mk-ut4">
                                         <rect key="frame" x="123" y="269" width="128" height="128"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -73,7 +87,9 @@
                     <connections>
                         <outlet property="logoImageview" destination="cni-Mk-ut4" id="frV-wO-UNg"/>
                         <outlet property="mapView" destination="2j4-FC-qKD" id="i2D-5n-mYd"/>
+                        <outlet property="mySearchBar" destination="aMq-By-qmM" id="2j3-di-bPh"/>
                         <outlet property="overlay" destination="TFh-rB-Eod" id="vQW-GV-uxZ"/>
+                        <outlet property="searchBtn" destination="vR4-hV-ldS" id="m6h-sy-Ksx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p4j-5e-ECV" userLabel="First Responder" sceneMemberID="firstResponder"/>
