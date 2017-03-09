@@ -15,6 +15,7 @@
 		E2838A771E568BE8006DFCEE /* scrapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838A761E568BE8006DFCEE /* scrapsViewController.swift */; };
 		E28D7D661E5CCDE000EC44C9 /* pathAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */; };
 		E28D7D681E5CE05E00EC44C9 /* CustomCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */; };
+		E2B367F31E6E107F0000BA5D /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B367F21E6E107F0000BA5D /* TableViewController.swift */; };
 		E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */; };
 		E2F0D08A1E4D28CF00BB4CBE /* mapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */; };
 		E2F0D08D1E4D28CF00BB4CBE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */; };
@@ -67,6 +68,7 @@
 		E2838A761E568BE8006DFCEE /* scrapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = scrapsViewController.swift; sourceTree = "<group>"; };
 		E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pathAnnotation.swift; sourceTree = "<group>"; };
 		E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCalloutView.swift; sourceTree = "<group>"; };
+		E2B367F21E6E107F0000BA5D /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		E2F0D0841E4D28CF00BB4CBE /* LazyWalker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LazyWalker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mapVC.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				E26409FF1E622B5700E89BAE /* animations.swift */,
 				E2FE285A1E5D037C0081FA0F /* Elevation.swift */,
 				E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */,
+				E2B367F21E6E107F0000BA5D /* TableViewController.swift */,
 				E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */,
 				E2838A761E568BE8006DFCEE /* scrapsViewController.swift */,
 				E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */,
@@ -406,6 +409,7 @@
 				E2FE285B1E5D037C0081FA0F /* Elevation.swift in Sources */,
 				E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */,
 				E2640A001E622B5700E89BAE /* animations.swift in Sources */,
+				E2B367F31E6E107F0000BA5D /* TableViewController.swift in Sources */,
 				E2F0D0901E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

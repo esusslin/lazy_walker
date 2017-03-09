@@ -230,6 +230,18 @@ Apache License
 
 
 
+## GoogleMaps
+
+Copyright 2016 Google
+
+## GooglePlacePicker
+
+Copyright 2016 Google
+
+## GooglePlaces
+
+Copyright 2016 Google
+
 ## PureLayout
 
 This code is distributed under the terms and conditions of the MIT license.
