@@ -33,7 +33,7 @@ class testVC: UIViewController {
         resultsViewController?.delegate = self
         
         resultsViewController?.autocompleteBounds = bounds
-                
+        
         searchController = UISearchController(searchResultsController: resultsViewController)
 //        searchController.
         searchController?.searchResultsUpdater = resultsViewController
