@@ -697,6 +697,8 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
         
+        print(place.placeID)
+        
         let lat = place.coordinate.latitude
         let lon = place.coordinate.longitude
         
