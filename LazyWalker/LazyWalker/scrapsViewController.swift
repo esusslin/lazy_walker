@@ -6,6 +6,132 @@
 //  Copyright © 2017 Emmet Susslin. All rights reserved.
 //
 
+
+
+
+
+
+
+
+//    func searchBarShow() {
+//
+//
+//        UIView.animate(withDuration: 1, animations: {
+//           self.mySearchBar.alpha = 0.6
+//        }) { (true) in
+//            UIView.animate(withDuration: 1, animations: {
+//                self.customView.alpha = 1
+//            }, completion: { (true) in
+//
+//            })
+//        }
+//
+//    }
+//
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        print("updatesearchresults")
+//
+//        let searchBarText = mySearchBar.text!
+//
+//        let theString = "https://maps.googleapis.com/maps/api/place/autocomplete/xml?input=" + "\(searchBarText)" + "&types=establishment&location=" + "\(latitude)," + "\(longitude)" + "&radius=500&key=AIzaSyDvuUvmQY5WxWZWV5HsoxVQTA4LEsW6cnw"
+//
+//        print(theString)
+//
+//        Alamofire.request(theString).responseJSON { response in
+//
+//
+//            if let JSON = response.result.value as? [String:Any] {
+//
+//                print("JSON?")
+//                print(JSON)
+//            }
+//
+//    }
+//
+//    func updateSearchResults(for searchController: UISearchController) {
+//
+//
+////
+////        let searchBarText = searchController.searchBar.text
+////
+////        let theString = "https://maps.googleapis.com/maps/api/place/autocomplete/xml?input=" + "\(searchBarText)" + "&types=establishment&location=" + "\(latitude)," + "\(longitude)" + "&radius=500&key=AIzaSyDvuUvmQY5WxWZWV5HsoxVQTA4LEsW6cnw"
+////
+////        print(theString)
+////
+////        Alamofire.request(theString).responseJSON { response in
+////
+////
+////            if let JSON = response.result.value as? [String:Any] {
+////
+////                print(JSON)
+////            }
+//        }
+//
+//
+//
+////        https://maps.googleapis.com/maps/api/place/autocomplete/xml?input=Amoeba&types=establishment&location=37.76999,-122.44696&radius=500&key=YOUR_API_KEY
+//
+////        let searchBarText = searchController.mySearchBar.text
+////
+////        let request = MKLocalSearchRequest()
+////        request.naturalLanguageQuery = searchBarText
+////        request.region = mapView.region
+////
+////        let search = MKLocalSearch(request: request)
+////        search.startWithCompletionHandler { response, _ in
+////            guard let response = response else {
+////                return
+////            }
+////            self.matchingItems = response.mapItems
+////            self.tableView.reloadData()
+////        }
+//
+//
+//    }
+//
+//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+//                    UIView.animate(withDuration: 1, animations: {
+//                        self.searchBtn.alpha = 0.6
+////                        self.tableView.alpha = 0.6
+//                    }, completion: { (true) in
+//                        print("BONER!")
+//                    })
+//    }
+// called whenever text is changed.
+//    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+//
+//        print("BONER!")
+//
+//            UIView.animate(withDuration: 1, animations: {
+//                self.searchBtn.alpha = 0.6
+//            }, completion: { (true) in
+//                print("BONER!")
+//            })
+//
+//
+//    }
+//
+//    // called when cancel button is clicked
+//    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+//            mySearchBar.text = ""
+//    }
+//
+//    // called when search button is clicked
+//    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+//
+//        mySearchBar.text = ""
+//        self.view.endEditing(true)
+//    }
+
+
+
+
+
+
+
+
+
+
 import UIKit
 
 class scrapsViewController: UIViewController {

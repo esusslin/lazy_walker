@@ -18,8 +18,7 @@ import Alamofire
 import Charts
 import SwiftCharts
 import GooglePlaces
-import GooglePlacePicker
-import GoogleMaps
+
 
 //// GLOBALS
 
@@ -56,8 +55,10 @@ var pointArr : [(Double, Double)] = []
 
 class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearchBarDelegate, UITableViewDelegate {
     
-    //GMSAutocompleteViewController
-    //, GMSAutocompleteViewControllerDelegate,
+    var resultsViewController: GMSAutocompleteResultsViewController?
+    var searchController: UISearchController?
+    var resultView: UITextView?
+
 
     @IBOutlet weak var overlay: UIView!
     @IBOutlet weak var logoImageview: UIImageView!
@@ -66,10 +67,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
 
     @IBOutlet weak var searchBtn: UIButton!
 
-
-
-    var searchController: UISearchController!
-    var resultsViewController: GMSAutocompleteResultsViewController?
     
 
 //    var mySearchBar: UISearchBar!
@@ -84,17 +81,53 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        resultsViewController = GMSAutocompleteResultsViewController()
-//        resultsViewController?.delegate = self
-//        
-//        searchController = UISearchController(searchResultsController: resultsViewController)
-//        searchController?.searchResultsUpdater = resultsViewController
+
 //        
         let currentLocation = locationManager.location
         
         latitude = (currentLocation?.coordinate.latitude)!
         longitude = (currentLocation?.coordinate.longitude)!
+        
+        let corner1 = CLLocationCoordinate2D(latitude: latitude + 1, longitude: longitude + 1)
+        let corner2 = CLLocationCoordinate2D(latitude: latitude - 1, longitude: longitude - 1)
+        
+        let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
+        
+        resultsViewController = GMSAutocompleteResultsViewController()
+        resultsViewController?.delegate = self
+        
+        resultsViewController?.autocompleteBounds = bounds
+        
+        searchController = UISearchController(searchResultsController: resultsViewController)
+        //        searchController.
+        searchController?.searchResultsUpdater = resultsViewController
+
+//        resultsViewController?.tableCellBackgroundColor = UIColor(white: 1, alpha: 0.01)
+        resultsViewController?.tableCellBackgroundColor = .black
+        resultsViewController?.primaryTextHighlightColor = .white
+        resultsViewController?.primaryTextColor = .gray
+        resultsViewController?.secondaryTextColor = .gray
+        resultsViewController?.tableCellSeparatorColor = .gray
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        
+        
+        // Add the search bar to the right of the nav bar,
+        // use a popover to display the results.
+        // Set an explicit size as we don't want to use the entire nav bar.
+        searchController?.searchBar.frame = (CGRect(x: 0, y: 0, width: screenSize.width - 30, height: 44.0))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: (searchController?.searchBar)!)
+        //        searchController?.searchBar.layer.borderColor = UIColor.white.cgColor
+        //        searchController?.searchBar.layer.shadowOpacity = 0.5
+        
+        // When UISearchController presents the results view, present it in
+        // this view controller, not one further up the chain.
+        definesPresentationContext = true
+        
+        // Keep the navigation bar visible.
+        searchController?.hidesNavigationBarDuringPresentation = false
+        searchController?.modalPresentationStyle = .popover
+
         
         print(latitude)
         print(longitude)
@@ -105,37 +138,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
 
         //SEARCHBARVIEW
         
-//        configureSearchController()
-        
-        let screenSize: CGRect = UIScreen.main.bounds
-        
-        mySearchBar.alpha = 0
-        mySearchBar.frame = CGRect.init(x: 0, y: 100, width: screenSize.width - 30, height: 30)
-        mySearchBar.delegate = self
-        mySearchBar.center.x = self.view.center.x
-        mySearchBar.placeholder = "Where to?"
-        mySearchBar.layer.shadowColor = UIColor.black.cgColor
-        mySearchBar.layer.shadowOpacity = 0.2
-        mySearchBar.searchBarStyle = UISearchBarStyle.default
-        
-        searchBtn.frame = CGRect.init(x: 0, y: 100, width: mySearchBar.frame.size.width / 2, height: 30)
-        searchBtn.center.x = self.view.center.x
-        searchBtn.center.y = self.mySearchBar.center.y + 50
-        searchBtn.layer.cornerRadius = 8
-        searchBtn.layer.borderWidth = 1;
-        searchBtn.layer.borderColor = UIColor.white.cgColor
-        searchBtn.layer.shadowOpacity = 0.5
-        searchBtn.alpha = 0
-        
-//        tableView.alpha = 0
-//        tableView.frame = CGRect.init(x: 0, y: 100, width: screenSize.width - 30, height: self.view.frame.height - 200)
-//        tableView.delegate = self
-//        tableView.center.x = self.view.center.x
-//        tableView.center.y = self.searchBtn.center.y + 150
-//        tableView.backgroundColor = .clear
-//        
 
-        
 
         
         // map stuff
@@ -144,137 +147,34 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         mapView.delegate = self
         
         mapView.frame = view.bounds
-        mapView.styleURL = URL(string: "mapbox://styles/esusslin/cixvherpa00032smn8c7kffjp")
+//        mapView.styleURL = URL(string: "mapbox://styles/esusslin/cixvherpa00032smn8c7kffjp")
+        
+        mapView.styleURL = URL(string: "mapbox://styles/mapbox/dark-v9")
+        
+//        mapView.styleURL = URL(string: "mapbox://styles/mapbox/dark")
         
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    
+        
         
         mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
         
-        destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
+//        destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
         
         
         origin = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         totalDistanceOverall = self.distance(origin, destination)
 
-//        37.793591, -122.440243
+
         
-        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.793591, longitude: -122.440243))
+//        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.793591, longitude: -122.440243))
         
 //        getGraphopper()
     }
     
     
-    func searchBarShow() {
 
-        
-        UIView.animate(withDuration: 1, animations: {
-           self.mySearchBar.alpha = 0.6
-        }) { (true) in
-            UIView.animate(withDuration: 1, animations: {
-                self.customView.alpha = 1
-            }, completion: { (true) in
-                
-            })
-        }
-
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("updatesearchresults")
-        
-        let searchBarText = mySearchBar.text!
-        
-        let theString = "https://maps.googleapis.com/maps/api/place/autocomplete/xml?input=" + "\(searchBarText)" + "&types=establishment&location=" + "\(latitude)," + "\(longitude)" + "&radius=500&key=AIzaSyDvuUvmQY5WxWZWV5HsoxVQTA4LEsW6cnw"
-        
-        print(theString)
-        
-        Alamofire.request(theString).responseJSON { response in
-            
-            
-            if let JSON = response.result.value as? [String:Any] {
-                
-                print("JSON?")
-                print(JSON)
-            }
-
-    }
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        
-        
-//        
-//        let searchBarText = searchController.searchBar.text
-//        
-//        let theString = "https://maps.googleapis.com/maps/api/place/autocomplete/xml?input=" + "\(searchBarText)" + "&types=establishment&location=" + "\(latitude)," + "\(longitude)" + "&radius=500&key=AIzaSyDvuUvmQY5WxWZWV5HsoxVQTA4LEsW6cnw"
-//
-//        print(theString)
-//        
-//        Alamofire.request(theString).responseJSON { response in
-//            
-//            
-//            if let JSON = response.result.value as? [String:Any] {
-//                
-//                print(JSON)
-//            }
-        }
-    
-
-
-//        https://maps.googleapis.com/maps/api/place/autocomplete/xml?input=Amoeba&types=establishment&location=37.76999,-122.44696&radius=500&key=YOUR_API_KEY
-        
-//        let searchBarText = searchController.mySearchBar.text
-//        
-//        let request = MKLocalSearchRequest()
-//        request.naturalLanguageQuery = searchBarText
-//        request.region = mapView.region
-//        
-//        let search = MKLocalSearch(request: request)
-//        search.startWithCompletionHandler { response, _ in
-//            guard let response = response else {
-//                return
-//            }
-//            self.matchingItems = response.mapItems
-//            self.tableView.reloadData()
-//        }
-
-        
-    }
-
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-                    UIView.animate(withDuration: 1, animations: {
-                        self.searchBtn.alpha = 0.6
-//                        self.tableView.alpha = 0.6
-                    }, completion: { (true) in
-                        print("BONER!")
-                    })
-    }
-    // called whenever text is changed.
-//    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-//        
-//        print("BONER!")
-//
-//            UIView.animate(withDuration: 1, animations: {
-//                self.searchBtn.alpha = 0.6
-//            }, completion: { (true) in
-//                print("BONER!")
-//            })
-//      
-//
-//    }
-//    
-//    // called when cancel button is clicked
-//    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-//            mySearchBar.text = ""
-//    }
-//    
-//    // called when search button is clicked
-//    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-//
-//        mySearchBar.text = ""
-//        self.view.endEditing(true)
-//    }
-    
     
     func addGraphicSubview(index: String) {
         
@@ -357,7 +257,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         self.view.addSubview(customView)
     }
     
-    func getGraphopper() {
+
+
+    func getGraphopper(destination: CLLocationCoordinate2D) {
         
         let destiny = destination
         
@@ -370,7 +272,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         
         let pointstring = originString + "&point=" + deString
         
-        let theString = "https://graphhopper.com/api/1/route?point=" + pointstring + "&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=372a9f91-e653-4793-a4e8-fb33663697db"
+        let theString = "https://graphhopper.com/api/1/route?point=" + pointstring + "&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=a67e19cf-291b-492b-b380-68405b49e910"
 //        
         print(theString)
         
@@ -380,7 +282,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
             
             if let JSON = response.result.value as? [String:Any] {
                 
-             
+             self.adjustCameraForRoutes()
+                
+                print(response)
                 
                 let pathss = JSON["paths"] as! [[String:Any]]
                 
@@ -406,7 +310,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
                 }
                 
                 self.flattestRoute()
-
+                
             }
             
             }
@@ -423,8 +327,11 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
             }
         
         //FOURTH:
+        if (paths.count > 4) {
+
         let fourflattest = ascend.index(of: sortedAscend[3])!
         printLine(index: fourflattest, id: "3")
+        }
 
         //THIRD:
         let threeflattest = ascend.index(of: sortedAscend[2])!
@@ -850,7 +757,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         print(totalDistanceOverall)
         
         // Animate the camera movement over 5 seconds.
-        mapView.setCamera(camera, withDuration: 5, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
     }
     
     
@@ -918,7 +825,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
             self.overlay.alpha = 0
             self.logoImageview.alpha = 0
         }) { (true) in
-            self.searchBarShow()
+//            self.searchBarShow()
         }
         
         
@@ -928,7 +835,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     // PRIVATE FUNCTIONS:
     
     
-    private func add(coordinate: CLLocationCoordinate2D, id: String) {
+   func add(coordinate: CLLocationCoordinate2D, id: String) {
         DispatchQueue.main.async {
             // Unowned reference to self to prevent retain cycle
             
@@ -942,7 +849,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         }
     }
     
-    private func split(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D, _ id: String) {
+    func split(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D, _ id: String) {
         
         if distance(from, to) > 40 { // THRESHOLD is 200m
             let middle = mid(from, to)
@@ -957,7 +864,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         
     }
     
-    private func distanceElevation(points: NSArray, id: String) {
+    func distanceElevation(points: NSArray, id: String) {
         
         var coordAry = [CLLocationCoordinate2D]()
         
@@ -1017,13 +924,13 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     }
 
     
-    private func distance(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> Double {
+    func distance(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> Double {
         let fromLoc = CLLocation(latitude: from.latitude, longitude: from.longitude)
         let toLoc = CLLocation(latitude: to.latitude, longitude: to.longitude)
         return fromLoc.distance(from: toLoc)
     }
     
-    private func mid(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
+    func mid(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
         let latitude = (from.latitude + to.latitude) / 2
         let longitude = (from.longitude + to.longitude) / 2
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -1031,4 +938,59 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     
     
 }
+
+
+
+
+
+
+// Handle the user's selection.
+extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
+    
+    
+    
+    
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
+                           didAutocompleteWith place: GMSPlace) {
+        
+        
+        searchController?.isActive = false
+        
+        // Do something with the selected place.
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+        
+        let lat = place.coordinate.latitude
+        let lon = place.coordinate.longitude
+        
+        
+        destination = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+//        self.bearingToLocationDegrees(destinationLocation:destination)
+        
+        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
+        
+        
+        
+        totalDistanceOverall = self.distance(origin, destination)
+        self.getGraphopper(destination: destination)
+
+    }
+    
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
+                           didFailAutocompleteWithError error: Error){
+        // TODO: handle the error.
+        print("Error: ", error.localizedDescription)
+    }
+    
+    // Turn the network activity indicator on and off again.
+    func didRequestAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+}
+
 
