@@ -81,22 +81,24 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setLocation()
 
 //        
-        let currentLocation = locationManager.location
-        
-        latitude = (currentLocation?.coordinate.latitude)!
-        longitude = (currentLocation?.coordinate.longitude)!
-        
-        let corner1 = CLLocationCoordinate2D(latitude: latitude + 1, longitude: longitude + 1)
-        let corner2 = CLLocationCoordinate2D(latitude: latitude - 1, longitude: longitude - 1)
-        
-        let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
-        
-        resultsViewController = GMSAutocompleteResultsViewController()
-        resultsViewController?.delegate = self
-        
-        resultsViewController?.autocompleteBounds = bounds
+//        let currentLocation = locationManager.location
+//        
+//        latitude = (currentLocation?.coordinate.latitude)!
+//        longitude = (currentLocation?.coordinate.longitude)!
+//        
+//        let corner1 = CLLocationCoordinate2D(latitude: latitude + 1, longitude: longitude + 1)
+//        let corner2 = CLLocationCoordinate2D(latitude: latitude - 1, longitude: longitude - 1)
+//        
+//        let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
+//        
+//        resultsViewController = GMSAutocompleteResultsViewController()
+//        resultsViewController?.delegate = self
+//        
+//        resultsViewController?.autocompleteBounds = bounds
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         //        searchController.
@@ -159,9 +161,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         
         mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
         
-//        destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
-        
-        
+
         origin = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         totalDistanceOverall = self.distance(origin, destination)
@@ -171,6 +171,40 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
 //        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.793591, longitude: -122.440243))
         
 //        getGraphopper()
+    }
+    
+    func clearMap() {
+        if self.mapView.annotations != nil {
+            print("ANNOTATION COUNT:")
+            print(mapView.annotations?.count)
+            self.mapView.removeAnnotations(self.mapView.annotations!)
+        }
+
+    }
+    
+    func setLocation() {
+        
+        
+        
+        let currentLocation = locationManager.location
+        
+        latitude = (currentLocation?.coordinate.latitude)!
+        longitude = (currentLocation?.coordinate.longitude)!
+        
+        let corner1 = CLLocationCoordinate2D(latitude: latitude + 1, longitude: longitude + 1)
+        let corner2 = CLLocationCoordinate2D(latitude: latitude - 1, longitude: longitude - 1)
+        
+        let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
+        
+        print(bounds)
+        
+        resultsViewController = GMSAutocompleteResultsViewController()
+        resultsViewController?.delegate = self
+        
+        resultsViewController?.autocompleteBounds = bounds
+        
+        print(resultsViewController?.autocompleteBounds)
+
     }
     
     
@@ -327,7 +361,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
             }
         
         //FOURTH:
-        if (paths.count > 4) {
+        if (paths.count > 3) {
 
         let fourflattest = ascend.index(of: sortedAscend[3])!
         printLine(index: fourflattest, id: "3")
@@ -832,7 +866,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     }
     
     
-    // PRIVATE FUNCTIONS:
+    // DIVIDE POLYLINE FOR ACCURACY:
     
     
    func add(coordinate: CLLocationCoordinate2D, id: String) {
@@ -946,13 +980,13 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
 
 // Handle the user's selection.
 extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
-    
-    
-    
+
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
-        
+
+        self.clearMap()
+        self.setLocation()
         
         searchController?.isActive = false
         
