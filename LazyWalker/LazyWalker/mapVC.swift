@@ -159,7 +159,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         
         mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
         
-        destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
+//        destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
         
         
         origin = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -327,8 +327,11 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
             }
         
         //FOURTH:
+        if (paths.count > 4) {
+
         let fourflattest = ascend.index(of: sortedAscend[3])!
         printLine(index: fourflattest, id: "3")
+        }
 
         //THIRD:
         let threeflattest = ascend.index(of: sortedAscend[2])!
@@ -754,7 +757,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         print(totalDistanceOverall)
         
         // Animate the camera movement over 5 seconds.
-        mapView.setCamera(camera, withDuration: 8, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
     }
     
     
@@ -832,7 +835,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     // PRIVATE FUNCTIONS:
     
     
-    private func add(coordinate: CLLocationCoordinate2D, id: String) {
+   func add(coordinate: CLLocationCoordinate2D, id: String) {
         DispatchQueue.main.async {
             // Unowned reference to self to prevent retain cycle
             
@@ -846,7 +849,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         }
     }
     
-    private func split(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D, _ id: String) {
+    func split(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D, _ id: String) {
         
         if distance(from, to) > 40 { // THRESHOLD is 200m
             let middle = mid(from, to)
@@ -861,7 +864,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         
     }
     
-    private func distanceElevation(points: NSArray, id: String) {
+    func distanceElevation(points: NSArray, id: String) {
         
         var coordAry = [CLLocationCoordinate2D]()
         
@@ -921,13 +924,13 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     }
 
     
-    private func distance(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> Double {
+    func distance(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> Double {
         let fromLoc = CLLocation(latitude: from.latitude, longitude: from.longitude)
         let toLoc = CLLocation(latitude: to.latitude, longitude: to.longitude)
         return fromLoc.distance(from: toLoc)
     }
     
-    private func mid(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
+    func mid(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
         let latitude = (from.latitude + to.latitude) / 2
         let longitude = (from.longitude + to.longitude) / 2
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -965,9 +968,11 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
         destination = CLLocationCoordinate2D(latitude: lat, longitude: lon)
 //        self.bearingToLocationDegrees(destinationLocation:destination)
         
-        destinationDirection = bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
+        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
         
-        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.793591, longitude: -122.440243))
+        
+        
+        totalDistanceOverall = self.distance(origin, destination)
         self.getGraphopper(destination: destination)
 
     }
