@@ -74,9 +74,15 @@ extension mapVC {
 
 func addGraphicSubview(index: String) {
     
-    let num = Int(index)!
     
+    
+    let num = Int(index)!
     var pointsAry = [CGPoint]()
+    print(num)
+    
+    var customView = LineChart()
+    customView.data = nil
+    
     var color = UIColor()
     
     if num == 0 {
@@ -123,6 +129,8 @@ func addGraphicSubview(index: String) {
     customView.center.x = self.view.center.x
     customView.layer.cornerRadius = customView.frame.size.width / 16
     
+    
+    
     customView.lineColor = color
     customView.showPoints = false
     customView.axisColor = .gray
@@ -130,54 +138,23 @@ func addGraphicSubview(index: String) {
     customView.yMin = CGFloat(sortedAscend[0] - 10)
     customView.xMax = CGFloat(totalDistanceOverall)
     customView.yMax = CGFloat(sortedAscend[sortedAscend.count - 1] + 10)
-   customView.data = pointsAry
+    customView.data = pointsAry
+    customView.tag = 100
     
-    print(pointsAry)
-    
-    
-//    var lineChart = LineChart()
-//    lineChart.area = false
-//    lineChart.x.grid.visible = false
-//    lineChart.x.labels.visible = false
-//    lineChart.y.grid.visible = false
-//    lineChart.y.labels.visible = false
-//    lineChart.dots.visible = false
-//    lineChart.addLine([3, 4, 9, 11, 13, 15])
-//    lineChart.addLine([5, 4, 3, 6, 6, 7])
-    
-//    let chartConfig = ChartConfigXY(
-//        xAxisConfig: ChartAxisConfig(from: 0, to: totalDistanceOverall as! Double, by: 2),
-//        yAxisConfig: ChartAxisConfig(from: 0, to: sortedAscend[sortedAscend.count - 1] + 10, by: 4)
-//    )
-//    
-//    //        let chartdata = LineChartDataSet
-//    
-//    let chart = LineChart(
-//        frame: CGRect.init(x: 0, y: 0, width: customView.frame.size.width, height: customView.frame.size.height),
-//        chartConfig: chartConfig,
-//        xTitle: "X axis",
-//        yTitle: "Y axis",
-//        lines: [
-//            (chartPoints: pointArr, color: color),
-//            //                (chartPoints: [(2.0, 2.6), (4.2, 4.1), (7.3, 1.0), (8.1, 11.5), (14.0, 3.0)], color: .blue)
-//        ]
-//    )
-    
-//    frame: CGRect.init(x: 0, y: 0, width: screenSize.width - 35, height: 80),
-
-//    chart.view.center = CGPointMake(CGRectGetMidX(customView.bounds), chart.view.center.y);
-    
-//    chart.view.center = customView.center
-
-//    chart.view.center.y = customView.center.y
-//    self.customView.addSubview(chart.view)
+    print(customView.data?.count)
     
     
-    
-    //        chart.view.center = customView.center
-    
-    self.view.addSubview(customView)
+    self.mapView.addSubview(customView)
 }
+    
+    func removeSubview() {
+        print("Start remove sibview")
+        if let viewWithTag = self.view.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        }else{
+            print("No!")
+        }
+    }
     
     
     

@@ -46,7 +46,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var mask: CALayer!
     var animation: CABasicAnimation!
     
-    var customView = LineChart()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,12 +105,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         mapView.frame = view.bounds
        
         mapView.styleURL = URL(string: "mapbox://styles/mapbox/dark-v9")
-  
-        
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     
-        
-        
+        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
         mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
         
 
@@ -472,15 +469,15 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
         let catchtitle = String()
         
-        pointArr.removeAll()
+    
+        removeSubview()
+        //        for v in self.customView.subviews{
+//            
+//                v.removeFromSuperview()
+//                self.customView.data = nil
+//        }
         
-        for v in self.customView.subviews{
-            
-                v.removeFromSuperview()
-            
-        }
-        
-        self.customView.removeFromSuperview()
+//        self.customView.data = nil
         
         
         
@@ -696,7 +693,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
                self.imageView.alpha = 0.5
             }) { (true) in
                 UIView.animate(withDuration: 1, animations: {
-                    self.customView.alpha = 1
+//                    self.customView.alpha = 1
                 }, completion: { (true) in
     
                 })

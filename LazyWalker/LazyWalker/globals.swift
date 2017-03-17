@@ -46,4 +46,4 @@ var thirdCoords = [CGPoint]()
 var fourthCoords = [CGPoint]()
 var fifthCoords = [CGPoint]()
 
-var pointArr : [CGPoint] = []
+//var pointsAry = [CGPoint]()
