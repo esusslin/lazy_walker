@@ -31,10 +31,12 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     @IBOutlet weak var logoImageview: UIImageView!
     @IBOutlet weak var mapView: MGLMapView!
     
+    @IBOutlet weak var menuView: UIView!
 
     @IBOutlet weak var searchBtn: UIButton!
 
     
+    @IBOutlet weak var imageView: UIImageView!
 
 //    var mySearchBar: UISearchBar!
     @IBOutlet weak var mySearchBar: UISearchBar!
@@ -44,7 +46,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var mask: CALayer!
     var animation: CABasicAnimation!
     
-    var customView = UIView()
+    var customView = LineChart()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,10 +54,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         setLocation()
         
         searchController = UISearchController(searchResultsController: resultsViewController)
-        //        searchController.
+
         searchController?.searchResultsUpdater = resultsViewController
 
-//        resultsViewController?.tableCellBackgroundColor = UIColor(white: 1, alpha: 0.01)
         resultsViewController?.tableCellBackgroundColor = .black
         resultsViewController?.primaryTextHighlightColor = .white
         resultsViewController?.primaryTextColor = .gray
@@ -63,6 +64,12 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         resultsViewController?.tableCellSeparatorColor = .gray
         
         let screenSize: CGRect = UIScreen.main.bounds
+        
+        imageView.alpha = 0
+        imageView.frame = CGRect.init(x: 0, y: 100, width: screenSize.width - 60, height: screenSize.height / 6)
+        imageView.center.x = self.view.center.x
+        imageView.center.y = self.view.center.y / 2.5
+        
         
         
         // Add the search bar to the right of the nav bar,
@@ -136,8 +143,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
         
         if self.mapView.annotations != nil {
-            print("ANNOTATION COUNT:")
-            print(mapView.annotations?.count)
+//            print("ANNOTATION COUNT:")
+//            print(mapView.annotations?.count)
             self.mapView.removeAnnotations(self.mapView.annotations!)
         }
 
@@ -157,14 +164,14 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
         let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
         
-        print(bounds)
+//        print(bounds)
         
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
         
         resultsViewController?.autocompleteBounds = bounds
         
-        print(resultsViewController?.autocompleteBounds)
+//        print(resultsViewController?.autocompleteBounds)
 
     }
     
@@ -199,7 +206,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
                 
              self.adjustCameraForRoutes()
                 
-                print(response)
+//                print(response)
                 
                 let pathss = JSON["paths"] as! [[String:Any]]
                 
@@ -246,12 +253,17 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         }
 
         //THIRD:
+         if (paths.count > 2) {
         let threeflattest = ascend.index(of: sortedAscend[2])!
         printLine(index: threeflattest, id: "2")
+        }
         
         //SECOND:
+        if (paths.count > 1) {
         let twoflattest = ascend.index(of: sortedAscend[1])!
         printLine(index: twoflattest, id: "1")
+        }
+        
         
         // FIRST:
         let flattest = ascend.index(of: sortedAscend[0])!
@@ -327,8 +339,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
         let theindex = sortedAscend.index(of: ascend[index])!
         
-        print("INDEX:")
-        print(index)
+//        print("INDEX:")
+////        print(index)
         
         let path = paths[index]
 
@@ -670,7 +682,28 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        
+        self.imageShow()
     }
+    
+    
+    
+        func imageShow() {
+    
+            print("imageshow!")
+    
+            UIView.animate(withDuration: 8, animations: {
+               self.imageView.alpha = 0.5
+            }) { (true) in
+                UIView.animate(withDuration: 1, animations: {
+                    self.customView.alpha = 1
+                }, completion: { (true) in
+    
+                })
+            }
+    
+        }
+
  
     
 }
@@ -686,6 +719,8 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
+        
+        
 
         self.reset()
         self.setLocation()
@@ -698,6 +733,8 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
         print("Place attributions: \(place.attributions)")
         
         print(place.placeID)
+        
+        self.loadFirstPhotoForPlace(placeID: place.placeID)
         
         let lat = place.coordinate.latitude
         let lon = place.coordinate.longitude

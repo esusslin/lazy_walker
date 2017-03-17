@@ -11,44 +11,65 @@ import GooglePlaces
 
 
 
+
+
 class testVC: UIViewController {
     
-    @IBOutlet weak var imageView: UIImageView!
-   
-    @IBOutlet weak var attributionTextView: UITextView!
+
+    @IBOutlet weak var lineChart: LineChart!
     
     override func viewDidLoad() {
        super.viewDidLoad()
         
-        loadFirstPhotoForPlace(placeID: "ChIJvXl2weCAhYARjSxnhzrBfNc")
-    }
-    
-    
-    func loadFirstPhotoForPlace(placeID: String) {
-        GMSPlacesClient.shared().lookUpPhotos(forPlaceID: placeID) { (photos, error) -> Void in
-            if let error = error {
-                // TODO: handle the error.
-                print("Error: \(error.localizedDescription)")
-            } else {
-                if let firstPhoto = photos?.results.first {
-                    self.loadImageForMetadata(photoMetadata: firstPhoto)
-                }
-            }
+        let f: (CGFloat) -> CGPoint = {
+            let noiseY = (CGFloat(arc4random_uniform(2)) * 2 - 1) * CGFloat(arc4random_uniform(4))
+            let noiseX = (CGFloat(arc4random_uniform(2)) * 2 - 1) * CGFloat(arc4random_uniform(4))
+            let b: CGFloat = 5
+            let y = 2 * $0 + b + noiseY
+            return CGPoint(x: $0 + noiseX, y: y)
         }
+        
+        let xs = [Int](1..<20)
+        
+        let points = xs.map({f(CGFloat($0 * 10))})
+        
+        lineChart.deltaX = 20
+        lineChart.deltaY = 30
+        
+        lineChart.plot(points)
     }
     
-    func loadImageForMetadata(photoMetadata: GMSPlacePhotoMetadata) {
-        GMSPlacesClient.shared().loadPlacePhoto(photoMetadata, callback: {
-            (photo, error) -> Void in
-            if let error = error {
-                // TODO: handle the error.
-                print("Error: \(error.localizedDescription)")
-            } else {
-                self.imageView.image = photo;
-                self.attributionTextView.attributedText = photoMetadata.attributions;
-            }
-        })
-    }
+
+    
+        
+ }
+    
+    
+//    func loadFirstPhotoForPlace(placeID: String) {
+//        GMSPlacesClient.shared().lookUpPhotos(forPlaceID: placeID) { (photos, error) -> Void in
+//            if let error = error {
+//                // TODO: handle the error.
+//                print("Error: \(error.localizedDescription)")
+//            } else {
+//                if let firstPhoto = photos?.results.first {
+//                    self.loadImageForMetadata(photoMetadata: firstPhoto)
+//                }
+//            }
+//        }
+//    }
+//    
+//    func loadImageForMetadata(photoMetadata: GMSPlacePhotoMetadata) {
+//        GMSPlacesClient.shared().loadPlacePhoto(photoMetadata, callback: {
+//            (photo, error) -> Void in
+//            if let error = error {
+//                // TODO: handle the error.
+//                print("Error: \(error.localizedDescription)")
+//            } else {
+//                self.imageView.image = photo;
+//                self.attributionTextView.attributedText = photoMetadata.attributions;
+//            }
+//        })
+//    }
     
 //    var resultsViewController: GMSAutocompleteResultsViewController?
 //    var searchController: UISearchController?
@@ -161,4 +182,4 @@ class testVC: UIViewController {
 //    func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
 //        UIApplication.shared.isNetworkActivityIndicatorVisible = false
 //    }
-}
+

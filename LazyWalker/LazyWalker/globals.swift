@@ -40,10 +40,10 @@ var totalDistanceOverall = Double()
 
 // ALL COORDINATES
 
-var firstCoords = [NSArray]()
-var secondCoords = [NSArray]()
-var thirdCoords = [NSArray]()
-var fourthCoords = [NSArray]()
-var fifthCoords = [NSArray]()
+var firstCoords = [CGPoint]()
+var secondCoords = [CGPoint]()
+var thirdCoords = [CGPoint]()
+var fourthCoords = [CGPoint]()
+var fifthCoords = [CGPoint]()
 
-var pointArr : [(Double, Double)] = []
+var pointArr : [CGPoint] = []

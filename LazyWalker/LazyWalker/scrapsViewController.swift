@@ -532,7 +532,7 @@ class scrapsViewController: UIViewController {
 //                    self.distance.append((path["distance"] as? Double)!)
 //                    
 //                    
-//                    self.paths.append(path)
+//                    self.paths.append(path) 
 //                }
 //                
 //                self.flattestRoute()
@@ -806,6 +806,7 @@ class scrapsViewController: UIViewController {
 //    
 //    
 //    
+
 //    
 //    func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
 //        // Try to reuse the existing ‘pisa’ annotation image, if it exists.
