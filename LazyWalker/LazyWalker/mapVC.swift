@@ -20,40 +20,7 @@ import SwiftCharts
 import GooglePlaces
 
 
-//// GLOBALS
-
-let locationManager = CLLocationManager()
-
-var latitude = Double()
-var longitude = Double()
-
-var destination = CLLocationCoordinate2D()
-var origin = CLLocationCoordinate2D()
-var destinationDirection = Double()
-
-// FOR ALL ROUTES
-var paths = [[String:Any]]()
-
-// UNIQUE VALUES OF EACH ROUTE
-
-var ascend = [Double]()
-var descend = [Double]()
-var totalDistance = [Double]()
-
-var totalDistanceOverall = Double()
-
-// ALL COORDINATES
-
-var firstCoords = [NSArray]()
-var secondCoords = [NSArray]()
-var thirdCoords = [NSArray]()
-var fourthCoords = [NSArray]()
-var fifthCoords = [NSArray]()
-
-var pointArr : [(Double, Double)] = []
-
-
-class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearchBarDelegate, UITableViewDelegate {
+class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableViewDelegate {
     
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
@@ -64,10 +31,12 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     @IBOutlet weak var logoImageview: UIImageView!
     @IBOutlet weak var mapView: MGLMapView!
     
+    @IBOutlet weak var menuView: UIView!
 
     @IBOutlet weak var searchBtn: UIButton!
 
     
+    @IBOutlet weak var imageView: UIImageView!
 
 //    var mySearchBar: UISearchBar!
     @IBOutlet weak var mySearchBar: UISearchBar!
@@ -77,32 +46,17 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
     var mask: CALayer!
     var animation: CABasicAnimation!
     
-    var customView = UIView()
+    var customView = LineChart()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        
-        let currentLocation = locationManager.location
         
-        latitude = (currentLocation?.coordinate.latitude)!
-        longitude = (currentLocation?.coordinate.longitude)!
-        
-        let corner1 = CLLocationCoordinate2D(latitude: latitude + 1, longitude: longitude + 1)
-        let corner2 = CLLocationCoordinate2D(latitude: latitude - 1, longitude: longitude - 1)
-        
-        let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
-        
-        resultsViewController = GMSAutocompleteResultsViewController()
-        resultsViewController?.delegate = self
-        
-        resultsViewController?.autocompleteBounds = bounds
+        setLocation()
         
         searchController = UISearchController(searchResultsController: resultsViewController)
-        //        searchController.
+
         searchController?.searchResultsUpdater = resultsViewController
 
-//        resultsViewController?.tableCellBackgroundColor = UIColor(white: 1, alpha: 0.01)
         resultsViewController?.tableCellBackgroundColor = .black
         resultsViewController?.primaryTextHighlightColor = .white
         resultsViewController?.primaryTextColor = .gray
@@ -111,17 +65,19 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         
         let screenSize: CGRect = UIScreen.main.bounds
         
+        imageView.alpha = 0
+        imageView.frame = CGRect.init(x: 0, y: 100, width: screenSize.width - 60, height: screenSize.height / 6)
+        imageView.center.x = self.view.center.x
+        imageView.center.y = self.view.center.y / 2.5
+        
+        
         
         // Add the search bar to the right of the nav bar,
         // use a popover to display the results.
         // Set an explicit size as we don't want to use the entire nav bar.
         searchController?.searchBar.frame = (CGRect(x: 0, y: 0, width: screenSize.width - 30, height: 44.0))
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: (searchController?.searchBar)!)
-        //        searchController?.searchBar.layer.borderColor = UIColor.white.cgColor
-        //        searchController?.searchBar.layer.shadowOpacity = 0.5
-        
-        // When UISearchController presents the results view, present it in
-        // this view controller, not one further up the chain.
+
         definesPresentationContext = true
         
         // Keep the navigation bar visible.
@@ -147,11 +103,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         mapView.delegate = self
         
         mapView.frame = view.bounds
-//        mapView.styleURL = URL(string: "mapbox://styles/esusslin/cixvherpa00032smn8c7kffjp")
-        
+       
         mapView.styleURL = URL(string: "mapbox://styles/mapbox/dark-v9")
-        
-//        mapView.styleURL = URL(string: "mapbox://styles/mapbox/dark")
+  
         
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     
@@ -159,104 +113,72 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         
         mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
         
-//        destination = CLLocationCoordinate2D(latitude: 37.793591, longitude: -122.440243)
-        
-        
+
         origin = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         totalDistanceOverall = self.distance(origin, destination)
 
+    }
+    
+    func reset() {
+        
+        // FOR ALL ROUTES
+        paths.removeAll()
+        
+        // UNIQUE VALUES OF EACH ROUTE
+        
+        ascend.removeAll()
+        descend.removeAll()
+        totalDistance.removeAll()
+        
+        totalDistanceOverall = 0.0
+        
+        // ALL COORDINATES
+        
+        firstCoords.removeAll()
+        secondCoords.removeAll()
+        thirdCoords.removeAll()
+        fourthCoords.removeAll()
+        fifthCoords.removeAll()
+        
+        
+        if self.mapView.annotations != nil {
+//            print("ANNOTATION COUNT:")
+//            print(mapView.annotations?.count)
+            self.mapView.removeAnnotations(self.mapView.annotations!)
+        }
 
+    }
+    
+    func setLocation() {
         
-//        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: 37.793591, longitude: -122.440243))
         
-//        getGraphopper()
+        
+        let currentLocation = locationManager.location
+        
+        latitude = (currentLocation?.coordinate.latitude)!
+        longitude = (currentLocation?.coordinate.longitude)!
+        
+        let corner1 = CLLocationCoordinate2D(latitude: latitude + 1, longitude: longitude + 1)
+        let corner2 = CLLocationCoordinate2D(latitude: latitude - 1, longitude: longitude - 1)
+        
+        let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
+        
+//        print(bounds)
+        
+        resultsViewController = GMSAutocompleteResultsViewController()
+        resultsViewController?.delegate = self
+        
+        resultsViewController?.autocompleteBounds = bounds
+        
+//        print(resultsViewController?.autocompleteBounds)
+
     }
     
     
 
     
-    func addGraphicSubview(index: String) {
         
-        let num = Int(index)!
-        
-        var pointsAry = [NSArray]()
-        var color = UIColor()
-        
-        if num == 0 {
-            pointsAry = firstCoords
-            color = .green
-        }
-        
-        if num == 1 {
-            pointsAry = secondCoords
-            color = UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
-        }
-        
-        if num == 2 {
-            pointsAry = thirdCoords
-            color = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
-        }
-        
-        if num == 3 {
-            pointsAry = fourthCoords
-            color = UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 0.0/255.0, alpha: 1)
-        }
-
-        if num == 4 {
-            pointsAry = fifthCoords
-            color = .red
-        }
-        
-        
-        
-        for point in pointsAry {
-            let dot = (point[0] as! Double, point[1] as! Double)
-            pointArr.append(dot as! (Double, Double))
-        }
-        
-        let screenSize: CGRect = UIScreen.main.bounds
-        
-        let width = self.view.frame.size.width
-        let height = self.view.frame.size.height
-        
-        
-        customView.frame = CGRect.init(x: 0, y: height - 200, width: screenSize.width - 30, height: 85)
-        
-        customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
-        customView.center.x = self.view.center.x
-        customView.layer.cornerRadius = customView.frame.size.width / 16
-        
-
-        let sortedAscend = ascend.sorted()
-        
-        let chartConfig = ChartConfigXY(
-            xAxisConfig: ChartAxisConfig(from: 0, to: totalDistanceOverall as! Double, by: 2),
-            yAxisConfig: ChartAxisConfig(from: 0, to: sortedAscend[sortedAscend.count - 1] + 100, by: 2)
-        )
-        
-//        let chartdata = LineChartDataSet
-        
-        let chart = LineChart(
-            frame: CGRect.init(x: 0, y: 50, width: screenSize.width - 35, height: 80),
-            chartConfig: chartConfig,
-            xTitle: "X axis",
-            yTitle: "Y axis",
-            lines: [
-                (chartPoints: pointArr, color: color),
-//                (chartPoints: [(2.0, 2.6), (4.2, 4.1), (7.3, 1.0), (8.1, 11.5), (14.0, 3.0)], color: .blue)
-            ]
-        )
-        
-        
-        
-        self.customView.addSubview(chart.view)
-        
-//        chart.view.center = customView.center
-        
-        self.view.addSubview(customView)
-    }
-    
 
 
     func getGraphopper(destination: CLLocationCoordinate2D) {
@@ -284,7 +206,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
                 
              self.adjustCameraForRoutes()
                 
-                print(response)
+//                print(response)
                 
                 let pathss = JSON["paths"] as! [[String:Any]]
                 
@@ -301,9 +223,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
                     ascend.append((path["ascend"] as? Double)!)
                     descend.append((path["descend"] as? Double)!)
                     totalDistance.append((path["distance"] as? Double)!)
-                    
-//                    print((path["descend"] as? Double)!)
-
                 
                 
                 paths.append(path)
@@ -327,19 +246,24 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
             }
         
         //FOURTH:
-        if (paths.count > 4) {
+        if (paths.count > 3) {
 
         let fourflattest = ascend.index(of: sortedAscend[3])!
         printLine(index: fourflattest, id: "3")
         }
 
         //THIRD:
+         if (paths.count > 2) {
         let threeflattest = ascend.index(of: sortedAscend[2])!
         printLine(index: threeflattest, id: "2")
+        }
         
         //SECOND:
+        if (paths.count > 1) {
         let twoflattest = ascend.index(of: sortedAscend[1])!
         printLine(index: twoflattest, id: "1")
+        }
+        
         
         // FIRST:
         let flattest = ascend.index(of: sortedAscend[0])!
@@ -415,8 +339,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         
         let theindex = sortedAscend.index(of: ascend[index])!
         
-        print("INDEX:")
-        print(index)
+//        print("INDEX:")
+////        print(index)
         
         let path = paths[index]
 
@@ -722,25 +646,25 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         return heading
     }
     
-    ///// TABLEVIEW STUFF
-
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
-                   forRowAt indexPath: IndexPath) {
-        cell.backgroundColor = UIColor.clear
-    }
-    
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
+//    ///// TABLEVIEW STUFF
+//
+//    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
+//                   forRowAt indexPath: IndexPath) {
+//        cell.backgroundColor = UIColor.clear
+//    }
+//    
+//    
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return 0
+//    }
+//    
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        // #warning Incomplete implementation, return the number of rows
+//        return 0
+//    }
+//
     
     ////////////////////
     
@@ -758,184 +682,29 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
         
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        
+        self.imageShow()
     }
     
     
     
-    // ANIMATIONS:
+        func imageShow() {
     
-    func animateLaunch(image: UIImage) {
-        
-        //        self.view.backgroundColor = bgColor
-        
-        // Create and apply mask
-        
-        mask = CALayer()
-        mask.contents = image.cgImage
-        mask.bounds = CGRect(x: 0, y: 0, width: 128, height: 128)
-        mask.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        mask.position = CGPoint(x: mapView.frame.width / 2.0, y: mapView.frame.height / 2.0)
-        mapView.layer.mask = mask
-        
-        animateDecreaseSize()
-        
-    }
+            print("imageshow!")
     
-    func animateDecreaseSize() {
-        
-        let decreaseSize = CABasicAnimation(keyPath: "bounds")
-        decreaseSize.delegate = self
-        decreaseSize.duration = 2.0
-        decreaseSize.fromValue = NSValue(cgRect: mask!.bounds)
-        decreaseSize.toValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 20, height: 20))
-        
-        decreaseSize.fillMode = kCAFillModeForwards
-        decreaseSize.isRemovedOnCompletion = false
-        
-        mask.add(decreaseSize, forKey: "bounds")
-        
-        
-    }
+            UIView.animate(withDuration: 8, animations: {
+               self.imageView.alpha = 0.5
+            }) { (true) in
+                UIView.animate(withDuration: 1, animations: {
+                    self.customView.alpha = 1
+                }, completion: { (true) in
     
-    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        animateIncreaseSize()
-    }
-    
-    func animateIncreaseSize() {
-        
-        animation = CABasicAnimation(keyPath: "bounds")
-        animation.duration = 2.0
-        animation.fromValue = NSValue(cgRect: mask!.bounds)
-        animation.toValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 8000, height: 8000))
-        
-        animation.fillMode = kCAFillModeForwards
-        animation.isRemovedOnCompletion = false
-        
-        mask.add(animation, forKey: "bounds")
-        
-        // Fade out overlay
-//        UIView.animate(withDuration: 2.0, animations: { () -> Void in
-//            self.overlay.alpha = 0
-//            self.logoImageview.alpha = 0
-//            print("boner?")
-//            
-//        })
-        
-        UIView.animate(withDuration: 2.0, animations: { 
-            self.overlay.alpha = 0
-            self.logoImageview.alpha = 0
-        }) { (true) in
-//            self.searchBarShow()
-        }
-        
-        
-    }
-    
-    
-    // PRIVATE FUNCTIONS:
-    
-    
-   func add(coordinate: CLLocationCoordinate2D, id: String) {
-        DispatchQueue.main.async {
-            // Unowned reference to self to prevent retain cycle
-            
-            
-
-            let point = pathAnnotation()
-            point.coordinate = coordinate
-            point.title = id
-//            point.subtitle = "\(coordinate.latitude) / \(coordinate.longitude)"
-            self.mapView.addAnnotation(point)
-        }
-    }
-    
-    func split(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D, _ id: String) {
-        
-        if distance(from, to) > 40 { // THRESHOLD is 200m
-            let middle = mid(from, to)
-            add(coordinate: middle, id: id)
-            split(from, middle, id)
-            split(middle, to, id)
-        }
-        
-        add(coordinate: from, id: id)
-        add(coordinate: to, id: id)
-        
-        
-    }
-    
-    func distanceElevation(points: NSArray, id: String) {
-        
-        var coordAry = [CLLocationCoordinate2D]()
-        
-        var htAry = [Double]()
-        
-        for point in points {
-        
-            let pointAry = point as! NSArray
-            
-            htAry.append(pointAry[2] as! Double)
-            
-            let coordinates = CLLocationCoordinate2D(latitude: pointAry[1] as! CLLocationDegrees, longitude: pointAry[0] as! CLLocationDegrees)
-
-            coordAry.append(coordinates)
-        }
-        
-        var distanceCounter = 0.0
-        
-        for (index, _) in coordAry.enumerated() {
-            
-            
-            
-            if index == 0 { continue } // skip first
-            
-            
-            let distance = self.distance(coordAry[index - 1], coordAry[index])
-            
-            distanceCounter += distance
-            
-            let point = [distanceCounter, htAry[index]] as! NSArray
-            
-            if id == "0" {
-                firstCoords.append(point)
+                })
             }
-            if id == "1" {
-                secondCoords.append(point)
-            }
-            if id == "2" {
-                thirdCoords.append(point)
-            }
-
-            if id == "3" {
-                fourthCoords.append(point)
-            }
-
-            if id == "4" {
-                fifthCoords.append(point)
-            }
-
-
+    
         }
-    
-    
-//        let fromLoc = CLLocation(latitude: from.latitude, longitude: from.longitude)
-//        let toLoc = CLLocation(latitude: to.latitude, longitude: to.longitude)
-//        return fromLoc.distance(from: toLoc)
-    }
 
-    
-    func distance(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> Double {
-        let fromLoc = CLLocation(latitude: from.latitude, longitude: from.longitude)
-        let toLoc = CLLocation(latitude: to.latitude, longitude: to.longitude)
-        return fromLoc.distance(from: toLoc)
-    }
-    
-    func mid(_ from: CLLocationCoordinate2D, _ to: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
-        let latitude = (from.latitude + to.latitude) / 2
-        let longitude = (from.longitude + to.longitude) / 2
-        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-    }
-    
+ 
     
 }
 
@@ -946,13 +715,15 @@ class mapVC: UIViewController, MGLMapViewDelegate, CAAnimationDelegate, UISearch
 
 // Handle the user's selection.
 extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
-    
-    
-    
+
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
         
+        
+
+        self.reset()
+        self.setLocation()
         
         searchController?.isActive = false
         
@@ -960,6 +731,10 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
+        
+        print(place.placeID)
+        
+        self.loadFirstPhotoForPlace(placeID: place.placeID)
         
         let lat = place.coordinate.latitude
         let lon = place.coordinate.longitude
