@@ -74,6 +74,7 @@ extension mapVC {
 
 func addGraphicSubview(index: String) {
     
+  
     
     
     let num = Int(index)!
@@ -82,6 +83,11 @@ func addGraphicSubview(index: String) {
     
     var customView = LineChart()
     customView.data = nil
+    
+    customView.xMin = 0.0
+    customView.xMax = 0.0
+    customView.yMin = 0.0
+    customView.yMax = 0.0
     
     var color = UIColor()
     
@@ -109,46 +115,49 @@ func addGraphicSubview(index: String) {
         pointsAry = fifthCoords
         color = .red
     }
-    
-    
-    
-//    for point in pointsAry {
-//        let dot = (point[0] as! Double, point[1] as! Double)
-//        pointArr.append(dot as! (Double, Double))
-//    }
-//    
+
     let screenSize: CGRect = UIScreen.main.bounds
     
     let width = self.view.frame.size.width
     let height = self.view.frame.size.height
-    let sortedAscend = ascend.sorted()
     
-    customView.frame = CGRect.init(x: 0, y: height - 200, width: screenSize.width - 30, height: 85)
+    customView.frame = CGRect.init(x: 0, y: height - 230, width: screenSize.width - 30, height: 100)
     
     customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
     customView.center.x = self.view.center.x
     customView.layer.cornerRadius = customView.frame.size.width / 16
     
+    let xmaximum = pointsAry[pointsAry.count - 1]
     
+    print(xmaximum.x)
     
     customView.lineColor = color
     customView.showPoints = false
     customView.axisColor = .gray
     customView.axisLineWidth = 1
-    customView.yMin = CGFloat(sortedAscend[0] - 10)
-    customView.xMax = CGFloat(totalDistanceOverall)
-    customView.yMax = CGFloat(sortedAscend[sortedAscend.count - 1] + 10)
+    customView.yMin = CGFloat(minElevation)
+    customView.xMin = 0.0
+    customView.xMax = CGFloat(xmaximum.x)
+//    customView.xMax = CGFloat(4000)
+    customView.yMax = CGFloat(maxElevation + 10)
     customView.data = pointsAry
     customView.tag = 100
     
+    print("TOTAL DISTANCE OVERALL")
+    print(customView.xMax)
+    
+//    customView.setAxisRange(xMin: 0.0, xMax: customView.xMax, yMin: customView.yMin, yMax: customView.xMax )
+    
     print(customView.data?.count)
+    print(customView.yMin)
+    print(customView.yMax)
     
     
     self.mapView.addSubview(customView)
 }
     
     func removeSubview() {
-        print("Start remove sibview")
+        print("Start remove subview")
         if let viewWithTag = self.view.viewWithTag(100) {
             viewWithTag.removeFromSuperview()
         }else{
@@ -223,6 +232,8 @@ func addGraphicSubview(index: String) {
 //            let point = [distanceCounter, htAry[index]] as! NSArray
             
             let point = CGPoint(x: distanceCounter, y: htAry[index])
+            
+            print(point)
             
             if id == "0" {
                 firstCoords.append(point)

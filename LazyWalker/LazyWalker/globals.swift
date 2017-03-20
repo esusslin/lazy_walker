@@ -46,4 +46,9 @@ var thirdCoords = [CGPoint]()
 var fourthCoords = [CGPoint]()
 var fifthCoords = [CGPoint]()
 
+var elevationRange = [Double]()
+
+var minElevation = Double()
+var maxElevation = Double()
+
 //var pointsAry = [CGPoint]()
