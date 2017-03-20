@@ -689,17 +689,34 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
             print("imageshow!")
     
-            UIView.animate(withDuration: 8, animations: {
+            UIView.animate(withDuration: 6, animations: {
                self.imageView.alpha = 0.5
             }) { (true) in
-                UIView.animate(withDuration: 1, animations: {
-//                    self.customView.alpha = 1
+                UIView.animate(withDuration: 6, animations: {
+                    self.imageHide()
                 }, completion: { (true) in
     
                 })
             }
     
         }
+    
+    func imageHide() {
+        
+        print("imagehide!")
+        
+        UIView.animate(withDuration: 6, animations: {
+            self.imageView.alpha = 0.0
+        }) { (true) in
+            UIView.animate(withDuration: 1, animations: {
+                //                    self.customView.alpha = 1
+            }, completion: { (true) in
+                
+            })
+        }
+        
+    }
+
 
  
     
