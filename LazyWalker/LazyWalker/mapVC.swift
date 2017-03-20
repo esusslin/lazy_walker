@@ -158,8 +158,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         latitude = (currentLocation?.coordinate.latitude)!
         longitude = (currentLocation?.coordinate.longitude)!
         
-        let corner1 = CLLocationCoordinate2D(latitude: latitude + 1, longitude: longitude + 1)
-        let corner2 = CLLocationCoordinate2D(latitude: latitude - 1, longitude: longitude - 1)
+        let corner1 = CLLocationCoordinate2D(latitude: latitude + 0.1, longitude: longitude + 0.1)
+        let corner2 = CLLocationCoordinate2D(latitude: latitude - 0.1, longitude: longitude - 0.1)
         
         let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
         

@@ -69,7 +69,20 @@ extension mapVC {
         return UIImage(cgImage: cgImage!)
     }
 
-    
+
+    func addAnnotationSubview(index: String) {
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        
+        let width = self.view.frame.size.width
+        let height = self.view.frame.size.height
+        
+        let annotationView = UIView()
+        
+        annotationView .frame = CGRect.init(x: 0, y: height - 280, width: screenSize.width / 2, height: 30)
+        
+        self.mapView.addSubview(annotationView)
+    }
     
 
 func addGraphicSubview(index: String) {
