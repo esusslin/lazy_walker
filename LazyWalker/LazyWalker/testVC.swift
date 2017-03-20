@@ -36,12 +36,21 @@ class testVC: UIViewController {
         
         let screenSize: CGRect = UIScreen.main.bounds
         
+        menuView.center.x = screenSize.width / 2
+        
+        menuView.center.y = screenSize.height
+        
+        print(screenSize.width)
+        
         darkFillView.layer.cornerRadius = 22.0
         btn1.layer.cornerRadius = 22.0
         btn2.layer.cornerRadius = 22.0
         btn3.layer.cornerRadius = 22.0
         btn4.layer.cornerRadius = 22.0
         btn5.layer.cornerRadius = 22.0
+        btn5.alpha = 0
+        btn4.alpha = 0
+        btn3.alpha = 0
         
         btn1.translatesAutoresizingMaskIntoConstraints = false
         btn2.translatesAutoresizingMaskIntoConstraints = false
@@ -51,19 +60,14 @@ class testVC: UIViewController {
         btn4.translatesAutoresizingMaskIntoConstraints = false
 
         btn5.translatesAutoresizingMaskIntoConstraints = false
-        
-        btn3.center.x = screenSize.width / 2
 
-   
+
+        position2()
         
         // Create the views dictionary
-        let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+       let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
         
-//         Create and add the vertical constraints
-        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[btn1(44)]-20-[btn2(44)]-20-[btn3(44)]-20-[btn4(44)]-20-[btn5(44)]-40-|",
-                                                                                options: [],
-                                                                                metrics: nil, 
-                                                                                views: viewsDictionary))
+
         
         menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn1(44)]-18-|",
                                                                options: [],
@@ -89,9 +93,55 @@ class testVC: UIViewController {
                                                                options: [],
                                                                metrics: nil,
                                                                views: viewsDictionary))
-        
-//        [btn2(44)]-10-[btn3(44)]-10-[btn4(44)]-10-[btn5(44)]-|"
 
+    }
+    
+    func position2() {
+        
+        let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+        //         Create and add the vertical constraints
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-100-[btn1(44)]-80-[btn2(44)]-100-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+    }
+
+    
+    
+    
+    func position3() {
+        
+        let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+        //         Create and add the vertical constraints
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-70-[btn1(44)]-51-[btn2(44)]-51-[btn3(44)]-70-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+    }
+    
+    func position4() {
+        
+         let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+        //         Create and add the vertical constraints
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-54-[btn1(44)]-30-[btn2(44)]-30-[btn3(44)]-30-[btn4(44)]-54-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+    }
+    
+    func position5() {
+        
+        
+         let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+        //         Create and add the vertical constraints
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[btn1(44)]-20-[btn2(44)]-20-[btn3(44)]-20-[btn4(44)]-20-[btn5(44)]-40-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
     }
     
 
