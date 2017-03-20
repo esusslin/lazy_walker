@@ -46,10 +46,12 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var mask: CALayer!
     var animation: CABasicAnimation!
     
-    var customView = LineChart()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        reset()
         
         setLocation()
         
@@ -105,12 +107,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         mapView.frame = view.bounds
        
         mapView.styleURL = URL(string: "mapbox://styles/mapbox/dark-v9")
-  
-        
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     
-        
-        
+        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
         mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
         
 
@@ -159,8 +158,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         latitude = (currentLocation?.coordinate.latitude)!
         longitude = (currentLocation?.coordinate.longitude)!
         
-        let corner1 = CLLocationCoordinate2D(latitude: latitude + 1, longitude: longitude + 1)
-        let corner2 = CLLocationCoordinate2D(latitude: latitude - 1, longitude: longitude - 1)
+        let corner1 = CLLocationCoordinate2D(latitude: latitude + 0.1, longitude: longitude + 0.1)
+        let corner2 = CLLocationCoordinate2D(latitude: latitude - 0.1, longitude: longitude - 0.1)
         
         let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
         
@@ -197,7 +196,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         let theString = "https://graphhopper.com/api/1/route?point=" + pointstring + "&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=a67e19cf-291b-492b-b380-68405b49e910"
 //        
         print(theString)
-        
+        var allPathElevations = [Double]()
         
         Alamofire.request(theString).responseJSON { response in
         
@@ -217,6 +216,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
                     
                     let points = path["points"] as? [String:Any]
                     let coords = points?["coordinates"] as! NSArray!
+                    
+//                    allPathElevations.append(coords[2])
                    
                     var elevations = [Double]()
                     
@@ -229,11 +230,19 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
                 }
                 
                 self.flattestRoute()
-                
+                self.findRange()
             }
             
             }
         }
+    
+    func findRange() {
+        
+        let sortedRange = elevationRange.sorted()
+        minElevation = sortedRange[0]
+        maxElevation = sortedRange[sortedRange.count - 1]
+        
+    }
 
     
     func flattestRoute() {
@@ -268,6 +277,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         // FIRST:
         let flattest = ascend.index(of: sortedAscend[0])!
         printLine(index: flattest, id: "0")
+        
+        findRange()
 
     }
     
@@ -280,6 +291,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         let path = paths[index]
 
         let points = path["points"]! as! AnyObject!
+        
+        
+        
                 let coords = points?["coordinates"] as! NSArray!
         
                     self.distanceElevation(points: coords!, id: id)
@@ -288,6 +302,11 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
                             for coord in coords! {
         
                                 let coordAry = coord as! NSArray
+                                
+                                let elevation = coordAry[2]
+                                
+                                elevationRange.append(elevation as! Double)
+                                
                                 let lat = coordAry[1]
                                 let lng = coordAry[0]
                                 
@@ -305,7 +324,12 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
                                 
                             }
         
+        
+        
                     totalDistanceOverall = self.distance(linecoords.first!, linecoords.last!)
+        
+        print("TOTAL DISTANCE")
+        print(totalDistanceOverall)
 
         
                     for (index, _) in linecoords.enumerated() {
@@ -472,16 +496,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
         let catchtitle = String()
         
-        pointArr.removeAll()
-        
-        for v in self.customView.subviews{
-            
-                v.removeFromSuperview()
-            
-        }
-        
-        self.customView.removeFromSuperview()
-        
+    
+        removeSubview()
         
         
         let poly = mapView.annotations?.filter { annotation in
@@ -646,27 +662,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         return heading
     }
     
-//    ///// TABLEVIEW STUFF
-//
-//    
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
-//                   forRowAt indexPath: IndexPath) {
-//        cell.backgroundColor = UIColor.clear
-//    }
-//    
-//    
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 0
-//    }
-//    
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//        return 0
-//    }
-//
-    
-    ////////////////////
     
     
     // MAP CAMERA
@@ -692,17 +687,34 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
             print("imageshow!")
     
-            UIView.animate(withDuration: 8, animations: {
+            UIView.animate(withDuration: 6, animations: {
                self.imageView.alpha = 0.5
             }) { (true) in
-                UIView.animate(withDuration: 1, animations: {
-                    self.customView.alpha = 1
+                UIView.animate(withDuration: 6, animations: {
+                    self.imageHide()
                 }, completion: { (true) in
     
                 })
             }
     
         }
+    
+    func imageHide() {
+        
+        print("imagehide!")
+        
+        UIView.animate(withDuration: 6, animations: {
+            self.imageView.alpha = 0.0
+        }) { (true) in
+            UIView.animate(withDuration: 1, animations: {
+                //                    self.customView.alpha = 1
+            }, completion: { (true) in
+                
+            })
+        }
+        
+    }
+
 
  
     

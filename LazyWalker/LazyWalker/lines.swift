@@ -69,14 +69,39 @@ extension mapVC {
         return UIImage(cgImage: cgImage!)
     }
 
-    
+
+    func addAnnotationSubview(index: String) {
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        
+        let width = self.view.frame.size.width
+        let height = self.view.frame.size.height
+        
+        let annotationView = UIView()
+        
+        annotationView .frame = CGRect.init(x: 0, y: height - 280, width: screenSize.width / 2, height: 30)
+        
+        self.mapView.addSubview(annotationView)
+    }
     
 
 func addGraphicSubview(index: String) {
     
-    let num = Int(index)!
+  
     
+    
+    let num = Int(index)!
     var pointsAry = [CGPoint]()
+    print(num)
+    
+    var customView = LineChart()
+    customView.data = nil
+    
+    customView.xMin = 0.0
+    customView.xMax = 0.0
+    customView.yMin = 0.0
+    customView.yMax = 0.0
+    
     var color = UIColor()
     
     if num == 0 {
@@ -103,81 +128,55 @@ func addGraphicSubview(index: String) {
         pointsAry = fifthCoords
         color = .red
     }
-    
-    
-    
-//    for point in pointsAry {
-//        let dot = (point[0] as! Double, point[1] as! Double)
-//        pointArr.append(dot as! (Double, Double))
-//    }
-//    
+
     let screenSize: CGRect = UIScreen.main.bounds
     
     let width = self.view.frame.size.width
     let height = self.view.frame.size.height
-    let sortedAscend = ascend.sorted()
     
-    customView.frame = CGRect.init(x: 0, y: height - 200, width: screenSize.width - 30, height: 85)
+    customView.frame = CGRect.init(x: 0, y: height - 230, width: screenSize.width - 30, height: 100)
     
     customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
     customView.center.x = self.view.center.x
     customView.layer.cornerRadius = customView.frame.size.width / 16
     
+    let xmaximum = pointsAry[pointsAry.count - 1]
+    
+    print(xmaximum.x)
+    
     customView.lineColor = color
     customView.showPoints = false
     customView.axisColor = .gray
     customView.axisLineWidth = 1
-    customView.yMin = CGFloat(sortedAscend[0] - 10)
-    customView.xMax = CGFloat(totalDistanceOverall)
-    customView.yMax = CGFloat(sortedAscend[sortedAscend.count - 1] + 10)
-   customView.data = pointsAry
+    customView.yMin = CGFloat(minElevation)
+    customView.xMin = 0.0
+    customView.xMax = CGFloat(xmaximum.x)
+//    customView.xMax = CGFloat(4000)
+    customView.yMax = CGFloat(maxElevation + 10)
+    customView.data = pointsAry
+    customView.tag = 100
     
-    print(pointsAry)
+    print("TOTAL DISTANCE OVERALL")
+    print(customView.xMax)
     
+//    customView.setAxisRange(xMin: 0.0, xMax: customView.xMax, yMin: customView.yMin, yMax: customView.xMax )
     
-//    var lineChart = LineChart()
-//    lineChart.area = false
-//    lineChart.x.grid.visible = false
-//    lineChart.x.labels.visible = false
-//    lineChart.y.grid.visible = false
-//    lineChart.y.labels.visible = false
-//    lineChart.dots.visible = false
-//    lineChart.addLine([3, 4, 9, 11, 13, 15])
-//    lineChart.addLine([5, 4, 3, 6, 6, 7])
-    
-//    let chartConfig = ChartConfigXY(
-//        xAxisConfig: ChartAxisConfig(from: 0, to: totalDistanceOverall as! Double, by: 2),
-//        yAxisConfig: ChartAxisConfig(from: 0, to: sortedAscend[sortedAscend.count - 1] + 10, by: 4)
-//    )
-//    
-//    //        let chartdata = LineChartDataSet
-//    
-//    let chart = LineChart(
-//        frame: CGRect.init(x: 0, y: 0, width: customView.frame.size.width, height: customView.frame.size.height),
-//        chartConfig: chartConfig,
-//        xTitle: "X axis",
-//        yTitle: "Y axis",
-//        lines: [
-//            (chartPoints: pointArr, color: color),
-//            //                (chartPoints: [(2.0, 2.6), (4.2, 4.1), (7.3, 1.0), (8.1, 11.5), (14.0, 3.0)], color: .blue)
-//        ]
-//    )
-    
-//    frame: CGRect.init(x: 0, y: 0, width: screenSize.width - 35, height: 80),
-
-//    chart.view.center = CGPointMake(CGRectGetMidX(customView.bounds), chart.view.center.y);
-    
-//    chart.view.center = customView.center
-
-//    chart.view.center.y = customView.center.y
-//    self.customView.addSubview(chart.view)
+    print(customView.data?.count)
+    print(customView.yMin)
+    print(customView.yMax)
     
     
-    
-    //        chart.view.center = customView.center
-    
-    self.view.addSubview(customView)
+    self.mapView.addSubview(customView)
 }
+    
+    func removeSubview() {
+        print("Start remove subview")
+        if let viewWithTag = self.view.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        }else{
+            print("No!")
+        }
+    }
     
     
     
@@ -246,6 +245,8 @@ func addGraphicSubview(index: String) {
 //            let point = [distanceCounter, htAry[index]] as! NSArray
             
             let point = CGPoint(x: distanceCounter, y: htAry[index])
+            
+            print(point)
             
             if id == "0" {
                 firstCoords.append(point)

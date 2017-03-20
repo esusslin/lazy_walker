@@ -16,32 +16,164 @@ import GooglePlaces
 class testVC: UIViewController {
     
 
-    @IBOutlet weak var lineChart: LineChart!
+    @IBOutlet weak var menuView: UIView!
+
+    @IBOutlet weak var darkFillView: UIView!
+    
+    @IBOutlet weak var toggleMenuButton: UIButton!
+    
+    @IBOutlet weak var btn1: UIButton!
+    @IBOutlet weak var btn2: UIButton!
+    @IBOutlet weak var btn3: UIButton!
+    @IBOutlet weak var btn4: UIButton!
+    
+    @IBOutlet weak var btn5: UIButton!
+    
+    
     
     override func viewDidLoad() {
        super.viewDidLoad()
         
-        let f: (CGFloat) -> CGPoint = {
-            let noiseY = (CGFloat(arc4random_uniform(2)) * 2 - 1) * CGFloat(arc4random_uniform(4))
-            let noiseX = (CGFloat(arc4random_uniform(2)) * 2 - 1) * CGFloat(arc4random_uniform(4))
-            let b: CGFloat = 5
-            let y = 2 * $0 + b + noiseY
-            return CGPoint(x: $0 + noiseX, y: y)
-        }
+        let screenSize: CGRect = UIScreen.main.bounds
         
-        let xs = [Int](1..<20)
+        menuView.center.x = screenSize.width / 2
         
-        let points = xs.map({f(CGFloat($0 * 10))})
+        menuView.center.y = screenSize.height
         
-        lineChart.deltaX = 20
-        lineChart.deltaY = 30
+        print(screenSize.width)
         
-        lineChart.plot(points)
+        darkFillView.layer.cornerRadius = 22.0
+        btn1.layer.cornerRadius = 22.0
+        btn2.layer.cornerRadius = 22.0
+        btn3.layer.cornerRadius = 22.0
+        btn4.layer.cornerRadius = 22.0
+        btn5.layer.cornerRadius = 22.0
+        btn5.alpha = 0
+        btn4.alpha = 0
+        btn3.alpha = 0
+        
+        btn1.translatesAutoresizingMaskIntoConstraints = false
+        btn2.translatesAutoresizingMaskIntoConstraints = false
+
+        btn3.translatesAutoresizingMaskIntoConstraints = false
+
+        btn4.translatesAutoresizingMaskIntoConstraints = false
+
+        btn5.translatesAutoresizingMaskIntoConstraints = false
+
+
+        position2()
+        
+        // Create the views dictionary
+       let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn1(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn2(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn3(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn4(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn5(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+
+    }
+    
+    func position2() {
+        
+        let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+        //         Create and add the vertical constraints
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-100-[btn1(44)]-80-[btn2(44)]-100-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+    }
+
+    
+    
+    
+    func position3() {
+        
+        let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+        //         Create and add the vertical constraints
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-70-[btn1(44)]-51-[btn2(44)]-51-[btn3(44)]-70-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+    }
+    
+    func position4() {
+        
+         let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+        //         Create and add the vertical constraints
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-54-[btn1(44)]-30-[btn2(44)]-30-[btn3(44)]-30-[btn4(44)]-54-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+    }
+    
+    func position5() {
+        
+        
+         let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+        //         Create and add the vertical constraints
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[btn1(44)]-20-[btn2(44)]-20-[btn3(44)]-20-[btn4(44)]-20-[btn5(44)]-40-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
     }
     
 
-    
+    @IBAction func toggleMenu(_ sender: UIButton) {
         
+        if darkFillView.transform == CGAffineTransform.identity{
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.darkFillView.transform = CGAffineTransform(scaleX: 11, y: 11)
+            self.menuView.transform = CGAffineTransform(translationX: 0, y: -60)
+        }) { (true) in
+            self.toggleMenuButton.transform = CGAffineTransform(rotationAngle: self.radians(degrees: 180.0))
+        }
+        } else {
+            UIView.animate(withDuration: 0.2, animations: {
+            self.darkFillView.transform = .identity
+                self.menuView.transform = .identity
+                self.toggleMenuButton.transform = .identity
+            }) { (true) in
+                
+            }
+        }
+    }
+
+    func radians(degrees: Double) -> CGFloat {
+        return CGFloat(degrees * .pi / degrees)
+    }
+
+    
+
+    
+    
  }
     
     
