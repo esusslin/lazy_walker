@@ -72,6 +72,10 @@ extension mapVC {
 
     func addAnnotationSubview(index: String) {
         
+        let num = Int(index)!
+        let sortedAscend = ascend.sorted()
+        let index = ascend.index(of: sortedAscend[num])!
+        
         let screenSize: CGRect = UIScreen.main.bounds
         let width = screenSize.width
         let height = screenSize.height
@@ -85,22 +89,35 @@ extension mapVC {
         annotationView.tag = 100
        
         
-        let num = Int(index)!
+       
         
-        let sortedAscend = ascend.sorted()
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.text = "Climb: " + "\(Int(sortedAscend[num]))" + " meters, " + "Distance: " + "\(Int(totalDistance[index]))" + " meters"
+        label.numberOfLines=1
+        label.backgroundColor = UIColor.clear
+        label.textColor = .white
+        label.font=UIFont.systemFont(ofSize: 14)
+        annotationView.addSubview(label)
         
-        let distanceLabel = UILabel()
+        let horConstraint = NSLayoutConstraint(item: label, attribute: .centerX, relatedBy: .equal,
+                                               toItem: annotationView, attribute: .centerX,
+                                               multiplier: 1.0, constant: 0.0)
+        let verConstraint = NSLayoutConstraint(item: label, attribute: .centerY, relatedBy: .equal,
+                                               toItem: annotationView, attribute: .centerY,
+                                               multiplier: 1.0, constant: 0.0)
+        let widConstraint = NSLayoutConstraint(item: label, attribute: .width, relatedBy: .equal,
+                                               toItem: annotationView, attribute: .width,
+                                               multiplier: 0.95, constant: 0.0)
+        let heiConstraint = NSLayoutConstraint(item: label, attribute: .height, relatedBy: .equal,
+                                               toItem: annotationView, attribute: .height,
+                                               multiplier: 0.95, constant: 0.0)
         
-        let index = ascend.index(of: sortedAscend[num])!
+        annotationView.addConstraints([horConstraint, verConstraint, widConstraint, heiConstraint])
         
-        distanceLabel.text = "Climb: " + "\(Int(sortedAscend[num])), " + "Distance: " + "\(Int(totalDistance[index]))" + " meters"
         
-        annotationView.addSubview(distanceLabel)
-        
-        distanceLabel.textColor = .white
-        distanceLabel.alpha = 1
-        
-        print(distanceLabel.text)
+        print(label.text)
         
         self.mapView.addSubview(annotationView)
     }
