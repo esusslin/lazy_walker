@@ -42,6 +42,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     @IBOutlet weak var btn5: UIButton!
     
     
+
+
     
 
 
@@ -79,6 +81,10 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         darkFillView.layer.cornerRadius = 22.0
         
 //        customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        
+        
+        
+        
 
         
         btn1.layer.cornerRadius = 22.0
@@ -516,6 +522,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     func mapView(_ mapView: MGLMapView, calloutViewFor annotation: MGLAnnotation) -> UIView? {
         // Only show callouts for `Hello world!` annotation
         
+        self.addAnnotationSubview(index: annotation.title!!)
         self.addGraphicSubview(index: annotation.title!!)
         return CustomCalloutView(representedObject: annotation)
         

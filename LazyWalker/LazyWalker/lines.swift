@@ -73,13 +73,34 @@ extension mapVC {
     func addAnnotationSubview(index: String) {
         
         let screenSize: CGRect = UIScreen.main.bounds
-        
-        let width = self.view.frame.size.width
-        let height = self.view.frame.size.height
+        let width = screenSize.width
+        let height = screenSize.height
         
         let annotationView = UIView()
         
-        annotationView .frame = CGRect.init(x: 0, y: height - 280, width: screenSize.width / 2, height: 30)
+        annotationView.frame = CGRect.init(x: 0, y: height - 180, width: width - 40, height: 30)
+        annotationView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+        annotationView.center.x = self.view.center.x
+        annotationView.layer.cornerRadius = annotationView.frame.size.width / 16
+        annotationView.tag = 100
+       
+        
+        let num = Int(index)!
+        
+        let sortedAscend = ascend.sorted()
+        
+        let distanceLabel = UILabel()
+        
+        let index = ascend.index(of: sortedAscend[num])!
+        
+        distanceLabel.text = "Climb: " + "\(Int(sortedAscend[num])), " + "Distance: " + "\(Int(totalDistance[index]))" + " meters"
+        
+        annotationView.addSubview(distanceLabel)
+        
+        distanceLabel.textColor = .white
+        distanceLabel.alpha = 1
+        
+        print(distanceLabel.text)
         
         self.mapView.addSubview(annotationView)
     }
@@ -134,7 +155,7 @@ func addGraphicSubview(index: String) {
     let width = self.view.frame.size.width
     let height = self.view.frame.size.height
     
-    customView.frame = CGRect.init(x: 0, y: height - 200, width: screenSize.width - 30, height: 100)
+    customView.frame = CGRect.init(x: 0, y: height - 280, width: screenSize.width - 30, height: 100)
     
     customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
     customView.center.x = self.view.center.x
@@ -146,15 +167,17 @@ func addGraphicSubview(index: String) {
     
     customView.lineColor = color
     customView.showPoints = false
+//    customView.
     customView.axisColor = .gray
     customView.axisLineWidth = 1
+   
     customView.yMin = CGFloat(minElevation)
     customView.xMin = 0.0
     customView.xMax = CGFloat(xmaximum.x)
 //    customView.xMax = CGFloat(4000)
     customView.yMax = CGFloat(maxElevation + 10)
     customView.data = pointsAry
-    customView.tag = 100
+    customView.tag = 101
     
     print("X-RANGES:")
     print(customView.xMin)
@@ -178,9 +201,17 @@ func addGraphicSubview(index: String) {
         print("Start remove subview")
         if let viewWithTag = self.view.viewWithTag(100) {
             viewWithTag.removeFromSuperview()
-        }else{
+        } else {
             print("No!")
         }
+        
+        print("Start remove subview")
+        if let viewWithTagone = self.view.viewWithTag(101) {
+            viewWithTagone.removeFromSuperview()
+        } else {
+            print("No!")
+        }
+
     }
     
     
