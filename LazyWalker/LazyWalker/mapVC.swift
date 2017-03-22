@@ -25,13 +25,30 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var resultView: UITextView?
+    
+    
+    
+    @IBOutlet weak var menuView: UIView!
+    
+    @IBOutlet weak var darkFillView: UIView!
+    
+    @IBOutlet weak var toggleMenuButton: UIButton!
+    
+    @IBOutlet weak var btn1: UIButton!
+    @IBOutlet weak var btn2: UIButton!
+    @IBOutlet weak var btn3: UIButton!
+    @IBOutlet weak var btn4: UIButton!
+    
+    @IBOutlet weak var btn5: UIButton!
+    
+    
+    
 
 
     @IBOutlet weak var overlay: UIView!
     @IBOutlet weak var logoImageview: UIImageView!
     @IBOutlet weak var mapView: MGLMapView!
     
-    @IBOutlet weak var menuView: UIView!
 
     @IBOutlet weak var searchBtn: UIButton!
 
@@ -39,7 +56,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     @IBOutlet weak var imageView: UIImageView!
 
 //    var mySearchBar: UISearchBar!
-    @IBOutlet weak var mySearchBar: UISearchBar!
+   
     var placesClient: GMSPlacesClient!
     
 
@@ -50,6 +67,49 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        
+        menuView.center.x = screenSize.width / 2
+        
+        menuView.center.y = screenSize.height
+        
+        print(screenSize.width)
+        
+        darkFillView.layer.cornerRadius = 22.0
+        
+//        customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+
+        
+        btn1.layer.cornerRadius = 22.0
+        btn2.layer.cornerRadius = 22.0
+        btn3.layer.cornerRadius = 22.0
+        btn4.layer.cornerRadius = 22.0
+        btn5.layer.cornerRadius = 22.0
+                
+        btn1.backgroundColor = .green
+        btn2.backgroundColor = UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
+        btn3.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
+        btn4.backgroundColor = UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 0.0/255.0, alpha: 1)
+        btn5.backgroundColor = UIColor(red: 255.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 1)
+                
+        btn5.alpha = 0
+        btn4.alpha = 0
+        btn3.alpha = 0
+        btn2.alpha = 0
+        btn1.alpha = 0
+        menuView.alpha = 0
+        
+        btn1.translatesAutoresizingMaskIntoConstraints = false
+        btn2.translatesAutoresizingMaskIntoConstraints = false
+        
+        btn3.translatesAutoresizingMaskIntoConstraints = false
+        
+        btn4.translatesAutoresizingMaskIntoConstraints = false
+        
+        btn5.translatesAutoresizingMaskIntoConstraints = false
+        
+        
         
         reset()
         
@@ -65,7 +125,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         resultsViewController?.secondaryTextColor = .gray
         resultsViewController?.tableCellSeparatorColor = .gray
         
-        let screenSize: CGRect = UIScreen.main.bounds
+        
         
         imageView.alpha = 0
         imageView.frame = CGRect.init(x: 0, y: 100, width: screenSize.width - 60, height: screenSize.height / 6)
@@ -118,6 +178,12 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         totalDistanceOverall = self.distance(origin, destination)
 
     }
+    
+    
+    
+    /// TOGGLE MENU
+    
+  
     
     func reset() {
         
@@ -208,9 +274,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
 //                print(response)
                 
                 let pathss = JSON["paths"] as! [[String:Any]]
-                
-                print("path options:")
-                print(paths.count)
+
                 
                 for path in pathss {
                     
@@ -231,6 +295,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
                 
                 self.flattestRoute()
                 self.findRange()
+                self.setMenu()
             }
             
             }
@@ -248,8 +313,17 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     func flattestRoute() {
 
         let sortedAscend = ascend.sorted()
+        
+        
+        print("PATHS COUNT")
+        print(paths.count)
+        
+        
+        
     
         if (paths.count > 4) {
+            
+            
         let fiveflattest = ascend.index(of: sortedAscend[4])!
             printLine(index: fiveflattest, id: "4")
             }
@@ -289,6 +363,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     func printLine(index: Int, id: String) {
         
         let path = paths[index]
+        
 
         let points = path["points"]! as! AnyObject!
         
@@ -714,10 +789,140 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         }
         
     }
-
-
- 
     
+    //// TOGGLE MENU
+    
+    @IBAction func toggleMenu(_ sender: UIButton) {
+        
+        if darkFillView.transform == CGAffineTransform.identity{
+            
+            UIView.animate(withDuration: 0.2, animations: {
+                self.darkFillView.transform = CGAffineTransform(scaleX: 11, y: 11)
+                self.menuView.transform = CGAffineTransform(translationX: 0, y: -60)
+            }) { (true) in
+                self.toggleMenuButton.transform = CGAffineTransform(rotationAngle: self.radians(degrees: 180.0))
+            }
+        } else {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.darkFillView.transform = .identity
+                self.menuView.transform = .identity
+                self.toggleMenuButton.transform = .identity
+            }) { (true) in
+                
+            }
+        }
+    }
+    
+    @IBAction func btn1_pressed(_ sender: UIButton) {
+    }
+    
+    @IBAction func btn2_pressed(_ sender: UIButton) {
+    }
+
+    @IBAction func btn3_pressed(_ sender: UIButton) {
+    }
+
+
+    @IBAction func btn4_pressed(_ sender: UIButton) {
+    }
+    
+    @IBAction func btn5_pressed(_ sender: UIButton) {
+    }
+    
+    func radians(degrees: Double) -> CGFloat {
+        return CGFloat(degrees * .pi / degrees)
+    }
+    
+
+    
+
+    
+    func setMenu() {
+        
+        menuView.alpha = 1
+        // Create the views dictionary
+        let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
+        
+        
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn1(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn2(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn3(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn4(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+        
+        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn5(44)]-18-|",
+                                                               options: [],
+                                                               metrics: nil,
+                                                               views: viewsDictionary))
+        
+        
+        if paths.count > 4 {
+            
+            //buttons visible
+            btn5.alpha = 1
+            btn4.alpha = 1
+            btn3.alpha = 1
+            btn2.alpha = 1
+            btn1.alpha = 1
+            
+            //POSITION 5 buttons on Menu
+            menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[btn1(44)]-20-[btn2(44)]-20-[btn3(44)]-20-[btn4(44)]-20-[btn5(44)]-40-|",
+                                                                   options: [],
+                                                                   metrics: nil,
+                                                                   views: viewsDictionary))
+        } else if paths.count > 3 {
+            
+            btn4.alpha = 1
+            btn3.alpha = 1
+            btn2.alpha = 1
+            btn1.alpha = 1
+            //POSITION 4 buttons on Menu
+            menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-54-[btn1(44)]-30-[btn2(44)]-30-[btn3(44)]-30-[btn4(44)]-54-|",
+                                                                   options: [],
+                                                                   metrics: nil,
+                                                                   views: viewsDictionary))
+        } else if paths.count > 2 {
+            
+            btn3.alpha = 1
+            btn2.alpha = 1
+            btn1.alpha = 1
+            
+            //POSITION 3 buttons on Menu
+            menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-70-[btn1(44)]-51-[btn2(44)]-51-[btn3(44)]-70-|",
+                                                                   options: [],
+                                                                   metrics: nil,
+                                                                   views: viewsDictionary))
+        } else {
+            btn2.alpha = 1
+            btn1.alpha = 1
+            //POSITION 2 buttons on Menu
+            menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-100-[btn1(44)]-80-[btn2(44)]-100-|",
+                                                                   options: [],
+                                                                   metrics: nil,
+                                                                   views: viewsDictionary))
+        }
+        
+        
+
+        
+        
+        
+            }
 }
 
 
@@ -778,6 +983,6 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
     func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-}
 
+}
 
