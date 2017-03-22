@@ -134,7 +134,7 @@ func addGraphicSubview(index: String) {
     let width = self.view.frame.size.width
     let height = self.view.frame.size.height
     
-    customView.frame = CGRect.init(x: 0, y: height - 230, width: screenSize.width - 30, height: 100)
+    customView.frame = CGRect.init(x: 0, y: height - 200, width: screenSize.width - 30, height: 100)
     
     customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
     customView.center.x = self.view.center.x
@@ -156,8 +156,13 @@ func addGraphicSubview(index: String) {
     customView.data = pointsAry
     customView.tag = 100
     
-    print("TOTAL DISTANCE OVERALL")
+    print("X-RANGES:")
+    print(customView.xMin)
     print(customView.xMax)
+    
+    print("Y-RANGES:")
+    print(customView.yMin)
+    print(customView.yMax)
     
 //    customView.setAxisRange(xMin: 0.0, xMax: customView.xMax, yMin: customView.yMin, yMax: customView.xMax )
     
