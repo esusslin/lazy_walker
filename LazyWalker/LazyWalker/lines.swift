@@ -116,8 +116,7 @@ extension mapVC {
         
         annotationView.addConstraints([horConstraint, verConstraint, widConstraint, heiConstraint])
         
-        
-        print(label.text)
+
         
         self.mapView.addSubview(annotationView)
     }
@@ -130,7 +129,6 @@ func addGraphicSubview(index: String) {
     
     let num = Int(index)!
     var pointsAry = [CGPoint]()
-    print(num)
     
     var customView = LineChart()
     customView.data = nil
@@ -191,24 +189,23 @@ func addGraphicSubview(index: String) {
     customView.yMin = CGFloat(minElevation)
     customView.xMin = 0.0
     customView.xMax = CGFloat(xmaximum.x)
-//    customView.xMax = CGFloat(4000)
     customView.yMax = CGFloat(maxElevation + 10)
     customView.data = pointsAry
     customView.tag = 101
     
-    print("X-RANGES:")
-    print(customView.xMin)
-    print(customView.xMax)
-    
-    print("Y-RANGES:")
-    print(customView.yMin)
-    print(customView.yMax)
+//    print("X-RANGES:")
+//    print(customView.xMin)
+//    print(customView.xMax)
+//    
+//    print("Y-RANGES:")
+//    print(customView.yMin)
+//    print(customView.yMax)
     
 //    customView.setAxisRange(xMin: 0.0, xMax: customView.xMax, yMin: customView.yMin, yMax: customView.xMax )
     
-    print(customView.data?.count)
-    print(customView.yMin)
-    print(customView.yMax)
+//    print(customView.data?.count)
+//    print(customView.yMin)
+//    print(customView.yMax)
     
     
     self.mapView.addSubview(customView)
@@ -229,6 +226,7 @@ func addGraphicSubview(index: String) {
             print("No!")
         }
 
+        self.removeTapGestureDismissal()
     }
     
     
@@ -265,6 +263,9 @@ func addGraphicSubview(index: String) {
         
     }
     
+    
+    
+    
     func distanceElevation(points: NSArray, id: String) {
         
         var coordAry = [CLLocationCoordinate2D]()
@@ -299,7 +300,7 @@ func addGraphicSubview(index: String) {
             
             let point = CGPoint(x: distanceCounter, y: htAry[index])
             
-            print(point)
+//            print(point)
             
             if id == "0" {
                 firstCoords.append(point)

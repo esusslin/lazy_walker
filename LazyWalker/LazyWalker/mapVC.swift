@@ -80,13 +80,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
         darkFillView.layer.cornerRadius = 22.0
         
-//        customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
-        
-        
-        
-        
-
-        
         btn1.layer.cornerRadius = 22.0
         btn2.layer.cornerRadius = 22.0
         btn3.layer.cornerRadius = 22.0
@@ -98,6 +91,28 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn3.backgroundColor = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
         btn4.backgroundColor = UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 0.0/255.0, alpha: 1)
         btn5.backgroundColor = UIColor(red: 255.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 1)
+        
+        btn1.layer.borderWidth = 4.0
+        btn2.layer.borderWidth = 4.0
+        btn3.layer.borderWidth = 4.0
+        btn4.layer.borderWidth = 4.0
+        btn5.layer.borderWidth = 4.0
+        
+        btn1.layer.borderColor = UIColor.white.cgColor
+        btn2.layer.borderColor = UIColor.white.cgColor
+        btn3.layer.borderColor = UIColor.white.cgColor
+        btn4.layer.borderColor = UIColor.white.cgColor
+        btn5.layer.borderColor = UIColor.white.cgColor
+        
+        btn1.layer.shadowRadius = 5
+        btn1.layer.shadowOpacity = 0.8
+        btn1.layer.shadowOffset = CGSize(width: 5, height: 5)
+        
+        
+        
+        
+        
+        
                 
         btn5.alpha = 0
         btn4.alpha = 0
@@ -170,6 +185,10 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         // Set the map view‘s delegate property
         mapView.delegate = self
         
+//        let aSelector : Selector = "removeSubview"
+//        let tapGesture = UITapGestureRecognizer(target:self, action: aSelector)
+//        mapView.addGestureRecognizer(tapGesture)
+        
         mapView.frame = view.bounds
        
         mapView.styleURL = URL(string: "mapbox://styles/mapbox/dark-v9")
@@ -184,6 +203,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         totalDistanceOverall = self.distance(origin, destination)
 
     }
+    
     
     
     
@@ -331,6 +351,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
             
             
         let fiveflattest = ascend.index(of: sortedAscend[4])!
+            
             printLine(index: fiveflattest, id: "4")
             }
         
@@ -594,6 +615,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
         mapView.removeAnnotation(first!)
         
+            
+            
         let name = first!.title!
         
         if (name == "4BOLD") {
@@ -821,25 +844,68 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     }
     
     @IBAction func btn1_pressed(_ sender: UIButton) {
+        
+    
+        
+        addTapGestureDismissal()
+        self.boldline(title: "0")
+        self.addAnnotationSubview(index: "0")
+        self.addGraphicSubview(index: "0")
     }
     
     @IBAction func btn2_pressed(_ sender: UIButton) {
+        
+        self.boldline(title: "1")
+        addTapGestureDismissal()
+        self.addAnnotationSubview(index: "1")
+        self.addGraphicSubview(index: "1")
     }
 
     @IBAction func btn3_pressed(_ sender: UIButton) {
+        
+        self.boldline(title: "2")
+        addTapGestureDismissal()
+        self.addAnnotationSubview(index: "2")
+        self.addGraphicSubview(index: "2")
     }
 
 
     @IBAction func btn4_pressed(_ sender: UIButton) {
+        
+        self.boldline(title: "3")
+        addTapGestureDismissal()
+        self.addAnnotationSubview(index: "3")
+        self.addGraphicSubview(index: "3")
     }
     
     @IBAction func btn5_pressed(_ sender: UIButton) {
+        
+        self.boldline(title: "4")
+        addTapGestureDismissal()
+        self.addAnnotationSubview(index: "4")
+        self.addGraphicSubview(index: "4")
     }
     
     func radians(degrees: Double) -> CGFloat {
         return CGFloat(degrees * .pi / degrees)
     }
     
+    func addTapGestureDismissal() {
+        let aSelector : Selector = "removeSubview"
+        let tapGesture = UITapGestureRecognizer(target:self, action: aSelector)
+        mapView.addGestureRecognizer(tapGesture)
+    }
+    
+    func removeTapGestureDismissal() {
+        
+        for recognizer in mapView.gestureRecognizers! {
+            mapView.removeGestureRecognizer(recognizer)
+            print("gesture removed!")
+        }
+        
+        flattestRoute()
+
+    }
 
     
 
