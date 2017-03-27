@@ -16,6 +16,9 @@
 		E275FCDA1E7B5A8F0051F2A4 /* LineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCD91E7B5A8F0051F2A4 /* LineChart.swift */; };
 		E275FCDC1E7B5C6B0051F2A4 /* LineChartAxes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCDB1E7B5C6B0051F2A4 /* LineChartAxes.swift */; };
 		E275FCDE1E8097A80051F2A4 /* toggleMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCDD1E8097A80051F2A4 /* toggleMenu.swift */; };
+		E275FCE01E846FB80051F2A4 /* graphhopper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCDF1E846FB80051F2A4 /* graphhopper.swift */; };
+		E275FCE21E847A1C0051F2A4 /* menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCE11E847A1C0051F2A4 /* menu.swift */; };
+		E275FCE41E84813E0051F2A4 /* subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCE31E84813E0051F2A4 /* subviews.swift */; };
 		E2838A731E4D3631006DFCEE /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; };
 		E2838A741E4D3631006DFCEE /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2838A771E568BE8006DFCEE /* scrapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838A761E568BE8006DFCEE /* scrapsViewController.swift */; };
@@ -77,6 +80,9 @@
 		E275FCD91E7B5A8F0051F2A4 /* LineChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChart.swift; sourceTree = "<group>"; };
 		E275FCDB1E7B5C6B0051F2A4 /* LineChartAxes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineChartAxes.swift; sourceTree = "<group>"; };
 		E275FCDD1E8097A80051F2A4 /* toggleMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = toggleMenu.swift; sourceTree = "<group>"; };
+		E275FCDF1E846FB80051F2A4 /* graphhopper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = graphhopper.swift; sourceTree = "<group>"; };
+		E275FCE11E847A1C0051F2A4 /* menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = menu.swift; sourceTree = "<group>"; };
+		E275FCE31E84813E0051F2A4 /* subviews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = subviews.swift; sourceTree = "<group>"; };
 		E2838A761E568BE8006DFCEE /* scrapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = scrapsViewController.swift; sourceTree = "<group>"; };
 		E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pathAnnotation.swift; sourceTree = "<group>"; };
 		E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCalloutView.swift; sourceTree = "<group>"; };
@@ -176,12 +182,15 @@
 		E2F0D0861E4D28CF00BB4CBE /* LazyWalker */ = {
 			isa = PBXGroup;
 			children = (
+				E275FCDF1E846FB80051F2A4 /* graphhopper.swift */,
 				E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */,
 				E275FCDD1E8097A80051F2A4 /* toggleMenu.swift */,
 				E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */,
 				E275FCD31E79F13F0051F2A4 /* globals.swift */,
 				E26409FF1E622B5700E89BAE /* animations.swift */,
+				E275FCE31E84813E0051F2A4 /* subviews.swift */,
 				E275FCD11E79E16A0051F2A4 /* lines.swift */,
+				E275FCE11E847A1C0051F2A4 /* menu.swift */,
 				E275FCD51E7B38360051F2A4 /* picAnnotation.swift */,
 				E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */,
 				E2DD26661E71E39800747B62 /* testVC.swift */,
@@ -425,13 +434,16 @@
 				E275FCD21E79E16A0051F2A4 /* lines.swift in Sources */,
 				E28D7D661E5CCDE000EC44C9 /* pathAnnotation.swift in Sources */,
 				E275FCDA1E7B5A8F0051F2A4 /* LineChart.swift in Sources */,
+				E275FCE41E84813E0051F2A4 /* subviews.swift in Sources */,
 				E275FCD41E79F13F0051F2A4 /* globals.swift in Sources */,
 				E275FCD61E7B38360051F2A4 /* picAnnotation.swift in Sources */,
 				E2F0D08A1E4D28CF00BB4CBE /* mapVC.swift in Sources */,
 				E275FCDC1E7B5C6B0051F2A4 /* LineChartAxes.swift in Sources */,
 				E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */,
+				E275FCE21E847A1C0051F2A4 /* menu.swift in Sources */,
 				E2DD26671E71E39800747B62 /* testVC.swift in Sources */,
 				E275FCDE1E8097A80051F2A4 /* toggleMenu.swift in Sources */,
+				E275FCE01E846FB80051F2A4 /* graphhopper.swift in Sources */,
 				E2640A001E622B5700E89BAE /* animations.swift in Sources */,
 				E2B367F31E6E107F0000BA5D /* TableViewController.swift in Sources */,
 				E2F0D0901E4D28CF00BB4CBE /* LazyWalker.xcdatamodeld in Sources */,

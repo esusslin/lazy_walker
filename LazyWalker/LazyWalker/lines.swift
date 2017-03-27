@@ -17,174 +17,181 @@ import GooglePlaces
 
 extension mapVC {
     
-    func loadFirstPhotoForPlace(placeID: String) {
-        GMSPlacesClient.shared().lookUpPhotos(forPlaceID: placeID) { (photos, error) -> Void in
-            if let error = error {
-                // TODO: handle the error.
-                print("Error: \(error.localizedDescription)")
-            } else {
-                if let firstPhoto = photos?.results.first {
-                    self.loadImageForMetadata(photoMetadata: firstPhoto)
-                }
+    
+    // PRINT FLATTEST ROUTES!
+    
+    
+    func printLine(index: Int, id: String, array: [CLLocationCoordinate2D]) {
+        
+        let path = paths[index]
+        
+        let points = path["points"]! as! AnyObject!
+        
+        
+        
+        let coords = points?["coordinates"] as! NSArray!
+        
+        self.distanceElevation(points: coords!, id: id)
+        
+        var array = array
+        
+        for coord in coords! {
+            
+            let coordAry = coord as! NSArray
+            
+            let elevation = coordAry[2]
+            
+            elevationRange.append(elevation as! Double)
+            
+            let lat = coordAry[1]
+            let lng = coordAry[0]
+            
+            let ht = coordAry[2]
+            
+            let point = CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
+            
+            
+            
+            add(coordinate: point, id: id)
+            
+            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+            
+            array.append(coordpoint)
+            
+        }
+        
+        
+        
+        totalDistanceOverall = self.distance(array.first!, array.last!)
+        
+        
+        for (index, _) in array.enumerated() {
+            if index == 0 { continue } // skip first
+            self.split(array[index - 1], array[index], id)
+        }
+        
+        
+        
+        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: array)
+        let shape = MGLPolyline(coordinates: pointer, count: UInt(array.count))
+        
+        shape.title = (id + "REG") as! String!
+        
+        print("INITIAL TITLE")
+        print(shape.title)
+        
+        
+        self.mapView.addAnnotation(shape)
+        mapView.selectAnnotation(shape, animated: true)
+    }
+
+    
+    /// BOLD LINE
+    
+    func boldline(title: String) {
+        
+        let num = Int(title)!
+        
+        let titleString = title
+        
+        let poly = mapView.annotations?.filter { annotation in
+            
+            return (annotation.title??.localizedCaseInsensitiveContains("REG") == true)
+            
+        }
+        
+        for pol in poly! {
+        
+        let name = pol.title!
+        let id = (title + "REG") as? String
+            
+            print("ID AND NAME")
+            print(id)
+            print(name)
+            
+            if pol.title!! == id! {
+                
+                mapView.removeAnnotation(pol)
+                let shape = pol as! MGLPolyline
+                let newtitle = (titleString + "BOLD")
+                
+                shape.title = newtitle
+                
+                
+                print("EMBOLDENED SHAPE TITLE")
+                    print(shape.title)
+                    self.mapView.addAnnotation(shape)
             }
         }
+        
     }
     
-    func loadImageForMetadata(photoMetadata: GMSPlacePhotoMetadata) {
-        GMSPlacesClient.shared().loadPlacePhoto(photoMetadata, callback: {
-            (photo, error) -> Void in
-            if let error = error {
-                // TODO: handle the error.
-                print("Error: \(error.localizedDescription)")
-            } else {
-                
-                let image = self.convertImageToBW(image:photo!);
-                self.imageView.image = image;
-                
-                
-//                self.imageView.sizeThatFits(CGSize(width: 100, height: 100))
-                
-                
-//                self.imageShow()
-//                self.attributionTextView.attributedText = photoMetadata.attributions;
-            }
-        })
-    }
+    func removeBold() {
     
-    func convertImageToBW(image:UIImage) -> UIImage {
-        
-        let filter = CIFilter(name: "CIPhotoEffectMono")
-        
-        // convert UIImage to CIImage and set as input
-        
-        let ciInput = CIImage(image: image)
-        filter?.setValue(ciInput, forKey: "inputImage")
-        
-        // get output CIImage, render as CGImage first to retain proper UIImage scale
-        
-        let ciOutput = filter?.outputImage
-        let ciContext = CIContext()
-        let cgImage = ciContext.createCGImage(ciOutput!, from: (ciOutput?.extent)!)
-        
-        return UIImage(cgImage: cgImage!)
-    }
-
-
-    func addAnnotationSubview(index: String) {
-        
-        let screenSize: CGRect = UIScreen.main.bounds
-        
-        let width = self.view.frame.size.width
-        let height = self.view.frame.size.height
-        
-        let annotationView = UIView()
-        
-        annotationView .frame = CGRect.init(x: 0, y: height - 280, width: screenSize.width / 2, height: 30)
-        
-        self.mapView.addSubview(annotationView)
-    }
+        let poly = mapView.annotations?.filter { annotation in
     
-
-func addGraphicSubview(index: String) {
+            return (annotation.title??.localizedCaseInsensitiveContains("BOLD") == true)
     
-  
-    
-    
-    let num = Int(index)!
-    var pointsAry = [CGPoint]()
-    print(num)
-    
-    var customView = LineChart()
-    customView.data = nil
-    
-    customView.xMin = 0.0
-    customView.xMax = 0.0
-    customView.yMin = 0.0
-    customView.yMax = 0.0
-    
-    var color = UIColor()
-    
-    if num == 0 {
-        pointsAry = firstCoords
-        color = .green
-    }
-    
-    if num == 1 {
-        pointsAry = secondCoords
-        color = UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
-    }
-    
-    if num == 2 {
-        pointsAry = thirdCoords
-        color = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
-    }
-    
-    if num == 3 {
-        pointsAry = fourthCoords
-        color = UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 0.0/255.0, alpha: 1)
-    }
-    
-    if num == 4 {
-        pointsAry = fifthCoords
-        color = .red
-    }
-
-    let screenSize: CGRect = UIScreen.main.bounds
-    
-    let width = self.view.frame.size.width
-    let height = self.view.frame.size.height
-    
-    customView.frame = CGRect.init(x: 0, y: height - 200, width: screenSize.width - 30, height: 100)
-    
-    customView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
-    customView.center.x = self.view.center.x
-    customView.layer.cornerRadius = customView.frame.size.width / 16
-    
-    let xmaximum = pointsAry[pointsAry.count - 1]
-    
-    print(xmaximum.x)
-    
-    customView.lineColor = color
-    customView.showPoints = false
-    customView.axisColor = .gray
-    customView.axisLineWidth = 1
-    customView.yMin = CGFloat(minElevation)
-    customView.xMin = 0.0
-    customView.xMax = CGFloat(xmaximum.x)
-//    customView.xMax = CGFloat(4000)
-    customView.yMax = CGFloat(maxElevation + 10)
-    customView.data = pointsAry
-    customView.tag = 100
-    
-    print("X-RANGES:")
-    print(customView.xMin)
-    print(customView.xMax)
-    
-    print("Y-RANGES:")
-    print(customView.yMin)
-    print(customView.yMax)
-    
-//    customView.setAxisRange(xMin: 0.0, xMax: customView.xMax, yMin: customView.yMin, yMax: customView.xMax )
-    
-    print(customView.data?.count)
-    print(customView.yMin)
-    print(customView.yMax)
-    
-    
-    self.mapView.addSubview(customView)
-}
-    
-    func removeSubview() {
-        print("Start remove subview")
-        if let viewWithTag = self.view.viewWithTag(100) {
-            viewWithTag.removeFromSuperview()
-        }else{
-            print("No!")
         }
+    
+        if (poly!.count > 0) {
+    
+            let first = poly?.first!
+    
+            mapView.removeAnnotation(first!)
+
+            let name = first!.title!
+    
+            if (name == "4BOLD") {
+                let shape = first as! MGLPolyline
+                shape.title = "4REG"
+    
+                print(shape.title)
+                self.mapView.addAnnotation(shape)
+            }
+    
+            
+            if (name == "3BOLD") {
+                    let shape = first as! MGLPolyline
+                    shape.title = "3REG"
+    
+                print(shape.title)
+                self.mapView.addAnnotation(shape)
+            }
+    
+    
+            if (name == "2BOLD") {
+                    let shape = first as! MGLPolyline
+                    shape.title = "2REG"
+    
+                print(shape.title)
+                self.mapView.addAnnotation(shape)
+            }
+    
+    
+            if (name == "1BOLD") {
+                    let shape = first as! MGLPolyline
+                    shape.title = "1REG"
+    
+                print(shape.title)
+                self.mapView.addAnnotation(shape)
+            }
+    
+    
+            if (name == "0BOLD") {
+                    let shape = first as! MGLPolyline
+                    shape.title = "0REG"
+    
+                print(shape.title)
+                self.mapView.addAnnotation(shape)
+            }
+            
+        }
+
+    
     }
-    
-    
-    
+
+
     // DIVIDE POLYLINE FOR ACCURACY:
     
     
@@ -216,6 +223,9 @@ func addGraphicSubview(index: String) {
         
         
     }
+    
+    
+    
     
     func distanceElevation(points: NSArray, id: String) {
         
@@ -251,7 +261,7 @@ func addGraphicSubview(index: String) {
             
             let point = CGPoint(x: distanceCounter, y: htAry[index])
             
-            print(point)
+//            print(point)
             
             if id == "0" {
                 firstCoords.append(point)
