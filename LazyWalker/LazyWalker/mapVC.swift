@@ -40,19 +40,12 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     @IBOutlet weak var btn4: UIButton!
     
     @IBOutlet weak var btn5: UIButton!
-    
-    
-
-
-    
 
 
     @IBOutlet weak var overlay: UIView!
     @IBOutlet weak var logoImageview: UIImageView!
     @IBOutlet weak var mapView: MGLMapView!
-    
 
-    @IBOutlet weak var searchBtn: UIButton!
 
     
     @IBOutlet weak var imageView: UIImageView!
@@ -107,12 +100,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn1.layer.shadowRadius = 5
         btn1.layer.shadowOpacity = 0.8
         btn1.layer.shadowOffset = CGSize(width: 5, height: 5)
-        
-        
-        
-        
-        
-        
+
                 
         btn5.alpha = 0
         btn4.alpha = 0
@@ -175,19 +163,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         // HERE WE GO
         animateLaunch(image: UIImage(named: "people1")!)
 
-        //SEARCHBARVIEW
-        
-
-
-        
-        // map stuff
         
         // Set the map view‘s delegate property
         mapView.delegate = self
-        
-//        let aSelector : Selector = "removeSubview"
-//        let tapGesture = UITapGestureRecognizer(target:self, action: aSelector)
-//        mapView.addGestureRecognizer(tapGesture)
         
         mapView.frame = view.bounds
        
@@ -203,13 +181,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         totalDistanceOverall = self.distance(origin, destination)
 
     }
-    
-    
-    
-    
-    /// TOGGLE MENU
-    
-  
+
     
     func reset() {
         
@@ -265,251 +237,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
 //        print(resultsViewController?.autocompleteBounds)
 
     }
+     
     
-    
-
-    
-        
-
-
-    func getGraphopper(destination: CLLocationCoordinate2D) {
-        
-        let destiny = destination
-        
-        let destLat = destiny.latitude
-        let destLong = destiny.longitude
-
-        let originString = "\(latitude)," + "\(longitude)"
-        
-        let deString = "\(destLat)," + "\(destLong)"
-        
-        let pointstring = originString + "&point=" + deString
-        
-        let theString = "https://graphhopper.com/api/1/route?point=" + pointstring + "&vehicle=foot&locale=en&elevation=true&points_encoded=false&ch.disable=true&heading=1&algorithm=alternative_route&alternative_route.max_paths=20&alternative_route.max_weight_factor=4&alternative_route.max_share_factor=2&key=a67e19cf-291b-492b-b380-68405b49e910"
-//        
-        print(theString)
-        var allPathElevations = [Double]()
-        
-        Alamofire.request(theString).responseJSON { response in
-        
-            
-            if let JSON = response.result.value as? [String:Any] {
-                
-             self.adjustCameraForRoutes()
-                
-//                print(response)
-                
-                let pathss = JSON["paths"] as! [[String:Any]]
-
-                
-                for path in pathss {
-                    
-                    let points = path["points"] as? [String:Any]
-                    let coords = points?["coordinates"] as! NSArray!
-                    
-//                    allPathElevations.append(coords[2])
-                   
-                    var elevations = [Double]()
-                    
-                    ascend.append((path["ascend"] as? Double)!)
-                    descend.append((path["descend"] as? Double)!)
-                    totalDistance.append((path["distance"] as? Double)!)
-                
-                
-                paths.append(path)
-                }
-                
-                self.flattestRoute()
-                self.findRange()
-                self.setMenu()
-            }
-            
-            }
-        }
-    
-    func findRange() {
-        
-        let sortedRange = elevationRange.sorted()
-        minElevation = sortedRange[0]
-        maxElevation = sortedRange[sortedRange.count - 1]
-        
-    }
-
-    
-    func flattestRoute() {
-
-        let sortedAscend = ascend.sorted()
-        
-        
-        print("PATHS COUNT")
-        print(paths.count)
-        
-        
-        
-    
-        if (paths.count > 4) {
-            
-            
-        let fiveflattest = ascend.index(of: sortedAscend[4])!
-            
-            printLine(index: fiveflattest, id: "4")
-            }
-        
-        //FOURTH:
-        if (paths.count > 3) {
-
-        let fourflattest = ascend.index(of: sortedAscend[3])!
-        printLine(index: fourflattest, id: "3")
-        }
-
-        //THIRD:
-         if (paths.count > 2) {
-        let threeflattest = ascend.index(of: sortedAscend[2])!
-        printLine(index: threeflattest, id: "2")
-        }
-        
-        //SECOND:
-        if (paths.count > 1) {
-        let twoflattest = ascend.index(of: sortedAscend[1])!
-        printLine(index: twoflattest, id: "1")
-        }
-        
-        
-        // FIRST:
-        let flattest = ascend.index(of: sortedAscend[0])!
-        printLine(index: flattest, id: "0")
-        
-        findRange()
-
-    }
-    
-    
-    // PRINT FLATTEST ROUTES!
-
-    
-    func printLine(index: Int, id: String) {
-        
-        let path = paths[index]
-        
-
-        let points = path["points"]! as! AnyObject!
-        
-        
-        
-                let coords = points?["coordinates"] as! NSArray!
-        
-                    self.distanceElevation(points: coords!, id: id)
-
-                            var linecoords = [CLLocationCoordinate2D]()
-                            for coord in coords! {
-        
-                                let coordAry = coord as! NSArray
-                                
-                                let elevation = coordAry[2]
-                                
-                                elevationRange.append(elevation as! Double)
-                                
-                                let lat = coordAry[1]
-                                let lng = coordAry[0]
-                                
-                                let ht = coordAry[2]
-                                
-                                let point = CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
-                                
-                                
-                                
-                                add(coordinate: point, id: id)
-                                
-                                let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
-                                
-                                linecoords.append(coordpoint)
-                                
-                            }
-        
-        
-        
-                    totalDistanceOverall = self.distance(linecoords.first!, linecoords.last!)
-        
-        print("TOTAL DISTANCE")
-        print(totalDistanceOverall)
-
-        
-                    for (index, _) in linecoords.enumerated() {
-                            if index == 0 { continue } // skip first
-                            self.split(linecoords[index - 1], linecoords[index], id)
-                    }
-
-        
-        
-                    let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
-                    let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
-        
-                    shape.title = id
-        
-                   self.mapView.addAnnotation(shape)
-                   mapView.selectAnnotation(shape, animated: true)
-    }
-    
-    
-    
-    
-    /// BOLD LINE
-    
-    func boldline(title: String) {
-        
-        let num = Int(title)!
-        
-        let sortedAscend = ascend.sorted()
-        
-        let index = ascend.index(of: sortedAscend[num])!
-        
-        let theindex = sortedAscend.index(of: ascend[index])!
-        
-//        print("INDEX:")
-////        print(index)
-        
-        let path = paths[index]
-
-        let points = path["points"]! as! AnyObject!
-        let coords = points?["coordinates"] as! NSArray!
-        var linecoords = [CLLocationCoordinate2D]()
-        for coord in coords! {
-            
-            let coordAry = coord as! NSArray
-            let lat = coordAry[1]
-            let lng = coordAry[0]
-            
-            let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
-            
-            linecoords.append(coordpoint)
-            
-        }
-        let pointer = UnsafeMutablePointer<CLLocationCoordinate2D>(mutating: linecoords)
-        let shape = MGLPolyline(coordinates: pointer, count: UInt(linecoords.count))
-        
-        if (theindex == 0) {
-            shape.title = "0BOLD"
-        }
-        
-        if (theindex == 1) {
-            shape.title = "1BOLD"
-        }
-        
-        if (theindex == 2) {
-            shape.title = "2BOLD"
-        }
-        
-        if (theindex == 3) {
-            shape.title = "3BOLD"
-        }
-        
-        if (theindex == 4) {
-            shape.title = "4BOLD"
-        }
-        
-        self.mapView.addAnnotation(shape)
-        }
-    
+     
     
     
     
@@ -542,7 +272,9 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
     func mapView(_ mapView: MGLMapView, calloutViewFor annotation: MGLAnnotation) -> UIView? {
         // Only show callouts for `Hello world!` annotation
-        
+        print("annotation title")
+        print(annotation.title!!)
+        self.boldline(title: annotation.title!!)
         self.addAnnotationSubview(index: annotation.title!!)
         self.addGraphicSubview(index: annotation.title!!)
         return CustomCalloutView(representedObject: annotation)
@@ -550,48 +282,48 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     }
     
     
-    func mapView(_ mapView: MGLMapView, leftCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
-        
-       
-        
-        if (annotation.title! != nil) {
-            
-            let title = annotation.title!
-            boldline(title: title!)
-            
-            let num = Int(title!)!
-            
-            let sortedAscend = ascend.sorted()
-            
-            let index = ascend.index(of: sortedAscend[num])!
-
-            
-            // Callout height is fixed; width expands to fit its content.
-            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
-            label.textAlignment = .right
-            label.textColor = UIColor(red: 0.81, green: 0.71, blue: 0.23, alpha: 1)
-            label.text = "\(sortedAscend[num])" + " uphill climb"
-            return label
-        }
-        
-        return nil
-    }
+//    func mapView(_ mapView: MGLMapView, leftCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
+//        
+//       
+//        
+//        if (annotation.title! != nil) {
+//            
+//            let title = annotation.title!
+//            boldline(title: title!)
+//            
+//            let num = Int(title!)!
+//            
+//            let sortedAscend = ascend.sorted()
+//            
+//            let index = ascend.index(of: sortedAscend[num])!
+//
+//            
+//            // Callout height is fixed; width expands to fit its content.
+//            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
+//            label.textAlignment = .right
+//            label.textColor = UIColor(red: 0.81, green: 0.71, blue: 0.23, alpha: 1)
+//            label.text = "\(sortedAscend[num])" + " uphill climb"
+//            return label
+//        }
+//        
+//        return nil
+//    }
 
     
     
     
     ///// ANNOTATION PARTICULARS
     
-    func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
-        return UIButton(type: .detailDisclosure)
-    }
-    
-    func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
-        // Hide the callout view.
-        mapView.deselectAnnotation(annotation, animated: false)
-        
-        UIAlertView(title: annotation.title!!, message: "A lovely (if touristy) place.", delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
-    }
+//    func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
+//        return UIButton(type: .detailDisclosure)
+//    }
+//    
+//    func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
+//        // Hide the callout view.
+//        mapView.deselectAnnotation(annotation, animated: false)
+//        
+//        UIAlertView(title: annotation.title!!, message: "A lovely (if touristy) place.", delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
+//    }
     
     
     
@@ -601,68 +333,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
     
         removeSubview()
-        
-        
-        let poly = mapView.annotations?.filter { annotation in
-            
-            return (annotation.title??.localizedCaseInsensitiveContains("BOLD") == true)
-            
-        }
-        
-        if (poly!.count > 0) {
-        
-        let first = poly?.first!
-        
-        mapView.removeAnnotation(first!)
-        
-            
-            
-        let name = first!.title!
-        
-        if (name == "4BOLD") {
-            let shape = first as! MGLPolyline
-            shape.title = "4"
-            
-            print(shape.title)
-            self.mapView.addAnnotation(shape)
-        }
-        
-        if (name == "3BOLD") {
-            let shape = first as! MGLPolyline
-            shape.title = "3"
-            
-            print(shape.title)
-            self.mapView.addAnnotation(shape)
-        }
-
-        
-        if (name == "2BOLD") {
-            let shape = first as! MGLPolyline
-            shape.title = "2"
-            
-            print(shape.title)
-            self.mapView.addAnnotation(shape)
-        }
-
-        
-        if (name == "1BOLD") {
-            let shape = first as! MGLPolyline
-            shape.title = "1"
-            
-            print(shape.title)
-            self.mapView.addAnnotation(shape)
-        }
-
-        
-        if (name == "0BOLD") {
-            let shape = first as! MGLPolyline
-            shape.title = "0"
-            
-            print(shape.title)
-            self.mapView.addAnnotation(shape)
-        }
-        }
-
+        removeBold()
     }
 
     
@@ -679,6 +350,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
         if ((annotation.title!.localizedCaseInsensitiveContains("BOLD") == true) && annotation is MGLPolyline) {
             
+            print("BOLD BONER!")
+            
             return 12.0
         }
                 else
@@ -693,26 +366,26 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         // Give our polyline a unique color by checking for its `title` property
         
         
-        if ((annotation.title == "0" || annotation.title == "0BOLD") && annotation is MGLPolyline) {
+        if ((annotation.title == "0REG" || annotation.title == "0BOLD") && annotation is MGLPolyline) {
 
             return .green
         }
-        if ((annotation.title == "1" || annotation.title == "1BOLD") && annotation is MGLPolyline) {
+        if ((annotation.title == "1REG" || annotation.title == "1BOLD") && annotation is MGLPolyline) {
 
             return UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
         
-        if ((annotation.title == "2" || annotation.title == "2BOLD") && annotation is MGLPolyline) {
+        if ((annotation.title == "2REG" || annotation.title == "2BOLD") && annotation is MGLPolyline) {
 
              return UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
         
-        if ((annotation.title == "3" || annotation.title == "3BOLD") && annotation is MGLPolyline) {
+        if ((annotation.title == "3REG" || annotation.title == "3BOLD") && annotation is MGLPolyline) {
 
             return UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
         
-        if ((annotation.title == "4" || annotation.title == "4BOLD") && annotation is MGLPolyline) {
+        if ((annotation.title == "4REG" || annotation.title == "4BOLD") && annotation is MGLPolyline) {
 
             return UIColor(red: 255.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 1)
         }
@@ -819,184 +492,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         }
         
     }
-    
-    //// TOGGLE MENU
-    
-    @IBAction func toggleMenu(_ sender: UIButton) {
-        
-        if darkFillView.transform == CGAffineTransform.identity{
-            
-            UIView.animate(withDuration: 0.2, animations: {
-                self.darkFillView.transform = CGAffineTransform(scaleX: 11, y: 11)
-                self.menuView.transform = CGAffineTransform(translationX: 0, y: -60)
-            }) { (true) in
-                self.toggleMenuButton.transform = CGAffineTransform(rotationAngle: self.radians(degrees: 180.0))
-            }
-        } else {
-            UIView.animate(withDuration: 0.2, animations: {
-                self.darkFillView.transform = .identity
-                self.menuView.transform = .identity
-                self.toggleMenuButton.transform = .identity
-            }) { (true) in
-                
-            }
-        }
-    }
-    
-    @IBAction func btn1_pressed(_ sender: UIButton) {
-        
-    
-        
-        addTapGestureDismissal()
-        self.boldline(title: "0")
-        self.addAnnotationSubview(index: "0")
-        self.addGraphicSubview(index: "0")
-    }
-    
-    @IBAction func btn2_pressed(_ sender: UIButton) {
-        
-        self.boldline(title: "1")
-        addTapGestureDismissal()
-        self.addAnnotationSubview(index: "1")
-        self.addGraphicSubview(index: "1")
-    }
-
-    @IBAction func btn3_pressed(_ sender: UIButton) {
-        
-        self.boldline(title: "2")
-        addTapGestureDismissal()
-        self.addAnnotationSubview(index: "2")
-        self.addGraphicSubview(index: "2")
-    }
-
-
-    @IBAction func btn4_pressed(_ sender: UIButton) {
-        
-        self.boldline(title: "3")
-        addTapGestureDismissal()
-        self.addAnnotationSubview(index: "3")
-        self.addGraphicSubview(index: "3")
-    }
-    
-    @IBAction func btn5_pressed(_ sender: UIButton) {
-        
-        self.boldline(title: "4")
-        addTapGestureDismissal()
-        self.addAnnotationSubview(index: "4")
-        self.addGraphicSubview(index: "4")
-    }
-    
-    func radians(degrees: Double) -> CGFloat {
-        return CGFloat(degrees * .pi / degrees)
-    }
-    
-    func addTapGestureDismissal() {
-        let aSelector : Selector = "removeSubview"
-        let tapGesture = UITapGestureRecognizer(target:self, action: aSelector)
-        mapView.addGestureRecognizer(tapGesture)
-    }
-    
-    func removeTapGestureDismissal() {
-        
-        for recognizer in mapView.gestureRecognizers! {
-            mapView.removeGestureRecognizer(recognizer)
-            print("gesture removed!")
-        }
-        
-        flattestRoute()
-
-    }
-
-    
-
-    
-    func setMenu() {
-        
-        menuView.alpha = 1
-        // Create the views dictionary
-        let viewsDictionary = ["btn1":btn1, "btn2":btn2, "btn3":btn3, "btn4":btn4, "btn5":btn5]
-        
-        
-        
-        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn1(44)]-18-|",
-                                                               options: [],
-                                                               metrics: nil,
-                                                               views: viewsDictionary))
-        
-        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn2(44)]-18-|",
-                                                               options: [],
-                                                               metrics: nil,
-                                                               views: viewsDictionary))
-        
-        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn3(44)]-18-|",
-                                                               options: [],
-                                                               metrics: nil,
-                                                               views: viewsDictionary))
-        
-        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn4(44)]-18-|",
-                                                               options: [],
-                                                               metrics: nil,
-                                                               views: viewsDictionary))
-        
-        menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-[btn5(44)]-18-|",
-                                                               options: [],
-                                                               metrics: nil,
-                                                               views: viewsDictionary))
-        
-        
-        if paths.count > 4 {
-            
-            //buttons visible
-            btn5.alpha = 1
-            btn4.alpha = 1
-            btn3.alpha = 1
-            btn2.alpha = 1
-            btn1.alpha = 1
-            
-            //POSITION 5 buttons on Menu
-            menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[btn1(44)]-20-[btn2(44)]-20-[btn3(44)]-20-[btn4(44)]-20-[btn5(44)]-40-|",
-                                                                   options: [],
-                                                                   metrics: nil,
-                                                                   views: viewsDictionary))
-        } else if paths.count > 3 {
-            
-            btn4.alpha = 1
-            btn3.alpha = 1
-            btn2.alpha = 1
-            btn1.alpha = 1
-            //POSITION 4 buttons on Menu
-            menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-54-[btn1(44)]-30-[btn2(44)]-30-[btn3(44)]-30-[btn4(44)]-54-|",
-                                                                   options: [],
-                                                                   metrics: nil,
-                                                                   views: viewsDictionary))
-        } else if paths.count > 2 {
-            
-            btn3.alpha = 1
-            btn2.alpha = 1
-            btn1.alpha = 1
-            
-            //POSITION 3 buttons on Menu
-            menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-70-[btn1(44)]-51-[btn2(44)]-51-[btn3(44)]-70-|",
-                                                                   options: [],
-                                                                   metrics: nil,
-                                                                   views: viewsDictionary))
-        } else {
-            btn2.alpha = 1
-            btn1.alpha = 1
-            //POSITION 2 buttons on Menu
-            menuView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-100-[btn1(44)]-80-[btn2(44)]-100-|",
-                                                                   options: [],
-                                                                   metrics: nil,
-                                                                   views: viewsDictionary))
-        }
-        
-        
-
-        
-        
-        
-            }
-}
+ }
 
 
 
@@ -1009,6 +505,10 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
+        
+        self.darkFillView.transform = .identity
+        self.menuView.transform = .identity
+        self.toggleMenuButton.transform = .identity
         
         
 
@@ -1056,6 +556,7 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
     func didUpdateAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-
+    
+    
 }
 

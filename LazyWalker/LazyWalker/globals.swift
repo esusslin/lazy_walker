@@ -46,6 +46,12 @@ var thirdCoords = [CGPoint]()
 var fourthCoords = [CGPoint]()
 var fifthCoords = [CGPoint]()
 
+var firstLinePoints = [CLLocationCoordinate2D]()
+var secondLinePoints = [CLLocationCoordinate2D]()
+var thirdLinePoints = [CLLocationCoordinate2D]()
+var fourthLinePoints = [CLLocationCoordinate2D]()
+var fifthLinePoints = [CLLocationCoordinate2D]()
+
 var elevationRange = [Double]()
 
 var minElevation = Double()
