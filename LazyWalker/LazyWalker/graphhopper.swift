@@ -37,7 +37,7 @@ extension mapVC {
         
         Alamofire.request(theString).responseJSON { response in
             
-            print(response)
+//            print(response)
             
             
             if let JSON = response.result.value as? [String:Any] {
