@@ -37,6 +37,8 @@ extension mapVC {
         
         Alamofire.request(theString).responseJSON { response in
             
+            print(response)
+            
             
             if let JSON = response.result.value as? [String:Any] {
                 
@@ -51,6 +53,9 @@ extension mapVC {
                     
                     let points = path["points"] as? [String:Any]
                     let coords = points?["coordinates"] as! NSArray!
+                    
+                    print("COORDS COUNTS")
+                    print(coords?.count)
                     
                     //                    allPathElevations.append(coords[2])
                     

@@ -8,6 +8,10 @@
 
 import Mapbox
 
+class MyTapGestureRecognizer: UITapGestureRecognizer {
+    var id: String?
+}
+
 class CustomCalloutView: UIView, MGLCalloutView {
     var representedObject: MGLAnnotation
     

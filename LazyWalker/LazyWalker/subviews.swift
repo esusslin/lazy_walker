@@ -75,6 +75,8 @@ extension mapVC {
     
     func addAnnotationSubview(index: String) {
         
+        let indexString = index
+        
         let num = Int(index)!
         let sortedAscend = ascend.sorted()
         let index = ascend.index(of: sortedAscend[num])!
@@ -119,15 +121,31 @@ extension mapVC {
         
         annotationView.addConstraints([horConstraint, verConstraint, widConstraint, heiConstraint])
         
-        
+//        let aSelector : Selector = "toDirections"
+//        let tapGesture = UITapGestureRecognizer(target:self, action: aSelector)
+//        
+//        annotationView.addGestureRecognizer(tapGesture)
+//        
+//        
+//        self.view.addGestureRecognizer(tapGesture)
+
         
         self.mapView.addSubview(annotationView)
+        
+        let aSelector : Selector = "toDirections"
+        let tapGesture = MyTapGestureRecognizer(target:self, action: #selector(toDirections(withSender:)))
+        tapGesture.id = indexString
+
+        annotationView.addGestureRecognizer(tapGesture)
+        
+        
+//                self.annotationView.addGestureRecognizer(tapGesture)
     }
     
     
     func addGraphicSubview(index: String) {
         
-        
+        let indexString = index
         
         
         let num = Int(index)!
@@ -140,6 +158,7 @@ extension mapVC {
         customView.xMax = 0.0
         customView.yMin = 0.0
         customView.yMax = 0.0
+        
         
         var color = UIColor()
         
@@ -212,6 +231,13 @@ extension mapVC {
         
         
         self.mapView.addSubview(customView)
+        
+        let aSelector : Selector = "toDirections"
+         let tapGesture = MyTapGestureRecognizer(target:self, action: #selector(toDirections(withSender:)))
+        tapGesture.id = indexString
+
+
+        customView.addGestureRecognizer(tapGesture)
     }
     
     func removeSubview() {
