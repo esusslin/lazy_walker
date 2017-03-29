@@ -378,38 +378,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         return radians * 180 / M_PI
     }
     
-    func bearingToLocationRadian(destinationLocation:CLLocation) -> Double {
-        
-        let lat1 = DegreesToRadians(degrees: latitude)
-        let lon1 = DegreesToRadians(degrees: longitude)
-        
-        let lat2 = DegreesToRadians(degrees: destinationLocation.coordinate.latitude);
-        let lon2 = DegreesToRadians(degrees: destinationLocation.coordinate.longitude);
-        
-        let dLon = lon2 - lon1
-        
-        let y = sin(dLon) * cos(lat2);
-        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
-        let radiansBearing = atan2(y, x)
-        
-        return radiansBearing
-    }
-    
-    func bearingToLocationDegrees(destinationLocation:CLLocation) -> Double{
-        let heading = RadiansToDegrees(radians: bearingToLocationRadian(destinationLocation: destinationLocation))
-        print("HEADING THIS DIRECTION:")
-        print(heading)
-        
-        let degrees = (360.0 + heading) as! Double!
-        
-        print("DEGREES")
-        print(degrees)
-        
-        destinationDirection = degrees!
-        
-        return heading
-    }
-    
+   
     
     
     // MAP CAMERA
@@ -501,7 +470,7 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
         
         
         destination = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-//        self.bearingToLocationDegrees(destinationLocation:destination)
+
         
         bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
         
