@@ -19,6 +19,7 @@
 		E275FCE21E847A1C0051F2A4 /* menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCE11E847A1C0051F2A4 /* menu.swift */; };
 		E275FCE41E84813E0051F2A4 /* subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCE31E84813E0051F2A4 /* subviews.swift */; };
 		E275FCE61E89C3360051F2A4 /* directions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCE51E89C3360051F2A4 /* directions.swift */; };
+		E275FCE81E8C1AF00051F2A4 /* directionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCE71E8C1AF00051F2A4 /* directionsCell.swift */; };
 		E2838A731E4D3631006DFCEE /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; };
 		E2838A741E4D3631006DFCEE /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2838A771E568BE8006DFCEE /* scrapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2838A761E568BE8006DFCEE /* scrapsViewController.swift */; };
@@ -83,6 +84,7 @@
 		E275FCE11E847A1C0051F2A4 /* menu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = menu.swift; sourceTree = "<group>"; };
 		E275FCE31E84813E0051F2A4 /* subviews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = subviews.swift; sourceTree = "<group>"; };
 		E275FCE51E89C3360051F2A4 /* directions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = directions.swift; sourceTree = "<group>"; };
+		E275FCE71E8C1AF00051F2A4 /* directionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = directionsCell.swift; sourceTree = "<group>"; };
 		E2838A761E568BE8006DFCEE /* scrapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = scrapsViewController.swift; sourceTree = "<group>"; };
 		E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pathAnnotation.swift; sourceTree = "<group>"; };
 		E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCalloutView.swift; sourceTree = "<group>"; };
@@ -188,8 +190,9 @@
 				E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */,
 				E275FCD31E79F13F0051F2A4 /* globals.swift */,
 				E26409FF1E622B5700E89BAE /* animations.swift */,
-				E275FCE31E84813E0051F2A4 /* subviews.swift */,
 				E275FCD11E79E16A0051F2A4 /* lines.swift */,
+				E275FCE71E8C1AF00051F2A4 /* directionsCell.swift */,
+				E275FCE31E84813E0051F2A4 /* subviews.swift */,
 				E275FCE11E847A1C0051F2A4 /* menu.swift */,
 				E275FCD51E7B38360051F2A4 /* picAnnotation.swift */,
 				E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */,
@@ -433,6 +436,7 @@
 				E2838A771E568BE8006DFCEE /* scrapsViewController.swift in Sources */,
 				E275FCD21E79E16A0051F2A4 /* lines.swift in Sources */,
 				E28D7D661E5CCDE000EC44C9 /* pathAnnotation.swift in Sources */,
+				E275FCE81E8C1AF00051F2A4 /* directionsCell.swift in Sources */,
 				E275FCDA1E7B5A8F0051F2A4 /* LineChart.swift in Sources */,
 				E275FCE41E84813E0051F2A4 /* subviews.swift in Sources */,
 				E275FCD41E79F13F0051F2A4 /* globals.swift in Sources */,

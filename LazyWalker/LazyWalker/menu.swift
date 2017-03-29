@@ -33,7 +33,7 @@ extension mapVC {
 
                 }) { (true) in
                     self.toggleMenuButton.transform = CGAffineTransform(rotationAngle: self.radians(degrees: 180.0))
-//                    self.menuView.touchesCancelled(mapView.gestureRecognizers, with: <#T##UIEvent?#>)
+
                 }
             } else {
                 UIView.animate(withDuration: 0.2, animations: {
