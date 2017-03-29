@@ -46,6 +46,24 @@ class testVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableDarkView.layer.cornerRadius = 22.0
     }
     
+    func metersToMilesString(meters: Double) -> String {
+        
+        let x = (meters * 0.000621371)
+        
+        if (x < 0.019) {
+            return "100 ft"
+        } else if (x < 0.04) {
+            return "200 ft"
+        } else if (x < 0.06) {
+            return "100 yrds"
+        } else {
+            let y = Double(round(100*x)/100)
+            let string = String(y)
+         return string + " mi"
+        }
+        
+    }
+
     
     //// TOGGLE TABLE
     
@@ -55,29 +73,32 @@ class testVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         let screenSize: CGRect = UIScreen.main.bounds
         
-        if tableView.transform == CGAffineTransform.identity {
+        if tableDarkView.transform == CGAffineTransform.identity {
             
             UIView.animate(withDuration: 0.8, animations: {
                 
-                self.tableView.center.y = self.view.center.y
-//                self.tableDarkView.center.y = self.tableView.frame.height
-//                self.tableToggleButton.center.y = (self.view.center.y) - (self.view.center.y - 30)
+                self.tableView.transform = CGAffineTransform(translationX: 0, y: -340)
+                
+                self.tableDarkView.transform = CGAffineTransform(translationX: 0, y: -340)
+                self.tableToggleButton.transform = CGAffineTransform(translationX: 0, y: -340)
+                
+//                self.tableToggleButton.transform = CGAffineTransform(translationX: 0, y: -340)
                 
             }) { (true) in
-                self.tableToggleButton.transform = CGAffineTransform(rotationAngle: self.radians(degrees: 180.0))
-
+               
+//                let image = UIImage(named: "down")
+                self.tableToggleButton.setImage( UIImage.init(named: "down"), for: .normal)
+                
             }
         } else {
             UIView.animate(withDuration: 0.8, animations: {
+                self.tableDarkView.transform = .identity
+                self.tableView.transform = .identity
+                self.tableToggleButton.transform = .identity
                 
-//                self.tableView.center.y = self.view.center.y / 3
-//                self.tableDarkView.center.y = (self.view.center.y / 3) - 10
-//                self.tableToggleButton.center.y = (self.view.center.y / 3) - 10
-//                self.tableView.transform = .identity
-//                self.tableToggleButton.transform = .identity
                 
             }) { (true) in
-                
+                self.tableToggleButton.setImage( UIImage.init(named: "up"), for: .normal)
             }
 
         }
@@ -92,7 +113,12 @@ class testVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath) as! directionsCell
         cell.label.text = textArray[indexPath.row]
-        cell.distanceLabel.text = distanceArray[indexPath.row]
+        let metersDouble = Double(distanceArray[indexPath.row])
+        let milesDouble = metersToMilesString(meters: metersDouble!)
+        
+        let milesString = String(describing: milesDouble)
+        
+        cell.distanceLabel.text = milesDouble
         return cell
     }
     

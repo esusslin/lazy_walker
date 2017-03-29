@@ -253,6 +253,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view alpha="0.5" contentMode="scaleToFill" misplaced="YES" id="Sfp-B2-b3r">
+                                <rect key="frame" x="166" y="415" width="44" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Etp-me-QR0">
+                                <rect key="frame" x="166" y="415" width="44" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="up"/>
+                                <connections>
+                                    <action selector="toggleMenu:" destination="rqQ-Xm-6Vz" eventType="touchUpInside" id="dGJ-5d-3td"/>
+                                    <action selector="toggleTable:" destination="IBx-7z-6nJ" eventType="touchUpInside" id="Cpe-qf-bts"/>
+                                </connections>
+                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="zD0-lX-cw2">
                                 <rect key="frame" x="1" y="467" width="374" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -297,21 +312,6 @@
                                     <outlet property="delegate" destination="IBx-7z-6nJ" id="Tx5-ER-Hfv"/>
                                 </connections>
                             </tableView>
-                            <view alpha="0.5" contentMode="scaleToFill" misplaced="YES" id="Sfp-B2-b3r">
-                                <rect key="frame" x="166" y="415" width="44" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Etp-me-QR0">
-                                <rect key="frame" x="166" y="415" width="44" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" image="up"/>
-                                <connections>
-                                    <action selector="toggleMenu:" destination="rqQ-Xm-6Vz" eventType="touchUpInside" id="dGJ-5d-3td"/>
-                                    <action selector="toggleTable:" destination="IBx-7z-6nJ" eventType="touchUpInside" id="Cpe-qf-bts"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.1009070889" green="0.77561346480000004" blue="0.66631711410000005" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
