@@ -109,6 +109,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn1.alpha = 0
         menuView.alpha = 0
         
+//        menuView.touchesCancelled(<#T##touches: Set<UITouch>##Set<UITouch>#>, with: <#T##UIEvent?#>)
+        
         btn1.translatesAutoresizingMaskIntoConstraints = false
         btn2.translatesAutoresizingMaskIntoConstraints = false
         
@@ -117,6 +119,18 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn4.translatesAutoresizingMaskIntoConstraints = false
         
         btn5.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tap = UITapGestureRecognizer()
+        tap.numberOfTapsRequired = 2
+        
+        tap.addTarget(self, action: Selector("toDirections"))
+//        tap.addTarget(self, action: )
+        
+        btn1.addGestureRecognizer(tap)
+        btn2.addGestureRecognizer(tap)
+        btn3.addGestureRecognizer(tap)
+        btn4.addGestureRecognizer(tap)
+        btn5.addGestureRecognizer(tap)
         
         
         
@@ -167,6 +181,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         // Set the map view‘s delegate property
         mapView.delegate = self
         
+       
+        
         mapView.frame = view.bounds
        
         mapView.styleURL = URL(string: "mapbox://styles/mapbox/dark-v9")
@@ -214,9 +230,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     }
     
     func setLocation() {
-        
-        
-        
+
         let currentLocation = locationManager.location
         
         latitude = (currentLocation?.coordinate.latitude)!
@@ -226,15 +240,14 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         let corner2 = CLLocationCoordinate2D(latitude: latitude - 0.1, longitude: longitude - 0.1)
         
         let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
-        
-//        print(bounds)
+
         
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
         
         resultsViewController?.autocompleteBounds = bounds
         
-//        print(resultsViewController?.autocompleteBounds)
+
 
     }
      
@@ -280,50 +293,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         return CustomCalloutView(representedObject: annotation)
         
     }
-    
-    
-//    func mapView(_ mapView: MGLMapView, leftCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
-//        
-//       
-//        
-//        if (annotation.title! != nil) {
-//            
-//            let title = annotation.title!
-//            boldline(title: title!)
-//            
-//            let num = Int(title!)!
-//            
-//            let sortedAscend = ascend.sorted()
-//            
-//            let index = ascend.index(of: sortedAscend[num])!
-//
-//            
-//            // Callout height is fixed; width expands to fit its content.
-//            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
-//            label.textAlignment = .right
-//            label.textColor = UIColor(red: 0.81, green: 0.71, blue: 0.23, alpha: 1)
-//            label.text = "\(sortedAscend[num])" + " uphill climb"
-//            return label
-//        }
-//        
-//        return nil
-//    }
-
-    
-    
-    
-    ///// ANNOTATION PARTICULARS
-    
-//    func mapView(_ mapView: MGLMapView, rightCalloutAccessoryViewFor annotation: MGLAnnotation) -> UIView? {
-//        return UIButton(type: .detailDisclosure)
-//    }
-//    
-//    func mapView(_ mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
-//        // Hide the callout view.
-//        mapView.deselectAnnotation(annotation, animated: false)
-//        
-//        UIAlertView(title: annotation.title!!, message: "A lovely (if touristy) place.", delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK").show()
-//    }
+ 
     
     
     
@@ -408,38 +378,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         return radians * 180 / M_PI
     }
     
-    func bearingToLocationRadian(destinationLocation:CLLocation) -> Double {
-        
-        let lat1 = DegreesToRadians(degrees: latitude)
-        let lon1 = DegreesToRadians(degrees: longitude)
-        
-        let lat2 = DegreesToRadians(degrees: destinationLocation.coordinate.latitude);
-        let lon2 = DegreesToRadians(degrees: destinationLocation.coordinate.longitude);
-        
-        let dLon = lon2 - lon1
-        
-        let y = sin(dLon) * cos(lat2);
-        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon);
-        let radiansBearing = atan2(y, x)
-        
-        return radiansBearing
-    }
-    
-    func bearingToLocationDegrees(destinationLocation:CLLocation) -> Double{
-        let heading = RadiansToDegrees(radians: bearingToLocationRadian(destinationLocation: destinationLocation))
-        print("HEADING THIS DIRECTION:")
-        print(heading)
-        
-        let degrees = (360.0 + heading) as! Double!
-        
-        print("DEGREES")
-        print(degrees)
-        
-        destinationDirection = degrees!
-        
-        return heading
-    }
-    
+   
     
     
     // MAP CAMERA
@@ -531,7 +470,7 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
         
         
         destination = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-//        self.bearingToLocationDegrees(destinationLocation:destination)
+
         
         bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
         
