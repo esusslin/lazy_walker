@@ -15,14 +15,27 @@ import GooglePlacePicker
 import GoogleMaps
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
+    
+//    , CLLocationManagerDelegate
 
     var window: UIWindow?
     
     var locationManager: CLLocationManager?
     var coordinate: CLLocationCoordinate2D?
+//    var currentHeading: CLLocationDirection?
+//    var heading: CLHeading?
 
 
+        func locationManager(_ manager: CLLocationManager, didUpdateHeading heading: CLHeading) {
+    
+            print("APP DELEGATE")
+            print(heading.magneticHeading)
+            
+//            currentHeading = heading.magneticHeading
+            
+        }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -37,16 +50,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: LocationManager functions
     
     func locationManagerStart() {
+        
+//
+        
         if locationManager == nil {
             print("init locationManager")
             locationManager = CLLocationManager()
-            //            locationManager!.delegate = self
+            locationManager!.delegate = self
             locationManager!.desiredAccuracy = kCLLocationAccuracyBest
             locationManager!.requestWhenInUseAuthorization()
+            
+            if (CLLocationManager.headingAvailable()) {
+                            locationManager!.headingFilter = 1
+                            locationManager!.startUpdatingHeading()
+                //            locationManager!.delegate = self
+                        }
+
         }
         
-        print("have location manager")
+        print("have location manager!")
         locationManager!.startUpdatingLocation()
+        
+         print("have heading direction!")
+        locationManager!.startUpdatingHeading()
         
     }
     

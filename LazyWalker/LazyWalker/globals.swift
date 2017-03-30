@@ -19,6 +19,7 @@ import GooglePlaces
 //// GLOBALS
 
 let locationManager = CLLocationManager()
+//var currentHeading: CLLocationDirection
 
 var latitude = Double()
 var longitude = Double()

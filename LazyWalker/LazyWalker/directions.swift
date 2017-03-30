@@ -31,7 +31,7 @@ var progCount = Int()
 extension mapVC {
     
 //    var geotifications = [Geotification]()
-//    let locationManager = CLLocationManager() // Add this statement
+//    let locationManager = CLLocationManager() // Add this stdatement
 
 
    @objc func toDirections(withSender sender: MyTapGestureRecognizer) {
@@ -113,7 +113,7 @@ extension mapVC {
         
         setLocation()
         
-        let currentLocation = locationManager.location
+//        let currentLocation = locationManager.location
         
         
     }
