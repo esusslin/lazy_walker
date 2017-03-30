@@ -59,6 +59,9 @@ extension mapVC {
             self.boldline(title: "0")
             self.addAnnotationSubview(index: "0")
             self.addGraphicSubview(index: "0")
+            
+            print("MAGNETIC HEADING!")
+            print(locationManager.heading?.magneticHeading)
         }
 
         @IBAction func btn2_pressed(_ sender: UIButton) {
@@ -68,6 +71,7 @@ extension mapVC {
             addTapGestureDismissal()
             self.addAnnotationSubview(index: "1")
             self.addGraphicSubview(index: "1")
+
         }
 
         @IBAction func btn3_pressed(_ sender: UIButton) {
@@ -77,6 +81,7 @@ extension mapVC {
             addTapGestureDismissal()
             self.addAnnotationSubview(index: "2")
             self.addGraphicSubview(index: "2")
+
         }
 
 
@@ -87,6 +92,7 @@ extension mapVC {
             addTapGestureDismissal()
             self.addAnnotationSubview(index: "3")
             self.addGraphicSubview(index: "3")
+
         }
 
         @IBAction func btn5_pressed(_ sender: UIButton) {
@@ -96,6 +102,7 @@ extension mapVC {
             addTapGestureDismissal()
             self.addAnnotationSubview(index: "4")
             self.addGraphicSubview(index: "4")
+
         }
     
 

@@ -132,11 +132,12 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn4.addGestureRecognizer(tap)
         btn5.addGestureRecognizer(tap)
         
-        
+       
         
         reset()
         
         setLocation()
+        
         
         searchController = UISearchController(searchResultsController: resultsViewController)
 
@@ -230,8 +231,12 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     }
     
     func setLocation() {
+        
+
 
         let currentLocation = locationManager.location
+        
+
         
         latitude = (currentLocation?.coordinate.latitude)!
         longitude = (currentLocation?.coordinate.longitude)!
@@ -250,7 +255,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
 
 
     }
-     
+    
+    
     
      
     

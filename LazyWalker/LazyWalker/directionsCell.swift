@@ -27,11 +27,11 @@ class directionsCell: UITableViewCell {
                 distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         
         self.contentView.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "H:|-10-[arrow(30)]-10-[label]-10-[distance]-5-|",
+            withVisualFormat: "H:|-10-[arrow(16)]-10-[label]-10-[distance]-5-|",
                     options: [], metrics: nil, views: ["arrow":arrowPic, "label":label,"distance":distanceLabel]))
         
         self.contentView.addConstraints(NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-10-[arrow(30)]-10-|",
+            withVisualFormat: "V:|-10-[arrow(16)]-10-|",
                     options: [], metrics: nil, views: ["arrow":arrowPic]))
         
         self.contentView.addConstraints(NSLayoutConstraint.constraints(

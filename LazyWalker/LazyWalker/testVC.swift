@@ -40,8 +40,22 @@ class testVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         print(screenSize.height)
         print(screenSize.width)
         
-
+        
+        tableView.backgroundColor = .black
+        tableView.backgroundView?.alpha = 0.5
+        
+        
         tableView.frame.size.height = screenSize.height
+        tableView.center.y = view.center.y + 500
+        
+        print(tableView.frame.size.height)
+        
+        tableDarkView.center.y = tableView.center.y - 360
+        tableToggleButton.center.y = tableView.center.y - 360
+        
+        print(tableDarkView.center.y)
+        
+        
 
         tableDarkView.layer.cornerRadius = 22.0
     }
@@ -49,13 +63,22 @@ class testVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func metersToMilesString(meters: Double) -> String {
         
         let x = (meters * 0.000621371)
-        
-        if (x < 0.019) {
+        if (x < 0.00473) {
+            return "25 ft"
+        }
+        else if (x < 0.00946) {
+            return "50 ft"
+        }
+        else if (x < 0.019) {
             return "100 ft"
         } else if (x < 0.04) {
             return "200 ft"
         } else if (x < 0.06) {
-            return "100 yrds"
+            return "300 ft"
+        } else if (x < 0.08) {
+            return "400 ft"
+        } else if (x < 0.09) {
+            return "500 ft"
         } else {
             let y = Double(round(100*x)/100)
             let string = String(y)
@@ -108,17 +131,61 @@ class testVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         return CGFloat(degrees * .pi / degrees)
     }
 
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.clear
+        cell.backgroundView?.alpha = 0.5
+    }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath) as! directionsCell
+        
         cell.label.text = textArray[indexPath.row]
+        cell.label.textColor = .white
+        
         let metersDouble = Double(distanceArray[indexPath.row])
         let milesDouble = metersToMilesString(meters: metersDouble!)
         
         let milesString = String(describing: milesDouble)
         
         cell.distanceLabel.text = milesDouble
+        
+        cell.distanceLabel.textColor = .white
+        
+        cell.distanceLabel.textColor = .red
+       
+        
+        print("direction:")
+        print(directionArray)
+        
+        if directionArray[indexPath.row] == "-3" || directionArray[indexPath.row] == "-2" {
+            cell.arrowPic.image = UIImage.init(named: "left")
+            
+        }
+        
+        if directionArray[indexPath.row] == "-1" {
+            cell.arrowPic.image = UIImage.init(named: "slight-left")
+            
+        }
+        if directionArray[indexPath.row] == "0" {
+            cell.arrowPic.image = UIImage.init(named: "straight")
+            
+        }
+        if directionArray[indexPath.row] == "1" {
+            cell.arrowPic.image = UIImage.init(named: "slight-right")
+            
+        }
+        
+        if directionArray[indexPath.row] == "2" || directionArray[indexPath.row] == "3" {
+            cell.arrowPic.image = UIImage.init(named: "right")
+            
+        }
+        
+        if directionArray[indexPath.row] == "6"  {
+            cell.arrowPic.image = UIImage.init(named: "round")
+            
+        }
+
         return cell
     }
     

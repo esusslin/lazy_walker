@@ -184,6 +184,7 @@
 		E2F0D0861E4D28CF00BB4CBE /* LazyWalker */ = {
 			isa = PBXGroup;
 			children = (
+				E2DD26661E71E39800747B62 /* testVC.swift */,
 				E275FCE51E89C3360051F2A4 /* directions.swift */,
 				E275FCDF1E846FB80051F2A4 /* graphhopper.swift */,
 				E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */,
@@ -196,7 +197,6 @@
 				E275FCE11E847A1C0051F2A4 /* menu.swift */,
 				E275FCD51E7B38360051F2A4 /* picAnnotation.swift */,
 				E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */,
-				E2DD26661E71E39800747B62 /* testVC.swift */,
 				E275FCD91E7B5A8F0051F2A4 /* LineChart.swift */,
 				E2B367F21E6E107F0000BA5D /* TableViewController.swift */,
 				E275FCDB1E7B5C6B0051F2A4 /* LineChartAxes.swift */,
