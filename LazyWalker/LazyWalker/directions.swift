@@ -16,6 +16,7 @@ import SwiftCharts
 import GooglePlaces
 
 
+
 var currentDestination = CLLocationCoordinate2D()
 var currentOrigin = CLLocationCoordinate2D()
 var currentDestinationDirection = Double()
@@ -84,6 +85,8 @@ extension mapVC {
     }
     
     func removeExtraRoutes(index: Int) {
+        
+        readySubview(index: index)
         
         print("REMOVE ALL BUT:")
          print(index)
@@ -322,9 +325,7 @@ extension mapVC {
     
     func adjustCameraForSelection() {
         
-        menuView.alpha = 0
-      
-        removeSubview()
+        
         
         
        
@@ -337,25 +338,122 @@ extension mapVC {
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         
-        self.imageShow()
-        
-        tableView.reloadData()
-        tableToggleButton.alpha = 1
-        tableDarkView.alpha = 1
-        tableView.alpha = 1
+//        self.imageShow()
+        prepareViewForSelection()
     }
     
- 
+    
+    func prepareViewForSelection() {
+        
+        tableView.reloadData()
+        removeSubview()
+        startChain()
+        
+    }
+    
+    func startChain() {
+        UIView.animate(withDuration: 1, animations: { 
+            self.menuView.alpha = 0
+        }) { (true) in
+            self.showButton()
+        }
+    }
+    
+    func showButton() {
+        UIView.animate(withDuration: 2, animations: {
+            self.tableToggleButton.alpha = 1
+            self.tableDarkView.alpha = 1
+        }) { (true) in
+            self.showTable()
+        }
 
+    }
+    
+    func showTable() {
+        UIView.animate(withDuration: 1.2, animations: {
+            self.tableView.alpha = 1
+        
+        }) { (true) in
+           self.showView()
+        }
+
+    }
+    
+    func showView() {
+        UIView.animate(withDuration: 1.2, animations: {
+            self.directionSubview.alpha = 1
+            
+        }) { (true) in
+//            self.showView()
+        }
+        
+    }
+
+    
+    func readySubview(index: Int) {
+    
+            let indexString = index
+            
+            let num = Int(index)
+            let sortedAscend = ascend.sorted()
+            let index = ascend.index(of: sortedAscend[num])!
+            
+            let screenSize: CGRect = UIScreen.main.bounds
+            let width = screenSize.width
+            let height = screenSize.height
+        
+            let totalMeters = Double(totalDistance[index])
+        
+            let totalMiles = metersToMilesString(meters: totalMeters)
+
+        
+            self.directionSubview.frame = CGRect.init(x: 0, y: height - 180, width: width - 40, height: 40)
+            self.directionSubview.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            self.directionSubview.center.x = self.view.center.x
+            self.directionSubview.center.y = (self.view.frame.size.height + 100) - self.view.frame.size.height
+//                (self.tableView.center.y + self.tableView.frame.size.height / 2) + 30
+            self.directionSubview.layer.cornerRadius = directionSubview.frame.size.width / 22
+            self.directionSubview.tag = 102
+        
+            self.directionSubview.alpha = 0
+
+                let label = UILabel()
+                label.translatesAutoresizingMaskIntoConstraints = false
+                label.textAlignment = .center
+                label.text = "\(Int(sortedAscend[num]))" + " meters uphill, " + totalMiles + " mi total"
+                label.numberOfLines=1
+                label.backgroundColor = UIColor.clear
+                label.textColor = .white
+                label.font=UIFont.systemFont(ofSize: 14)
+                self.directionSubview.addSubview(label)
+                
+                let horConstraint = NSLayoutConstraint(item: label, attribute: .centerX, relatedBy: .equal,
+                                                       toItem: directionSubview, attribute: .centerX,
+                                                       multiplier: 1.0, constant: 0.0)
+                let verConstraint = NSLayoutConstraint(item: label, attribute: .centerY, relatedBy: .equal,
+                                                       toItem: directionSubview, attribute: .centerY,
+                                                       multiplier: 1.0, constant: 0.0)
+                let widConstraint = NSLayoutConstraint(item: label, attribute: .width, relatedBy: .equal,
+                                                       toItem: directionSubview, attribute: .width,
+                                                       multiplier: 0.95, constant: 0.0)
+                let heiConstraint = NSLayoutConstraint(item: label, attribute: .height, relatedBy: .equal,
+                                                       toItem: directionSubview, attribute: .height,
+                                                       multiplier: 0.95, constant: 0.0)
+                
+                directionSubview.addConstraints([horConstraint, verConstraint, widConstraint, heiConstraint])
+
+        
+    
+//        self.mapView.addSubview(directionSubview)
+        
+       
+    }
     
     
     
     func adjustCameraForDirections() {
         
         let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 10, pitch: 80, heading: (currentDestinationDirection))
-        
-//        print("TOTAL DISTANCE")
-//        print(totalDistanceOverall)
         
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
@@ -424,4 +522,4 @@ extension mapVC {
 
 }
 
-//(sender : UITapGestureRecognizer)
+

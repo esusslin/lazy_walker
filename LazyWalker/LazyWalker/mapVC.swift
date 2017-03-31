@@ -37,6 +37,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     @IBOutlet weak var tableDarkView: UIView!
     @IBOutlet weak var tableToggleButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var directionSubview: UIView!
   
     
     
@@ -55,8 +56,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
 
     
     @IBOutlet weak var imageView: UIImageView!
-
-//    var mySearchBar: UISearchBar!
    
     var placesClient: GMSPlacesClient!
     
@@ -65,7 +64,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var animation: CABasicAnimation!
     
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -114,6 +113,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn2.alpha = 0
         btn1.alpha = 0
         menuView.alpha = 0
+       
         
 //        menuView.touchesCancelled(<#T##touches: Set<UITouch>##Set<UITouch>#>, with: <#T##UIEvent?#>)
         
@@ -130,17 +130,14 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         tap.numberOfTapsRequired = 2
         
         tap.addTarget(self, action: Selector("toDirections"))
-//        tap.addTarget(self, action: )
+
         
         btn1.addGestureRecognizer(tap)
         btn2.addGestureRecognizer(tap)
         btn3.addGestureRecognizer(tap)
         btn4.addGestureRecognizer(tap)
         btn5.addGestureRecognizer(tap)
-        
-        
-        
-        
+
         //TABLE POSITIONING
         
         tableView.backgroundColor = .black
@@ -161,6 +158,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         tableView.alpha = 0
         tableDarkView.alpha = 0
         tableToggleButton.alpha = 0
+        directionSubview.alpha = 0
 
         
         reset()
@@ -280,8 +278,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         resultsViewController?.delegate = self
         
         resultsViewController?.autocompleteBounds = bounds
-        
-
 
     }
     
@@ -330,13 +326,10 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     }
  
     
-    
-    
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         
         let catchtitle = String()
         
-    
         removeSubview()
         removeBold()
     }
@@ -412,8 +405,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     func RadiansToDegrees(radians: Double) -> Double {
         return radians * 180 / M_PI
     }
-    
-   
     
     
     // MAP CAMERA

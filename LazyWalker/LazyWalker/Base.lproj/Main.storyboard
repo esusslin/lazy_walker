@@ -120,6 +120,11 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
+                                    <view contentMode="scaleToFill" id="sfQ-GI-TW6">
+                                        <rect key="frame" x="67" y="269" width="240" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                     <view contentMode="scaleToFill" id="TFh-rB-Eod">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -200,6 +205,7 @@
                         <outlet property="btn4" destination="Kjx-7E-tPF" id="19i-nY-ruG"/>
                         <outlet property="btn5" destination="tDn-wM-XCh" id="VZH-ao-9Uf"/>
                         <outlet property="darkFillView" destination="HC1-fp-cQh" id="FEB-fC-cfi"/>
+                        <outlet property="directionSubview" destination="sfQ-GI-TW6" id="NwC-vW-fMB"/>
                         <outlet property="imageView" destination="dIj-wf-ZWe" id="jiP-NG-sIC"/>
                         <outlet property="logoImageview" destination="cni-Mk-ut4" id="frV-wO-UNg"/>
                         <outlet property="mapView" destination="2j4-FC-qKD" id="i2D-5n-mYd"/>
