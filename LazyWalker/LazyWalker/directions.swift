@@ -39,6 +39,8 @@ extension mapVC {
 
         let index = Int(sender.id!)!
     
+        removeExtraRoutes(index: index)
+    
         let path = paths[index]
     
         let points = path["points"]! as! AnyObject!
@@ -81,6 +83,42 @@ extension mapVC {
     
     }
     
+    func removeExtraRoutes(index: Int) {
+        
+        print("REMOVE ALL BUT:")
+         print(index)
+        
+        let indexString = String(index)
+        
+        let poly = mapView.annotations?.filter { annotation in
+            
+            return (annotation.title??.localizedCaseInsensitiveContains(indexString) == false)
+            
+        }
+
+        for pol in poly! {
+                mapView.removeAnnotation(pol)
+            }
+        
+        let theRoute = mapView.annotations?.filter { annotation in
+            
+            return (annotation.title??.localizedCaseInsensitiveContains("BOLD") == true)
+            
+        }
+        
+        for route in theRoute! {
+            mapView.removeAnnotation(route)
+            let shape = route as! MGLPolyline
+            let newtitle = (indexString + "BOLD")
+            
+            shape.title = newtitle
+            
+            self.mapView.addAnnotation(shape)
+            
+        }
+        
+    }
+    
 //    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
 //        showAlert("enter \(region.identifier)")
 //    }
@@ -105,9 +143,150 @@ extension mapVC {
         
         bearingToLocationDegreesDirections(destinationLocation:CLLocation(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees))
         
-        adjustCameraForDirections()
+        adjustCameraForSelection()
+//        adjustCameraForDirections()
         geoProgressListener()
     }
+    
+    
+    
+    
+    func metersToMilesString(meters: Double) -> String {
+        
+        let x = (meters * 0.000621371)
+        if (x < 0.00473) {
+            return "25 ft"
+        }
+        else if (x < 0.00946) {
+            return "50 ft"
+        }
+        else if (x < 0.019) {
+            return "100 ft"
+        } else if (x < 0.04) {
+            return "200 ft"
+        } else if (x < 0.06) {
+            return "300 ft"
+        } else if (x < 0.08) {
+            return "400 ft"
+        } else if (x < 0.09) {
+            return "500 ft"
+        } else {
+            let y = Double(round(100*x)/100)
+            let string = String(y)
+            return string + " mi"
+        }
+        
+    }
+    
+    
+    //// TOGGLE TABLE
+    
+    @IBAction func toggleTable(_ sender: UIButton) {
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        
+        if tableDarkView.transform == CGAffineTransform.identity {
+            
+            UIView.animate(withDuration: 0.8, animations: {
+                
+                self.tableView.transform = CGAffineTransform(translationX: 0, y: -340)
+                
+                self.tableDarkView.transform = CGAffineTransform(translationX: 0, y: -340)
+                self.tableToggleButton.transform = CGAffineTransform(translationX: 0, y: -340)
+                
+                //                self.tableToggleButton.transform = CGAffineTransform(translationX: 0, y: -340)
+                
+            }) { (true) in
+                
+                //                let image = UIImage(named: "down")
+                self.tableToggleButton.setImage( UIImage.init(named: "down"), for: .normal)
+                
+            }
+        } else {
+            UIView.animate(withDuration: 0.8, animations: {
+                self.tableDarkView.transform = .identity
+                self.tableView.transform = .identity
+                self.tableToggleButton.transform = .identity
+                
+                
+            }) { (true) in
+                self.tableToggleButton.setImage( UIImage.init(named: "up"), for: .normal)
+            }
+            
+        }
+    }
+    
+    func radians(degrees: Double) -> CGFloat {
+        return CGFloat(degrees * .pi / degrees)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = UIColor.clear
+        cell.backgroundView?.alpha = 0.5
+    }
+    
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath as IndexPath) as! directionsCell
+        
+        cell.label.text = textArray[indexPath.row]
+        cell.label.textColor = .white
+        
+        let metersDouble = Double(distanceArray[indexPath.row])
+        let milesDouble = metersToMilesString(meters: metersDouble!)
+        
+        let milesString = String(describing: milesDouble)
+        
+        cell.distanceLabel.text = milesDouble
+        
+        cell.distanceLabel.textColor = .white
+        
+        cell.distanceLabel.textColor = .red
+        
+        
+        print("direction:")
+        print(signArray)
+        
+        if signArray[indexPath.row] == "-3" || signArray[indexPath.row] == "-2" {
+            cell.arrowPic.image = UIImage.init(named: "left")
+            
+        }
+        
+        if signArray[indexPath.row] == "-1" {
+            cell.arrowPic.image = UIImage.init(named: "slight-left")
+            
+        }
+        if signArray[indexPath.row] == "0" {
+            cell.arrowPic.image = UIImage.init(named: "straight")
+            
+        }
+        if signArray[indexPath.row] == "1" {
+            cell.arrowPic.image = UIImage.init(named: "slight-right")
+            
+        }
+        
+        if signArray[indexPath.row] == "2" || signArray[indexPath.row] == "3" {
+            cell.arrowPic.image = UIImage.init(named: "right")
+            
+        }
+        
+        if signArray[indexPath.row] == "6"  {
+            cell.arrowPic.image = UIImage.init(named: "round")
+            
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return textArray.count
+    }
+
+    
+    
+    
+    
+    
     
     func geoProgressListener() {
         
@@ -140,6 +319,36 @@ extension mapVC {
     // MAP CAMERA
     
     //    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+    
+    func adjustCameraForSelection() {
+        
+        menuView.alpha = 0
+      
+        removeSubview()
+        
+        
+       
+        
+        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: totalDistanceOverall*0.8, pitch: 60, heading: (destinationDirection))
+        
+        print("TOTAL DISTANCE")
+        print(totalDistanceOverall)
+        
+        // Animate the camera movement over 5 seconds.
+        mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        
+        self.imageShow()
+        
+        tableView.reloadData()
+        tableToggleButton.alpha = 1
+        tableDarkView.alpha = 1
+        tableView.alpha = 1
+    }
+    
+ 
+
+    
+    
     
     func adjustCameraForDirections() {
         

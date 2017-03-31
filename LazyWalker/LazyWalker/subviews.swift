@@ -120,14 +120,6 @@ extension mapVC {
                                                multiplier: 0.95, constant: 0.0)
         
         annotationView.addConstraints([horConstraint, verConstraint, widConstraint, heiConstraint])
-        
-//        let aSelector : Selector = "toDirections"
-//        let tapGesture = UITapGestureRecognizer(target:self, action: aSelector)
-//        
-//        annotationView.addGestureRecognizer(tapGesture)
-//        
-//        
-//        self.view.addGestureRecognizer(tapGesture)
 
         
         self.mapView.addSubview(annotationView)
@@ -214,20 +206,6 @@ extension mapVC {
         customView.yMax = CGFloat(maxElevation + 10)
         customView.data = pointsAry
         customView.tag = 101
-        
-        //    print("X-RANGES:")
-        //    print(customView.xMin)
-        //    print(customView.xMax)
-        //
-        //    print("Y-RANGES:")
-        //    print(customView.yMin)
-        //    print(customView.yMax)
-        
-        //    customView.setAxisRange(xMin: 0.0, xMax: customView.xMax, yMin: customView.yMin, yMax: customView.xMax )
-        
-        //    print(customView.data?.count)
-        //    print(customView.yMin)
-        //    print(customView.yMax)
         
         
         self.mapView.addSubview(customView)

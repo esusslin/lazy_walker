@@ -20,19 +20,25 @@ import SwiftCharts
 import GooglePlaces
 
 
-class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableViewDelegate {
+class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var resultView: UITextView?
     
     
-    
+    // MENU PIECES
     @IBOutlet weak var menuView: UIView!
-    
     @IBOutlet weak var darkFillView: UIView!
-    
     @IBOutlet weak var toggleMenuButton: UIButton!
+    
+    // DIRECTION TABLE PIECES
+    
+    @IBOutlet weak var tableDarkView: UIView!
+    @IBOutlet weak var tableToggleButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+  
+    
     
     @IBOutlet weak var btn1: UIButton!
     @IBOutlet weak var btn2: UIButton!
@@ -132,7 +138,30 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn4.addGestureRecognizer(tap)
         btn5.addGestureRecognizer(tap)
         
-       
+        
+        
+        
+        //TABLE POSITIONING
+        
+        tableView.backgroundColor = .black
+        tableView.backgroundView?.alpha = 0.5
+        
+        
+        tableView.frame.size.height = screenSize.height
+        tableView.center.y = view.center.y + 500
+        
+        tableDarkView.center.y = tableView.center.y - 360
+        tableToggleButton.center.y = tableView.center.y - 360
+        
+        print(tableDarkView.center.y)
+
+        tableDarkView.layer.cornerRadius = 22.0
+        
+        // INITIALLY HIDDEN
+        tableView.alpha = 0
+        tableDarkView.alpha = 0
+        tableToggleButton.alpha = 0
+
         
         reset()
         
