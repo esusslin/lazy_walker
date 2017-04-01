@@ -20,19 +20,33 @@ import SwiftCharts
 import GooglePlaces
 
 
-class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableViewDelegate {
+class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var resultView: UITextView?
     
     
-    
+    // MENU PIECES
     @IBOutlet weak var menuView: UIView!
-    
     @IBOutlet weak var darkFillView: UIView!
-    
     @IBOutlet weak var toggleMenuButton: UIButton!
+    
+    //MAP BUTTONS
+    @IBOutlet weak var cancelBtn: UIButton!
+    @IBOutlet weak var centerMapBtn: UIButton!
+    @IBOutlet weak var goBTn: UIButton!
+    
+    
+    
+    // DIRECTION TABLE PIECES
+    
+    @IBOutlet weak var tableDarkView: UIView!
+    @IBOutlet weak var tableToggleButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var directionSubview: UIView!
+  
+    
     
     @IBOutlet weak var btn1: UIButton!
     @IBOutlet weak var btn2: UIButton!
@@ -49,8 +63,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
 
     
     @IBOutlet weak var imageView: UIImageView!
-
-//    var mySearchBar: UISearchBar!
    
     var placesClient: GMSPlacesClient!
     
@@ -59,7 +71,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var animation: CABasicAnimation!
     
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -78,6 +90,10 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn3.layer.cornerRadius = 22.0
         btn4.layer.cornerRadius = 22.0
         btn5.layer.cornerRadius = 22.0
+        
+        cancelBtn.alpha = 0
+        centerMapBtn.alpha = 0
+        goBTn.alpha = 0
                 
         btn1.backgroundColor = .green
         btn2.backgroundColor = UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
@@ -108,6 +124,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn2.alpha = 0
         btn1.alpha = 0
         menuView.alpha = 0
+       
         
 //        menuView.touchesCancelled(<#T##touches: Set<UITouch>##Set<UITouch>#>, with: <#T##UIEvent?#>)
         
@@ -124,15 +141,36 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         tap.numberOfTapsRequired = 2
         
         tap.addTarget(self, action: Selector("toDirections"))
-//        tap.addTarget(self, action: )
+
         
         btn1.addGestureRecognizer(tap)
         btn2.addGestureRecognizer(tap)
         btn3.addGestureRecognizer(tap)
         btn4.addGestureRecognizer(tap)
         btn5.addGestureRecognizer(tap)
+
+        //TABLE POSITIONING
         
-       
+        tableView.backgroundColor = .black
+        tableView.backgroundView?.alpha = 0.5
+        
+        
+        tableView.frame.size.height = screenSize.height
+        tableView.center.y = view.center.y + 500
+        
+        tableDarkView.center.y = tableView.center.y - 360
+        tableToggleButton.center.y = tableView.center.y - 360
+        
+        print(tableDarkView.center.y)
+
+        tableDarkView.layer.cornerRadius = 22.0
+        
+        // INITIALLY HIDDEN
+        tableView.alpha = 0
+        tableDarkView.alpha = 0
+        tableToggleButton.alpha = 0
+        directionSubview.alpha = 0
+
         
         reset()
         
@@ -227,8 +265,37 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
 //            print(mapView.annotations?.count)
             self.mapView.removeAnnotations(self.mapView.annotations!)
         }
+        
+//        self.cancelBtn.alpha = 0
+//        self.centerMapBtn.alpha = 0
+//        self.directionSubview.alpha = 0
+//        self.tableView.alpha = 0
+//        self.toggleMenuButton.alpha = 0
+//        self.tableDarkView.alpha = 0
+        
+        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
 
     }
+    
+    func fadeOutSubviews() {
+        UIView.animate(withDuration: 1.2, animations: {
+            self.cancelBtn.alpha = 0
+            self.centerMapBtn.alpha = 0
+            self.directionSubview.alpha = 0
+            self.tableView.alpha = 0
+            self.toggleMenuButton.alpha = 0
+            self.tableDarkView.alpha = 0
+            
+        }) { (true) in
+            self.resetCamera()
+        }
+        
+    }
+
+    
+  
+    
+    
     
     func setLocation() {
         
@@ -251,8 +318,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         resultsViewController?.delegate = self
         
         resultsViewController?.autocompleteBounds = bounds
-        
-
 
     }
     
@@ -263,6 +328,26 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
     
     //// MAP STUFF
+    
+    
+    
+    // MAP BUTTONS
+    @IBAction func cancelBtnPressed(_ sender: Any) {
+        
+        reset()
+    }
+    
+    @IBAction func centerMap(_ sender: Any) {
+        
+        adjustCameraForDirections()
+    }
+    
+    @IBAction func goBtnPressed(_ sender: Any) {
+        
+        geoProgressListener()
+    }
+    
+    
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         // Try to reuse the existing ‘pisa’ annotation image, if it exists.
@@ -301,13 +386,10 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     }
  
     
-    
-    
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         
         let catchtitle = String()
         
-    
         removeSubview()
         removeBold()
     }
@@ -384,12 +466,25 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         return radians * 180 / M_PI
     }
     
-   
-    
     
     // MAP CAMERA
 
 //    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+    
+    func resetCamera() {
+        
+        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 13, pitch: 90, heading: (destinationDirection))
+       
+        
+        print("TOTAL DISTANCE")
+        print(totalDistanceOverall)
+        
+        // Animate the camera movement over 5 seconds.
+        mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        
+        
+    }
+
     
     func adjustCameraForRoutes() {
     

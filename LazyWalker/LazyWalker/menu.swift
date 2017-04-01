@@ -106,9 +106,9 @@ extension mapVC {
         }
     
 
-        func radians(degrees: Double) -> CGFloat {
-            return CGFloat(degrees * .pi / degrees)
-        }
+//        func radians(degrees: Double) -> CGFloat {
+//            return CGFloat(degrees * .pi / degrees)
+//        }
 
         func addTapGestureDismissal() {
             let aSelector : Selector = "removeSubview"
