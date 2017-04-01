@@ -25,7 +25,9 @@ var distanceArray = [String]()
 var textArray = [String]()
 var signArray = [String]()
 var intervalArray = [NSArray]()
-var coordsArray = [NSArray]()
+var coordsArray = [CLLocationCoordinate2D]()
+var segmentPoints = [CLLocationCoordinate2D]()
+
 
 var progCount = Int()
 
@@ -44,10 +46,33 @@ extension mapVC {
     
         let path = paths[index]
     
+        progCount = 0
+    
         let points = path["points"]! as! AnyObject!
         let arrayOfCoords = points?["coordinates"] as! NSArray!
     
-        coordsArray = arrayOfCoords as! [NSArray]
+            for coord in arrayOfCoords! {
+                
+                let coordAry = coord as! NSArray
+                
+                let elevation = coordAry[2]
+                
+                elevationRange.append(elevation as! Double)
+                
+                let lat = coordAry[1]
+                let lng = coordAry[0]
+                
+                let ht = coordAry[2]
+                
+                let point = CLLocationCoordinate2D(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
+                
+                let coordpoint = CLLocationCoordinate2DMake(lat as! Double, lng as! Double)
+                
+                coordsArray.append(coordpoint)
+                
+            }
+    
+    
 
         let steps = path["instructions"] as! NSArray!
     
@@ -75,13 +100,45 @@ extension mapVC {
                 print(distString)
                
             }
+
     
-    print(distanceArray)
-    print(textArray)
-    print(distanceArray)
     
     startMap()
+    segments()
     
+    }
+    
+    func segments() {
+        
+        print("BONER!")
+        
+        var segs = [Int]()
+        
+        for int in intervalArray {
+//
+            
+            let inx2 = int[1]
+            
+            segs.append(inx2 as! Int)
+
+//            let coord1 = coordsArray[inx2] as! CLLocationCoordinate2D
+
+        }
+        
+        for seg in segs {
+            
+            let segCoord = coordsArray[seg]
+            
+            segmentPoints.append(segCoord)
+           
+        }
+        
+//        print("SEG POINTS")
+////        print(intervalArray.count)
+////        print(segmentPoints.count)
+////        print(textArray.count)
+//        print(segmentPoints)
+        
     }
     
     func removeExtraRoutes(index: Int) {
@@ -131,21 +188,11 @@ extension mapVC {
     
     func startMap() {
         
-        progCount += 1
         
-        print("COUNTER")
-        print(progCount)
         
         setLocation()
         
-        let lat = coordsArray[progCount][1]
-        let lng = coordsArray[progCount][0]
-        
-        currentDestination = CLLocationCoordinate2D(latitude:
-            lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees)
-        
-        bearingToLocationDegreesDirections(destinationLocation:CLLocation(latitude: lat as! CLLocationDegrees, longitude: lng as! CLLocationDegrees))
-        
+       
         adjustCameraForSelection()
 //        adjustCameraForDirections()
         geoProgressListener()
@@ -293,11 +340,26 @@ extension mapVC {
     
     func geoProgressListener() {
         
-        setLocation()
+        progCount += 1
         
-//        let currentLocation = locationManager.location
+        print("COUNTER")
+        print(progCount)
+        print(segmentPoints)
         
+                print("SEG POINTS")
+                print(intervalArray.count)
+                print(segmentPoints.count)
+                print(textArray.count)
+                print(segmentPoints)
         
+//        setLocation()
+////        currentDestination = segmentPoints[progCount]
+//        
+//        bearingToLocationDegreesDirections(destinationLocation:CLLocation(latitude: currentDestination.latitude, longitude: currentDestination.longitude))
+//        
+//        adjustCameraGO()
+////        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
+//        
     }
     
     
@@ -306,6 +368,9 @@ extension mapVC {
         setLocation()
         
         
+        
+     
+
         
 //        currentDestination = CLLocationCoordinate2D(latitude: lat, longitude: lon)
 //        //        self.bearingToLocationDegrees(destinationLocation:destination)
@@ -323,12 +388,24 @@ extension mapVC {
     
     //    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
     
+    func adjustCameraGO() {
+        
+        
+        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: totalDistanceOverall*0.8, pitch: 60, heading: (currentDestinationDirection))
+        
+        print("TOTAL DISTANCE")
+        print(totalDistanceOverall)
+        
+        // Animate the camera movement over 5 seconds.
+        mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        
+        //        self.imageShow()
+        prepareViewForSelection()
+    }
+
+    
     func adjustCameraForSelection() {
-        
-        
-        
-        
-       
+
         
         let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: totalDistanceOverall*0.8, pitch: 60, heading: (destinationDirection))
         
@@ -360,7 +437,7 @@ extension mapVC {
     }
     
     func showButton() {
-        UIView.animate(withDuration: 2, animations: {
+        UIView.animate(withDuration: 1, animations: {
             self.tableToggleButton.alpha = 1
             self.tableDarkView.alpha = 1
         }) { (true) in
@@ -384,8 +461,39 @@ extension mapVC {
             self.directionSubview.alpha = 1
             
         }) { (true) in
-//            self.showView()
+            self.showMapBtns()
         }
+        
+    }
+    
+    func showMapBtns() {
+        
+        cancelBtn.alpha = 0
+        centerMapBtn.alpha = 0
+        goBTn.alpha = 0
+        
+        self.centerMapBtn.center.x = self.view.frame.size.width - 40
+        self.centerMapBtn.center.y = self.directionSubview.center.y
+        
+        self.cancelBtn.center.x = self.tableToggleButton.center.x
+        self.cancelBtn.center.y = self.directionSubview.center.y
+        
+        self.goBTn.center.x = self.view.frame.size.width - 40
+        self.goBTn.center.y = self.tableToggleButton.center.y
+        
+        
+        self.directionSubview.center.y = (self.view.frame.size.height + 100) - self.view.frame.size.height
+
+        
+        UIView.animate(withDuration: 1.2, animations: {
+            self.cancelBtn.alpha = 1
+            self.centerMapBtn.alpha = 1
+           self.goBTn.alpha = 1
+            
+        }) { (true) in
+            //            self.showView()
+        }
+
         
     }
 
@@ -411,7 +519,7 @@ extension mapVC {
             self.directionSubview.backgroundColor = UIColor.black.withAlphaComponent(0.5)
             self.directionSubview.center.x = self.view.center.x
             self.directionSubview.center.y = (self.view.frame.size.height + 100) - self.view.frame.size.height
-//                (self.tableView.center.y + self.tableView.frame.size.height / 2) + 30
+
             self.directionSubview.layer.cornerRadius = directionSubview.frame.size.width / 22
             self.directionSubview.tag = 102
         
@@ -420,7 +528,7 @@ extension mapVC {
                 let label = UILabel()
                 label.translatesAutoresizingMaskIntoConstraints = false
                 label.textAlignment = .center
-                label.text = "\(Int(sortedAscend[num]))" + " meters uphill, " + totalMiles + " mi total"
+                label.text = "\(Int(sortedAscend[num]))" + " meters uphill, " + totalMiles + "total"
                 label.numberOfLines=1
                 label.backgroundColor = UIColor.clear
                 label.textColor = .white

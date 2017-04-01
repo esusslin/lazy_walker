@@ -130,6 +130,30 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Pn0-gC-yWn">
+                                        <rect key="frame" x="170" y="324" width="24" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="cancel"/>
+                                        <connections>
+                                            <action selector="cancelBtnPressed:" destination="rqQ-Xm-6Vz" eventType="touchUpInside" id="xBH-xg-jd2"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ml1-Sd-0WE">
+                                        <rect key="frame" x="16" y="16" width="24" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="center-map"/>
+                                        <connections>
+                                            <action selector="centerMap:" destination="rqQ-Xm-6Vz" eventType="touchUpInside" id="Rgx-vV-61R"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="z3K-dM-es0">
+                                        <rect key="frame" x="26" y="26" width="44" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="Go"/>
+                                        <connections>
+                                            <action selector="goBtnPressed:" destination="rqQ-Xm-6Vz" eventType="touchUpInside" id="caB-Rg-OEM"/>
+                                        </connections>
+                                    </button>
                                     <view alpha="0.5" contentMode="scaleToFill" id="emL-eA-BAD">
                                         <rect key="frame" x="10" y="10" width="44" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -204,8 +228,11 @@
                         <outlet property="btn3" destination="Ouh-yq-LFt" id="MyS-0j-Wrk"/>
                         <outlet property="btn4" destination="Kjx-7E-tPF" id="19i-nY-ruG"/>
                         <outlet property="btn5" destination="tDn-wM-XCh" id="VZH-ao-9Uf"/>
+                        <outlet property="cancelBtn" destination="Pn0-gC-yWn" id="oeo-f7-65b"/>
+                        <outlet property="centerMapBtn" destination="Ml1-Sd-0WE" id="dCq-CY-Par"/>
                         <outlet property="darkFillView" destination="HC1-fp-cQh" id="FEB-fC-cfi"/>
                         <outlet property="directionSubview" destination="sfQ-GI-TW6" id="NwC-vW-fMB"/>
+                        <outlet property="goBTn" destination="z3K-dM-es0" id="BlD-fJ-cpv"/>
                         <outlet property="imageView" destination="dIj-wf-ZWe" id="jiP-NG-sIC"/>
                         <outlet property="logoImageview" destination="cni-Mk-ut4" id="frV-wO-UNg"/>
                         <outlet property="mapView" destination="2j4-FC-qKD" id="i2D-5n-mYd"/>
@@ -413,6 +440,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Go" width="32" height="32"/>
+        <image name="cancel" width="32" height="32"/>
+        <image name="center-map" width="32" height="32"/>
         <image name="people1" width="128" height="128"/>
         <image name="up" width="32" height="32"/>
     </resources>

@@ -32,6 +32,13 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     @IBOutlet weak var darkFillView: UIView!
     @IBOutlet weak var toggleMenuButton: UIButton!
     
+    //MAP BUTTONS
+    @IBOutlet weak var cancelBtn: UIButton!
+    @IBOutlet weak var centerMapBtn: UIButton!
+    @IBOutlet weak var goBTn: UIButton!
+    
+    
+    
     // DIRECTION TABLE PIECES
     
     @IBOutlet weak var tableDarkView: UIView!
@@ -83,6 +90,10 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn3.layer.cornerRadius = 22.0
         btn4.layer.cornerRadius = 22.0
         btn5.layer.cornerRadius = 22.0
+        
+        cancelBtn.alpha = 0
+        centerMapBtn.alpha = 0
+        goBTn.alpha = 0
                 
         btn1.backgroundColor = .green
         btn2.backgroundColor = UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
@@ -254,8 +265,37 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
 //            print(mapView.annotations?.count)
             self.mapView.removeAnnotations(self.mapView.annotations!)
         }
+        
+//        self.cancelBtn.alpha = 0
+//        self.centerMapBtn.alpha = 0
+//        self.directionSubview.alpha = 0
+//        self.tableView.alpha = 0
+//        self.toggleMenuButton.alpha = 0
+//        self.tableDarkView.alpha = 0
+        
+        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
 
     }
+    
+    func fadeOutSubviews() {
+        UIView.animate(withDuration: 1.2, animations: {
+            self.cancelBtn.alpha = 0
+            self.centerMapBtn.alpha = 0
+            self.directionSubview.alpha = 0
+            self.tableView.alpha = 0
+            self.toggleMenuButton.alpha = 0
+            self.tableDarkView.alpha = 0
+            
+        }) { (true) in
+            self.resetCamera()
+        }
+        
+    }
+
+    
+  
+    
+    
     
     func setLocation() {
         
@@ -288,6 +328,26 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
     
     //// MAP STUFF
+    
+    
+    
+    // MAP BUTTONS
+    @IBAction func cancelBtnPressed(_ sender: Any) {
+        
+        reset()
+    }
+    
+    @IBAction func centerMap(_ sender: Any) {
+        
+        adjustCameraForDirections()
+    }
+    
+    @IBAction func goBtnPressed(_ sender: Any) {
+        
+        geoProgressListener()
+    }
+    
+    
     
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
         // Try to reuse the existing ‘pisa’ annotation image, if it exists.
@@ -410,6 +470,21 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     // MAP CAMERA
 
 //    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+    
+    func resetCamera() {
+        
+        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 13, pitch: 90, heading: (destinationDirection))
+       
+        
+        print("TOTAL DISTANCE")
+        print(totalDistanceOverall)
+        
+        // Animate the camera movement over 5 seconds.
+        mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        
+        
+    }
+
     
     func adjustCameraForRoutes() {
     
