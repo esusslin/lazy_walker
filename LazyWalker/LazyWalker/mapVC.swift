@@ -46,6 +46,13 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var directionSubview: UIView!
   
+    @IBOutlet weak var nextSubview: UIView!
+    @IBOutlet weak var nextLbl: UILabel!
+
+
+    @IBOutlet weak var distLbl: UILabel!
+    @IBOutlet weak var arrowPic: UIImageView!
+
     
     
     @IBOutlet weak var btn1: UIButton!
@@ -170,6 +177,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         tableDarkView.alpha = 0
         tableToggleButton.alpha = 0
         directionSubview.alpha = 0
+        
+        nextSubview.alpha = 0
 
         
         reset()

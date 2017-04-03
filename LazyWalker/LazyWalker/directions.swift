@@ -375,27 +375,24 @@ extension mapVC {
         let width = screenSize.width
         let height = screenSize.height
         
-        self.directionSubview.frame = CGRect.init(x: 0, y: height - 180, width: width - 40, height: 40)
-        self.directionSubview.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        self.directionSubview.center.x = self.view.center.x
-        self.directionSubview.center.y = (self.view.frame.size.height + 100) - self.view.frame.size.height
-        
-        self.directionSubview.layer.cornerRadius = directionSubview.frame.size.width / 22
-        self.directionSubview.tag = 102
+        self.nextSubview.frame = CGRect.init(x: 0, y: height - 180, width: width - 40, height: 40)
+        self.nextSubview.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.nextSubview.center.x = self.view.center.x
+        self.nextSubview.center.y = (self.view.frame.size.height + 200) - self.view.frame.size.height
         
         
+        self.nextSubview.layer.cornerRadius = directionSubview.frame.size.width / 22
+        self.nextSubview.tag = 102
         
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.text = textArray[progCount]
-        label.numberOfLines=1
-        label.backgroundColor = UIColor.clear
-        label.textColor = .white
-        label.font=UIFont.systemFont(ofSize: 14)
-        self.directionSubview.addSubview(label)
+        let directionText = textArray[progCount]
         
-        let arrowPic = UIImageView()
+        nextLbl.text = "BONER"
+        distLbl.text = "WTF"
+        nextLbl.alpha = 1
+        distLbl.alpha = 1
+        
+        
+        
         
         if signArray[progCount] == "-3" || signArray[progCount] == "-2" {
             arrowPic.image = UIImage.init(named: "left")
@@ -425,21 +422,41 @@ extension mapVC {
             
         }
         
-        self.directionSubview.addSubview(label)
-        self.directionSubview.addSubview(arrowPic)
         
-        // Create the views dictionary
-        let viewsDictionary = ["pic":arrowPic, "label":label]
+       let viewsDictionary = ["pic":arrowPic, "label":nextLbl, "distlbl":distLbl] as [String : Any]
         
-        directionSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[pic(16)]-10-[label]-20-|",
+//        nextSubview.translatesAutoresizingMaskIntoConstraints = false
+        nextLbl.translatesAutoresizingMaskIntoConstraints = false
+        arrowPic.translatesAutoresizingMaskIntoConstraints = false
+        distLbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[pic(16)]-10-[label]-20-[distlbl]-10-|",
                                                                        options: [],
                                                                        metrics: nil,
                                                                        views: viewsDictionary))
         
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[pic(16)]-10-|",
+                                                                  options: [],
+                                                                  metrics: nil,
+                                                                  views: viewsDictionary))
         
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[label]-10-|",
+                                                                  options: [],
+                                                                  metrics: nil,
+                                                                  views: viewsDictionary))
+
         
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[distlbl]-10-|",
+                                                                  options: [],
+                                                                  metrics: nil,
+                                                                  views: viewsDictionary))
+
+        print("CENTERS")
         
-        self.directionSubview.alpha = 1
+        print(arrowPic.center)
+        print(nextLbl.center)
+        print(distLbl.center)
+        self.nextSubview.alpha = 1
         
     }
 
@@ -449,18 +466,7 @@ extension mapVC {
         
         setLocation()
         
-        
-        
-     
 
-        
-//        currentDestination = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-//        //        self.bearingToLocationDegrees(destinationLocation:destination)
-//        
-//        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
-
-        
-        
     }
     
     
@@ -628,9 +634,6 @@ extension mapVC {
                 
                 directionSubview.addConstraints([horConstraint, verConstraint, widConstraint, heiConstraint])
 
-        
-    
-//        self.mapView.addSubview(directionSubview)
         
        
     }
