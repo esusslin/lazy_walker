@@ -178,11 +178,7 @@ extension mapVC {
         }
         
     }
-    
-//    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
-//        showAlert("enter \(region.identifier)")
-//    }
-    
+
        
     
     
@@ -192,6 +188,7 @@ extension mapVC {
         
         setLocation()
         
+        progCount = 0
        
         adjustCameraForSelection()
 //        adjustCameraForDirections()
