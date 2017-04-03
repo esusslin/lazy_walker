@@ -344,7 +344,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
     @IBAction func goBtnPressed(_ sender: Any) {
         
-        geoProgressListener()
+        geoStart()
     }
     
     

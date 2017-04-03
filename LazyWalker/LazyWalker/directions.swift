@@ -191,9 +191,9 @@ extension mapVC {
         progCount = 0
        
         adjustCameraForSelection()
-//        adjustCameraForDirections()
-        geoProgressListener()
-    }
+        
+
+        }
     
     
     
@@ -335,29 +335,114 @@ extension mapVC {
     
     
     
-    func geoProgressListener() {
+    func geoStart() {
         
-        progCount += 1
+        self.directionSubview.alpha = 0
+        self.tableToggleButton.alpha = 0
+        self.tableDarkView.alpha = 0
+        self.tableView.alpha = 0
+        
+        self.cancelBtn.alpha = 0
+        self.centerMapBtn.alpha = 0
+        self.goBTn.alpha = 0
         
         print("COUNTER")
         print(progCount)
-        print(segmentPoints)
         
-                print("SEG POINTS")
-                print(intervalArray.count)
-                print(segmentPoints.count)
-                print(textArray.count)
-                print(segmentPoints)
         
-//        setLocation()
-////        currentDestination = segmentPoints[progCount]
-//        
-//        bearingToLocationDegreesDirections(destinationLocation:CLLocation(latitude: currentDestination.latitude, longitude: currentDestination.longitude))
-//        
-//        adjustCameraGO()
-////        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
-//        
+        currentDestination = segmentPoints[progCount]
+        
+        let curLat = currentDestination.latitude
+        let curLng = currentDestination.longitude
+        
+        print(currentDestination)
+        
+        bearingToLocationDegreesDirections(destinationLocation: CLLocation(latitude: curLat, longitude: curLng))
+        
+        adjustCameraGO()
+        
+        progCount += 1
+        progressSubview()
+
+        
     }
+    
+    func progressSubview() {
+        
+        
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        let width = screenSize.width
+        let height = screenSize.height
+        
+        self.directionSubview.frame = CGRect.init(x: 0, y: height - 180, width: width - 40, height: 40)
+        self.directionSubview.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.directionSubview.center.x = self.view.center.x
+        self.directionSubview.center.y = (self.view.frame.size.height + 100) - self.view.frame.size.height
+        
+        self.directionSubview.layer.cornerRadius = directionSubview.frame.size.width / 22
+        self.directionSubview.tag = 102
+        
+        
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.text = textArray[progCount]
+        label.numberOfLines=1
+        label.backgroundColor = UIColor.clear
+        label.textColor = .white
+        label.font=UIFont.systemFont(ofSize: 14)
+        self.directionSubview.addSubview(label)
+        
+        let arrowPic = UIImageView()
+        
+        if signArray[progCount] == "-3" || signArray[progCount] == "-2" {
+            arrowPic.image = UIImage.init(named: "left")
+            
+        }
+        
+        if signArray[progCount] == "-1" {
+            arrowPic.image = UIImage.init(named: "slight-left")
+            
+        }
+        if signArray[progCount] == "0" {
+            arrowPic.image = UIImage.init(named: "straight")
+            
+        }
+        if signArray[progCount] == "1" {
+            arrowPic.image = UIImage.init(named: "slight-right")
+            
+        }
+        
+        if signArray[progCount] == "2" || signArray[progCount] == "3" {
+            arrowPic.image = UIImage.init(named: "right")
+            
+        }
+        
+        if signArray[progCount] == "6"  {
+            arrowPic.image = UIImage.init(named: "round")
+            
+        }
+        
+        self.directionSubview.addSubview(label)
+        self.directionSubview.addSubview(arrowPic)
+        
+        // Create the views dictionary
+        let viewsDictionary = ["pic":arrowPic, "label":label]
+        
+        directionSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[pic(16)]-10-[label]-20-|",
+                                                                       options: [],
+                                                                       metrics: nil,
+                                                                       views: viewsDictionary))
+        
+        
+        
+        
+        self.directionSubview.alpha = 1
+        
+    }
+
     
     
     func mapProgress() {
@@ -388,16 +473,12 @@ extension mapVC {
     func adjustCameraGO() {
         
         
-        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: totalDistanceOverall*0.8, pitch: 60, heading: (currentDestinationDirection))
-        
-        print("TOTAL DISTANCE")
-        print(totalDistanceOverall)
+        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 50, pitch: 80, heading: (currentDestinationDirection))
         
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         
-        //        self.imageShow()
-        prepareViewForSelection()
+        
     }
 
     
