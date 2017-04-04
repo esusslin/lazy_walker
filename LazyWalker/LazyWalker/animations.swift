@@ -16,7 +16,7 @@ extension mapVC: CAAnimationDelegate {
     
     func animateLaunch(image: UIImage) {
         
-        // Create and apply mask
+        // CREATE AND APPLY MASK
         
         mask = CALayer()
         mask.contents = image.cgImage
@@ -41,8 +41,7 @@ extension mapVC: CAAnimationDelegate {
         decreaseSize.isRemovedOnCompletion = false
         
         mask.add(decreaseSize, forKey: "bounds")
-        
-        
+  
     }
     
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
@@ -55,25 +54,16 @@ extension mapVC: CAAnimationDelegate {
         animation.duration = 2.0
         animation.fromValue = NSValue(cgRect: mask!.bounds)
         animation.toValue = NSValue(cgRect: CGRect(x: 0, y: 0, width: 8000, height: 8000))
-        
         animation.fillMode = kCAFillModeForwards
         animation.isRemovedOnCompletion = false
         
         mask.add(animation, forKey: "bounds")
-        
-        // Fade out overlay
-        //        UIView.animate(withDuration: 2.0, animations: { () -> Void in
-        //            self.overlay.alpha = 0
-        //            self.logoImageview.alpha = 0
-        //            print("boner?")
-        //
-        //        })
-        
+
         UIView.animate(withDuration: 2.0, animations: {
             self.overlay.alpha = 0
             self.logoImageview.alpha = 0
         }) { (true) in
-            //            self.searchBarShow()
+
         }
         
         

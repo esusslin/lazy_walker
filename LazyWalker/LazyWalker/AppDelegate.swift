@@ -28,29 +28,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
 
         func locationManager(_ manager: CLLocationManager, didUpdateHeading heading: CLHeading) {
-    
-            
-          
-//            print(heading.magneticHeading)
-            
-//            currentHeading = heading.magneticHeading
+
             
         }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-//        let first = mapVC()
-//        first.centerMap()
-        print("HELLO????")
-        
         if let vc = self.window?.rootViewController?.presentedViewController as? mapVC {
-            vc.centerMap()
-            print("PRINT BONER")
+            
         }
-       
-        
-//        mapVC.centerMap(locations.last?.coordinate)
-        
+
         
     }
     

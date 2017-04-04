@@ -105,7 +105,6 @@ extension mapVC {
     
     func segments() {
         
-        print("BONER!")
         
         var segs = [Int]()
         
@@ -321,9 +320,7 @@ extension mapVC {
     
     
     func geoStart() {
-        
-        
-        
+
         self.directionSubview.alpha = 0
         self.tableToggleButton.alpha = 0
         self.tableDarkView.alpha = 0

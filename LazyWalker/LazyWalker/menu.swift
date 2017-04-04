@@ -20,10 +20,10 @@ extension mapVC {
 
 
 //// TOGGLE MENU
+    
+    // THE USER CAN BRING THE DIRECTIONS TABLE INTO FULL VIEW OR LEAVE IT AS A PARTIAL VIEW BELOW THE MAP
 
         @IBAction func toggleMenu(_ sender: UIButton) {
-            
-//            self.btn1.addGestureRecognizer
             
             if darkFillView.transform == CGAffineTransform.identity{
                 
@@ -48,7 +48,9 @@ extension mapVC {
         }
     
 
-            
+         // BUTTONS ACTIONS:
+        // BUTTONS EFFECTIVELY PERFORM JUST LIKE TAPPING THE POLYLINES OF EACH ROUTE:  
+       // A LINECHART IS PRODUCED SHOWN ON A GRAPHIC SUBVIEW ALONG WITH THE TOTAL CLIMB AND DISTANCE
             
     
         @IBAction func btn1_pressed(_ sender: UIButton) {
@@ -59,9 +61,7 @@ extension mapVC {
             self.boldline(title: "0")
             self.addAnnotationSubview(index: "0")
             self.addGraphicSubview(index: "0")
-            
-            print("MAGNETIC HEADING!")
-//            print(locationManager.heading?.magneticHeading)
+
         }
 
         @IBAction func btn2_pressed(_ sender: UIButton) {
@@ -105,10 +105,6 @@ extension mapVC {
 
         }
     
-
-//        func radians(degrees: Double) -> CGFloat {
-//            return CGFloat(degrees * .pi / degrees)
-//        }
 
         func addTapGestureDismissal() {
             let aSelector : Selector = "removeSubview"

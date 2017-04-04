@@ -58,4 +58,3 @@ var elevationRange = [Double]()
 var minElevation = Double()
 var maxElevation = Double()
 
-//var pointsAry = [CGPoint]()

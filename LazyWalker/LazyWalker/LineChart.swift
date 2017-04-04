@@ -136,10 +136,7 @@ class LineChart: UIView {
 }
 
     override func draw(_ rect: CGRect) {
-        // draw rect comes with a drawing context, so lets grab it.
-        // Also, if there is not yet a chart transform, we will bail on performing any other drawing.
-        // I like guard statements for this because it's kind of like a bouncer to a bar.
-        // If you don't have your transform yet, you can't enter drawAxes.
+        
         guard let context = UIGraphicsGetCurrentContext(), let t = chartTransform else { return }
         drawAxes(in: context, usingTransform: t)
     }
@@ -147,25 +144,22 @@ class LineChart: UIView {
     func drawAxes(in context: CGContext, usingTransform t: CGAffineTransform) {
         context.saveGState()
         
-        // make two paths, one for thick lines, one for thin
+        
         let thickerLines = CGMutablePath()
         let thinnerLines = CGMutablePath()
         
-        // the two line chart axes
+        
         let xAxisPoints = [CGPoint(x: xMin, y: 0), CGPoint(x: xMax, y: 0)]
         let yAxisPoints = [CGPoint(x: 0, y: yMin), CGPoint(x: 0, y: yMax)]
         
-        // add each to thicker lines but apply our transform too.
+        
         thickerLines.addLines(between: xAxisPoints, transform: t)
         thickerLines.addLines(between: yAxisPoints, transform: t)
         
-        // next we go from xMin to xMax by deltaX using stride
+        
         for x in stride(from: xMin, through: xMax, by: deltaX) {
             
-            // tick points are the points for the ticks on each axis
-            // we check showInnerLines first to see if we are drawing small ticks or full lines
-            // tip for new guys: `let a = someBool ? b : c`  is called a ternary operator
-            // in english it means "let a = b if somebool is true, or c if it is false."
+            
             
             let tickPoints = showInnerLines ?
                 [CGPoint(x: x, y: yMin).applying(t), CGPoint(x: x, y: yMax).applying(t)] :
@@ -210,7 +204,7 @@ class LineChart: UIView {
                      NSForegroundColorAttributeName: axisColor])
             }
         }
-        // finally set stroke color & line width then stroke thick lines, repeat for thin
+        
         context.setStrokeColor(axisColor.cgColor)
         context.setLineWidth(axisLineWidth)
         context.addPath(thickerLines)
@@ -222,8 +216,7 @@ class LineChart: UIView {
         context.strokePath()
         
         context.restoreGState()
-        // whenever you change a graphics context you should save it prior and restore it after
-        // if we were using a context other than draw(rect) we would have to also end the graphics context
+        
 }
 
     
