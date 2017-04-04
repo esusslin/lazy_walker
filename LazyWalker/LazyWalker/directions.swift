@@ -32,13 +32,10 @@ var segmentPoints = [CLLocationCoordinate2D]()
 var progCount = Int()
 
 extension mapVC {
-    
-//    var geotifications = [Geotification]()
-//    let locationManager = CLLocationManager() // Add this stdatement
 
 
    @objc func toDirections(withSender sender: MyTapGestureRecognizer) {
-        print("BONER DIRECTIONS")
+        print("TO DIRECTIONS")
 
         let index = Int(sender.id!)!
     
@@ -79,8 +76,6 @@ extension mapVC {
             for step in steps! {
                 let each = step as AnyObject!
                 
-//                print(each)
-                
                 let dist = each?["distance"]!
                 let distString = String(describing: dist!)
                 distanceArray.append(distString)
@@ -94,7 +89,7 @@ extension mapVC {
                 signArray.append(sgnString)
                 
                 let interval = each?["interval"] as? NSArray!
-//                let interAry = NSArray(array: interval)
+
                 intervalArray.append(interval!)
                 
                 print(distString)
@@ -115,13 +110,9 @@ extension mapVC {
         var segs = [Int]()
         
         for int in intervalArray {
-//
-            
             let inx2 = int[1]
             
             segs.append(inx2 as! Int)
-
-//            let coord1 = coordsArray[inx2] as! CLLocationCoordinate2D
 
         }
         
@@ -132,12 +123,7 @@ extension mapVC {
             segmentPoints.append(segCoord)
            
         }
-        
-//        print("SEG POINTS")
-////        print(intervalArray.count)
-////        print(segmentPoints.count)
-////        print(textArray.count)
-//        print(segmentPoints)
+
         
     }
     
@@ -331,8 +317,7 @@ extension mapVC {
 
     
     
-    
-    
+       
     
     
     func geoStart() {
@@ -371,8 +356,7 @@ extension mapVC {
     
     func progressSubview() {
         
-        
-        
+
         let screenSize: CGRect = UIScreen.main.bounds
         let width = screenSize.width
         let height = screenSize.height
@@ -460,13 +444,7 @@ extension mapVC {
                                                                   options: [],
                                                                   metrics: nil,
                                                                   views: viewsDictionary))
-
         
-//        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[distlbl]-10-|",
-//                                                                  options: [],
-//                                                                  metrics: nil,
-//                                                                  views: viewsDictionary))
-
         print("CENTERS")
         
         print(arrowPic.center)
@@ -476,6 +454,8 @@ extension mapVC {
         
     }
     
+    
+   
        
     
     func mapProgress() {

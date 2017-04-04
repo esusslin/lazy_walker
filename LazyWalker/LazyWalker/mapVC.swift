@@ -26,6 +26,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var searchController: UISearchController?
     var resultView: UITextView?
     
+
+    
     
     // MENU PIECES
     @IBOutlet weak var menuView: UIView!
@@ -77,10 +79,15 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var mask: CALayer!
     var animation: CABasicAnimation!
     
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+     
+        
         
         let screenSize: CGRect = UIScreen.main.bounds
         
@@ -245,6 +252,24 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         totalDistanceOverall = self.distance(origin, destination)
 
     }
+    
+    
+        
+    func centerMap() {
+        
+//        let notificationCenter = NotificationCenter.defaultCenter
+//        let mainQueue = OperationQueue.mainQueue
+        
+//        appDelegate.locationManager(manager: locationManager, didUpdateToLocation: location, fromLocation: setLocation)
+        
+        
+        
+//        let point = CGPoint(
+//        mapView.center = location
+        
+        mapView.setCenter(CLLocationCoordinate2D(latitude: latitude, longitude: longitude), animated: true)
+        print("BONER!!!!!")
+    }
 
     
     func reset() {
@@ -300,19 +325,19 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         }
         
     }
-
     
-  
+
     
     
     
     func setLocation() {
         
+        
 
 
         let currentLocation = locationManager.location
         
-
+        
         
         latitude = (currentLocation?.coordinate.latitude)!
         longitude = (currentLocation?.coordinate.longitude)!
@@ -546,8 +571,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
 
 
 
-
-
 // Handle the user's selection.
 extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
 
@@ -565,12 +588,7 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
         self.setLocation()
         
         searchController?.isActive = false
-        
-        // Do something with the selected place.
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
-        
+   
         print(place.placeID)
         
         self.loadFirstPhotoForPlace(placeID: place.placeID)

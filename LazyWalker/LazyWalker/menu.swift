@@ -61,7 +61,7 @@ extension mapVC {
             self.addGraphicSubview(index: "0")
             
             print("MAGNETIC HEADING!")
-            print(locationManager.heading?.magneticHeading)
+//            print(locationManager.heading?.magneticHeading)
         }
 
         @IBAction func btn2_pressed(_ sender: UIButton) {

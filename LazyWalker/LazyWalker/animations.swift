@@ -16,8 +16,6 @@ extension mapVC: CAAnimationDelegate {
     
     func animateLaunch(image: UIImage) {
         
-        //        self.view.backgroundColor = bgColor
-        
         // Create and apply mask
         
         mask = CALayer()
