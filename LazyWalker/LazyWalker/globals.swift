@@ -18,6 +18,8 @@ import GooglePlaces
 
 //// GLOBALS
 
+
+
 let locationManager = CLLocationManager()
 //var currentHeading: CLLocationDirection
 

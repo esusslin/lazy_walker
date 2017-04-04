@@ -337,6 +337,8 @@ extension mapVC {
     
     func geoStart() {
         
+        
+        
         self.directionSubview.alpha = 0
         self.tableToggleButton.alpha = 0
         self.tableDarkView.alpha = 0
@@ -375,10 +377,10 @@ extension mapVC {
         let width = screenSize.width
         let height = screenSize.height
         
-        self.nextSubview.frame = CGRect.init(x: 0, y: height - 180, width: width - 40, height: 40)
+        self.nextSubview.frame = CGRect.init(x: 0, y: height - 180, width: width - 10, height: 100)
         self.nextSubview.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         self.nextSubview.center.x = self.view.center.x
-        self.nextSubview.center.y = (self.view.frame.size.height + 200) - self.view.frame.size.height
+        self.nextSubview.center.y = (self.view.frame.size.height + 120) - self.view.frame.size.height
         
         
         self.nextSubview.layer.cornerRadius = directionSubview.frame.size.width / 22
@@ -386,12 +388,21 @@ extension mapVC {
         
         let directionText = textArray[progCount]
         
-        nextLbl.text = "BONER"
-        distLbl.text = "WTF"
+        nextLbl.text = directionText
         nextLbl.alpha = 1
+        nextLbl.font=UIFont.systemFont(ofSize: 16)
+        
+        let x = distance(CLLocationCoordinate2D(latitude: latitude, longitude: longitude), currentDestination)
+
+        
+        distLbl.text = metersToMilesString(meters: x)
         distLbl.alpha = 1
+        print(distLbl.text)
+        distLbl.font=UIFont.systemFont(ofSize: 12)
+        distLbl.textColor = .red
+        distLbl.center.x = nextSubview.center.x
         
-        
+        let y = Double(round(100*x)/100)
         
         
         if signArray[progCount] == "-3" || signArray[progCount] == "-2" {
@@ -430,26 +441,31 @@ extension mapVC {
         arrowPic.translatesAutoresizingMaskIntoConstraints = false
         distLbl.translatesAutoresizingMaskIntoConstraints = false
         
-        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-10-[pic(16)]-10-[label]-20-[distlbl]-10-|",
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[pic(16)]-20-[label]-20-|",
                                                                        options: [],
                                                                        metrics: nil,
                                                                        views: viewsDictionary))
         
-        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[pic(16)]-10-|",
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[distlbl]-40-|",
                                                                   options: [],
                                                                   metrics: nil,
                                                                   views: viewsDictionary))
         
-        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[label]-10-|",
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[pic(16)]-10-|",
+                                                                  options: [],
+                                                                  metrics: nil,
+                                                                  views: viewsDictionary))
+        
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[label]-20-[distlbl]-20-|",
                                                                   options: [],
                                                                   metrics: nil,
                                                                   views: viewsDictionary))
 
         
-        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-10-[distlbl]-10-|",
-                                                                  options: [],
-                                                                  metrics: nil,
-                                                                  views: viewsDictionary))
+//        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[distlbl]-10-|",
+//                                                                  options: [],
+//                                                                  metrics: nil,
+//                                                                  views: viewsDictionary))
 
         print("CENTERS")
         
@@ -459,14 +475,13 @@ extension mapVC {
         self.nextSubview.alpha = 1
         
     }
-
     
+       
     
     func mapProgress() {
         
         setLocation()
         
-
     }
     
     
