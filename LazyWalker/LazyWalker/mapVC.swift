@@ -26,6 +26,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var searchController: UISearchController?
     var resultView: UITextView?
     
+
+    
     
     // MENU PIECES
     @IBOutlet weak var menuView: UIView!
@@ -46,6 +48,13 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var directionSubview: UIView!
   
+    @IBOutlet weak var nextSubview: UIView!
+    @IBOutlet weak var nextLbl: UILabel!
+
+
+    @IBOutlet weak var distLbl: UILabel!
+    @IBOutlet weak var arrowPic: UIImageView!
+
     
     
     @IBOutlet weak var btn1: UIButton!
@@ -70,10 +79,13 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     var mask: CALayer!
     var animation: CABasicAnimation!
     
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         let screenSize: CGRect = UIScreen.main.bounds
         
@@ -124,25 +136,17 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn2.alpha = 0
         btn1.alpha = 0
         menuView.alpha = 0
-       
-        
-//        menuView.touchesCancelled(<#T##touches: Set<UITouch>##Set<UITouch>#>, with: <#T##UIEvent?#>)
         
         btn1.translatesAutoresizingMaskIntoConstraints = false
         btn2.translatesAutoresizingMaskIntoConstraints = false
-        
         btn3.translatesAutoresizingMaskIntoConstraints = false
-        
         btn4.translatesAutoresizingMaskIntoConstraints = false
-        
         btn5.translatesAutoresizingMaskIntoConstraints = false
         
         let tap = UITapGestureRecognizer()
         tap.numberOfTapsRequired = 2
         
         tap.addTarget(self, action: Selector("toDirections"))
-
-        
         btn1.addGestureRecognizer(tap)
         btn2.addGestureRecognizer(tap)
         btn3.addGestureRecognizer(tap)
@@ -150,19 +154,13 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn5.addGestureRecognizer(tap)
 
         //TABLE POSITIONING
-        
         tableView.backgroundColor = .black
         tableView.backgroundView?.alpha = 0.5
-        
-        
         tableView.frame.size.height = screenSize.height
         tableView.center.y = view.center.y + 500
         
         tableDarkView.center.y = tableView.center.y - 360
         tableToggleButton.center.y = tableView.center.y - 360
-        
-        print(tableDarkView.center.y)
-
         tableDarkView.layer.cornerRadius = 22.0
         
         // INITIALLY HIDDEN
@@ -170,15 +168,14 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         tableDarkView.alpha = 0
         tableToggleButton.alpha = 0
         directionSubview.alpha = 0
+        
+        nextSubview.alpha = 0
 
         
         reset()
         
         setLocation()
-        
-        
         searchController = UISearchController(searchResultsController: resultsViewController)
-
         searchController?.searchResultsUpdater = resultsViewController
 
         resultsViewController?.tableCellBackgroundColor = .black
@@ -217,34 +214,29 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         animateLaunch(image: UIImage(named: "people1")!)
 
         
-        // Set the map view‘s delegate property
+        // SET TEH MAP'S VIEW AND DELEGATE PROPERTY
         mapView.delegate = self
-        
-       
-        
         mapView.frame = view.bounds
-       
         mapView.styleURL = URL(string: "mapbox://styles/mapbox/dark-v9")
-    
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
         mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
         
 
         origin = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        
         totalDistanceOverall = self.distance(origin, destination)
 
     }
+    
 
     
     func reset() {
+        
+        // ALL INTERNAL STORAGE ARRAYS ARE CLEARED 
         
         // FOR ALL ROUTES
         paths.removeAll()
         
         // UNIQUE VALUES OF EACH ROUTE
-        
         ascend.removeAll()
         descend.removeAll()
         totalDistance.removeAll()
@@ -252,7 +244,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         totalDistanceOverall = 0.0
         
         // ALL COORDINATES
-        
         firstCoords.removeAll()
         secondCoords.removeAll()
         thirdCoords.removeAll()
@@ -260,22 +251,19 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         fifthCoords.removeAll()
         
         
+        // MAP IS CLEARED OF ANNOTATIONS:
+        
         if self.mapView.annotations != nil {
-//            print("ANNOTATION COUNT:")
-//            print(mapView.annotations?.count)
+
             self.mapView.removeAnnotations(self.mapView.annotations!)
         }
-        
-//        self.cancelBtn.alpha = 0
-//        self.centerMapBtn.alpha = 0
-//        self.directionSubview.alpha = 0
-//        self.tableView.alpha = 0
-//        self.toggleMenuButton.alpha = 0
-//        self.tableDarkView.alpha = 0
         
         mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
 
     }
+    
+    
+    // SUBVIEWS FADE FROM VIEW GRADUALLY
     
     func fadeOutSubviews() {
         UIView.animate(withDuration: 1.2, animations: {
@@ -291,77 +279,70 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         }
         
     }
+    
 
     
-  
-    
-    
-    
+    // SETS CURRENT LOCATION
+
     func setLocation() {
         
-
-
         let currentLocation = locationManager.location
-        
-
         
         latitude = (currentLocation?.coordinate.latitude)!
         longitude = (currentLocation?.coordinate.longitude)!
         
+        
+        // ESTABLISHES BOUNDS FOR GOOGLE-PLACES SEARCH
         let corner1 = CLLocationCoordinate2D(latitude: latitude + 0.1, longitude: longitude + 0.1)
         let corner2 = CLLocationCoordinate2D(latitude: latitude - 0.1, longitude: longitude - 0.1)
-        
-        let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
 
-        
+        let bounds = GMSCoordinateBounds(coordinate: corner1, coordinate: corner2)
+   
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
-        
         resultsViewController?.autocompleteBounds = bounds
 
     }
     
     
-    
-     
-    
-    
-    
-    //// MAP STUFF
-    
-    
-    
     // MAP BUTTONS
+    
+    // RESETS THE APP
     @IBAction func cancelBtnPressed(_ sender: Any) {
-        
+    
         reset()
     }
     
+     // RESETS THE MAPVIEW TO DIRECTIONS VIEW (IN CASE OF SCROLLING OFF, ETC)
     @IBAction func centerMap(_ sender: Any) {
         
         adjustCameraForDirections()
     }
     
+    
+    // GOES FROM TABLE VIEW OF DIRECTIONS TO LIVE DIRECTIONS
+    
     @IBAction func goBtnPressed(_ sender: Any) {
         
-        geoProgressListener()
+        geoStart()
     }
     
     
     
+    // MAPVIEW PROTOCOLS:
+    
+    
+    
+    // MAPVIEW PROTOCOL FOR POINT ANNOTATIONS (MAKES POLYLINES TAP-ABLE)
+    
     func mapView(_ mapView: MGLMapView, imageFor annotation: MGLAnnotation) -> MGLAnnotationImage? {
-        // Try to reuse the existing ‘pisa’ annotation image, if it exists.
         
         var annotationImage = mapView.dequeueReusableAnnotationImage(withIdentifier: "dot")
         
         if annotationImage == nil {
-            // Leaning Tower of Pisa by Stefan Spieler from the Noun Project.
             var image = UIImage(named: "dot")!
-            
             image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: 0, bottom: image.size.height/2, right: 0))
-            
-            
-            // Initialize the ‘pisa’ annotation image with the UIImage we just loaded.
+
             annotationImage = MGLAnnotationImage(image: image, reuseIdentifier: "dot")
         }
         
@@ -374,10 +355,11 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     }
     
     
+    // WHEN ANNOTATION POINTS ARE TAPPED THE ANNOTATION VIEW IS PRESENTED AS WELL AS
+    //...A GRAPHIC SUBVIEW OF THE ROUTE FOR THE USER TO EVALUATE
+    
     func mapView(_ mapView: MGLMapView, calloutViewFor annotation: MGLAnnotation) -> UIView? {
-        // Only show callouts for `Hello world!` annotation
-        print("annotation title")
-        print(annotation.title!!)
+
         self.boldline(title: annotation.title!!)
         self.addAnnotationSubview(index: annotation.title!!)
         self.addGraphicSubview(index: annotation.title!!)
@@ -385,6 +367,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         
     }
  
+    
+    // IF THE USER DESELECTS A PATH (TAPS ELSEWHERE) THE SUBVIEWS DISAPPEAR AND BOLD LINES ARE RESTORED TO NORMAL SIZE
     
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         
@@ -397,18 +381,15 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
     
     func mapView(_ mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
-        // Set the alpha for all shape annotations to 1 (full opacity)
         return 1
     }
     
+    
+    // LINE FOR THE POLYLINES IS ESTABLISHED.  IF THE TITLE OF THE LINE INCLUDES 'BOLD' THEN THE LINE WILL APPEAR 3X THE WIDTH
+    
     func mapView(_ mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
-        // Set the line width for polyline annotations
-        print("ANNOTATION TITLE:")
-        print(annotation.title!)
         
         if ((annotation.title!.localizedCaseInsensitiveContains("BOLD") == true) && annotation is MGLPolyline) {
-            
-            print("BOLD BONER!")
             
             return 12.0
         }
@@ -420,8 +401,11 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
     }
     
+    // THE COLOR OF EACH LINE IS APPLIED.
+    //THE FLATTEST ROUTE WILL BE GREEN AND THE MORE CHALLENGING ROUTES PROGRESSIVELY MORE RED
+    // UICOLOR IS USED TO ACHIEVE THIS SPECTRUM:
+    
     func mapView(_ mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-        // Give our polyline a unique color by checking for its `title` property
         
         
         if ((annotation.title == "0REG" || annotation.title == "0BOLD") && annotation is MGLPolyline) {
@@ -458,6 +442,8 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
     // DIRECTIONAL BEARING:
     
+    // THESE 2 FUNCITONS QUICKLY CONVERT DEGREES TO RADIANS AND VICE-VERSA
+    
     func DegreesToRadians(degrees: Double ) -> Double {
         return degrees * M_PI / 180
     }
@@ -467,44 +453,35 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     }
     
     
-    // MAP CAMERA
-
-//    func mapViewDidFinishLoadingMap(_ mapView: MGLMapView) {
+    // MAP CAMERA ANIMATIONS:
     
     func resetCamera() {
         
         let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 13, pitch: 90, heading: (destinationDirection))
-       
-        
-        print("TOTAL DISTANCE")
-        print(totalDistanceOverall)
-        
-        // Animate the camera movement over 5 seconds.
+
+        // ANIMATES THE CAMERA OVER 5 SECONDS FOR DRAMATIC AWESOMENESS
         mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         
         
     }
 
-    
+    // ONCE THE DESTINATION IS ENTERED THE CAMERA IS ADJUSTED TO A VIEW THAT WILL INCLUDE THE DESTINATION AND ALL OF THE POSSIBLE ROUTES FOR THE USER'S EVALUATION
+
     func adjustCameraForRoutes() {
     
         let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: totalDistanceOverall*1.7, pitch: 60, heading: (destinationDirection))
-        
-        print("TOTAL DISTANCE")
-        print(totalDistanceOverall)
-        
-        // Animate the camera movement over 5 seconds.
-        mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+
+            mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         
         self.imageShow()
     }
     
     
+        // TO ENHANCE THE USER EXPERIENCE, IF AN IMAGE IS AVAILABLE VIA THE GOOGLE-PLACES CALL.. 
     
+        // THE IMAGE WILL MAGICALLY APPEAR IN THE SKY ABOVE THE MAP...
         func imageShow() {
-    
-            print("imageshow!")
-    
+            
             UIView.animate(withDuration: 6, animations: {
                self.imageView.alpha = 0.5
             }) { (true) in
@@ -517,15 +494,14 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     
         }
     
+    // ..AND QUICKLY DISAPPEAR THEREAFTER..
     func imageHide() {
-        
-        print("imagehide!")
         
         UIView.animate(withDuration: 6, animations: {
             self.imageView.alpha = 0.0
         }) { (true) in
             UIView.animate(withDuration: 1, animations: {
-                //                    self.customView.alpha = 1
+                
             }, completion: { (true) in
                 
             })
@@ -536,55 +512,53 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
 
 
 
-
-
+// THIS EXTENSION HANDLES THE USER'S SELECTION VIA THE GOOGLE-PLACES API
 
 // Handle the user's selection.
 extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
 
     
+    // ONCE A PLACE IS SELECTED IT IS RECOGNIZED AS THE CURRENT DESTINATION
+    
+    
+    
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
+        
+        
         
         self.darkFillView.transform = .identity
         self.menuView.transform = .identity
         self.toggleMenuButton.transform = .identity
-        
-        
 
         self.reset()
         self.setLocation()
         
         searchController?.isActive = false
         
-        // Do something with the selected place.
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
-        
-        print(place.placeID)
-        
+        // IF A GOOGLE-IMAGE IS AVAILABLE FOR THE DESTINATION THIS IS ACCESSED AND USED
         self.loadFirstPhotoForPlace(placeID: place.placeID)
+
         
         let lat = place.coordinate.latitude
         let lon = place.coordinate.longitude
-        
-        
         destination = CLLocationCoordinate2D(latitude: lat, longitude: lon)
 
-        
+        // THE DIRECTION FROM ORIGIN TO DESTINATION IS ACHIEVED AND USED TO ANGLE THE MAP FOR THE USER
         bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
-        
-        
-        
+
+        // TOTAL DISTANCE OVERALL IS ACHIEVED
         totalDistanceOverall = self.distance(origin, destination)
+        
+        // DESTINATION COORDINATES & THE USER'S CURRENT LOCATION ARE USED IN THE API CALL TO GRAPHOPPER:
+        
         self.getGraphopper(destination: destination)
 
     }
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didFailAutocompleteWithError error: Error){
-        // TODO: handle the error.
+        
         print("Error: ", error.localizedDescription)
     }
     

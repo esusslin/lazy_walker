@@ -32,13 +32,10 @@ var segmentPoints = [CLLocationCoordinate2D]()
 var progCount = Int()
 
 extension mapVC {
-    
-//    var geotifications = [Geotification]()
-//    let locationManager = CLLocationManager() // Add this stdatement
 
 
    @objc func toDirections(withSender sender: MyTapGestureRecognizer) {
-        print("BONER DIRECTIONS")
+        print("TO DIRECTIONS")
 
         let index = Int(sender.id!)!
     
@@ -79,8 +76,6 @@ extension mapVC {
             for step in steps! {
                 let each = step as AnyObject!
                 
-//                print(each)
-                
                 let dist = each?["distance"]!
                 let distString = String(describing: dist!)
                 distanceArray.append(distString)
@@ -94,7 +89,7 @@ extension mapVC {
                 signArray.append(sgnString)
                 
                 let interval = each?["interval"] as? NSArray!
-//                let interAry = NSArray(array: interval)
+
                 intervalArray.append(interval!)
                 
                 print(distString)
@@ -110,18 +105,13 @@ extension mapVC {
     
     func segments() {
         
-        print("BONER!")
         
         var segs = [Int]()
         
         for int in intervalArray {
-//
-            
             let inx2 = int[1]
             
             segs.append(inx2 as! Int)
-
-//            let coord1 = coordsArray[inx2] as! CLLocationCoordinate2D
 
         }
         
@@ -132,12 +122,7 @@ extension mapVC {
             segmentPoints.append(segCoord)
            
         }
-        
-//        print("SEG POINTS")
-////        print(intervalArray.count)
-////        print(segmentPoints.count)
-////        print(textArray.count)
-//        print(segmentPoints)
+
         
     }
     
@@ -191,9 +176,9 @@ extension mapVC {
         progCount = 0
        
         adjustCameraForSelection()
-//        adjustCameraForDirections()
-        geoProgressListener()
-    }
+        
+
+        }
     
     
     
@@ -331,50 +316,148 @@ extension mapVC {
 
     
     
+       
     
     
-    
-    
-    func geoProgressListener() {
+    func geoStart() {
+
+        self.directionSubview.alpha = 0
+        self.tableToggleButton.alpha = 0
+        self.tableDarkView.alpha = 0
+        self.tableView.alpha = 0
         
-        progCount += 1
+        self.cancelBtn.alpha = 0
+        self.centerMapBtn.alpha = 0
+        self.goBTn.alpha = 0
         
         print("COUNTER")
         print(progCount)
-        print(segmentPoints)
         
-                print("SEG POINTS")
-                print(intervalArray.count)
-                print(segmentPoints.count)
-                print(textArray.count)
-                print(segmentPoints)
         
-//        setLocation()
-////        currentDestination = segmentPoints[progCount]
-//        
-//        bearingToLocationDegreesDirections(destinationLocation:CLLocation(latitude: currentDestination.latitude, longitude: currentDestination.longitude))
-//        
-//        adjustCameraGO()
-////        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
-//        
+        currentDestination = segmentPoints[progCount]
+        
+        let curLat = currentDestination.latitude
+        let curLng = currentDestination.longitude
+        
+        print(currentDestination)
+        
+        bearingToLocationDegreesDirections(destinationLocation: CLLocation(latitude: curLat, longitude: curLng))
+        
+        adjustCameraGO()
+        
+        progCount += 1
+        progressSubview()
+
+        
     }
     
+    func progressSubview() {
+        
+
+        let screenSize: CGRect = UIScreen.main.bounds
+        let width = screenSize.width
+        let height = screenSize.height
+        
+        self.nextSubview.frame = CGRect.init(x: 0, y: height - 180, width: width - 10, height: 100)
+        self.nextSubview.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        self.nextSubview.center.x = self.view.center.x
+        self.nextSubview.center.y = (self.view.frame.size.height + 120) - self.view.frame.size.height
+        
+        
+        self.nextSubview.layer.cornerRadius = directionSubview.frame.size.width / 22
+        self.nextSubview.tag = 102
+        
+        let directionText = textArray[progCount]
+        
+        nextLbl.text = directionText
+        nextLbl.alpha = 1
+        nextLbl.font=UIFont.systemFont(ofSize: 16)
+        
+        let x = distance(CLLocationCoordinate2D(latitude: latitude, longitude: longitude), currentDestination)
+
+        
+        distLbl.text = metersToMilesString(meters: x)
+        distLbl.alpha = 1
+        print(distLbl.text)
+        distLbl.font=UIFont.systemFont(ofSize: 12)
+        distLbl.textColor = .red
+        distLbl.center.x = nextSubview.center.x
+        
+        let y = Double(round(100*x)/100)
+        
+        
+        if signArray[progCount] == "-3" || signArray[progCount] == "-2" {
+            arrowPic.image = UIImage.init(named: "left")
+            
+        }
+        
+        if signArray[progCount] == "-1" {
+            arrowPic.image = UIImage.init(named: "slight-left")
+            
+        }
+        if signArray[progCount] == "0" {
+            arrowPic.image = UIImage.init(named: "straight")
+            
+        }
+        if signArray[progCount] == "1" {
+            arrowPic.image = UIImage.init(named: "slight-right")
+            
+        }
+        
+        if signArray[progCount] == "2" || signArray[progCount] == "3" {
+            arrowPic.image = UIImage.init(named: "right")
+            
+        }
+        
+        if signArray[progCount] == "6"  {
+            arrowPic.image = UIImage.init(named: "round")
+            
+        }
+        
+        
+       let viewsDictionary = ["pic":arrowPic, "label":nextLbl, "distlbl":distLbl] as [String : Any]
+        
+//        nextSubview.translatesAutoresizingMaskIntoConstraints = false
+        nextLbl.translatesAutoresizingMaskIntoConstraints = false
+        arrowPic.translatesAutoresizingMaskIntoConstraints = false
+        distLbl.translatesAutoresizingMaskIntoConstraints = false
+        
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[pic(16)]-20-[label]-20-|",
+                                                                       options: [],
+                                                                       metrics: nil,
+                                                                       views: viewsDictionary))
+        
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-40-[distlbl]-40-|",
+                                                                  options: [],
+                                                                  metrics: nil,
+                                                                  views: viewsDictionary))
+        
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[pic(16)]-10-|",
+                                                                  options: [],
+                                                                  metrics: nil,
+                                                                  views: viewsDictionary))
+        
+        nextSubview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[label]-20-[distlbl]-20-|",
+                                                                  options: [],
+                                                                  metrics: nil,
+                                                                  views: viewsDictionary))
+        
+        print("CENTERS")
+        
+        print(arrowPic.center)
+        print(nextLbl.center)
+        print(distLbl.center)
+        self.nextSubview.alpha = 1
+        
+    }
+    
+    
+   
+       
     
     func mapProgress() {
         
         setLocation()
-        
-        
-        
-     
-
-        
-//        currentDestination = CLLocationCoordinate2D(latitude: lat, longitude: lon)
-//        //        self.bearingToLocationDegrees(destinationLocation:destination)
-//        
-//        bearingToLocationDegrees(destinationLocation:CLLocation(latitude: lat, longitude: lon))
-
-        
         
     }
     
@@ -388,16 +471,12 @@ extension mapVC {
     func adjustCameraGO() {
         
         
-        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: totalDistanceOverall*0.8, pitch: 60, heading: (currentDestinationDirection))
-        
-        print("TOTAL DISTANCE")
-        print(totalDistanceOverall)
+        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 50, pitch: 80, heading: (currentDestinationDirection))
         
         // Animate the camera movement over 5 seconds.
         mapView.setCamera(camera, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         
-        //        self.imageShow()
-        prepareViewForSelection()
+        
     }
 
     
@@ -547,9 +626,6 @@ extension mapVC {
                 
                 directionSubview.addConstraints([horConstraint, verConstraint, widConstraint, heiConstraint])
 
-        
-    
-//        self.mapView.addSubview(directionSubview)
         
        
     }

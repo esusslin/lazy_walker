@@ -17,24 +17,31 @@ import GoogleMaps
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
     
-//    , CLLocationManagerDelegate
+
 
     var window: UIWindow?
     
     var locationManager: CLLocationManager?
     var coordinate: CLLocationCoordinate2D?
-//    var currentHeading: CLLocationDirection?
-//    var heading: CLHeading?
+    var lastCoordinate: CLLocationCoordinate2D?
+
 
 
         func locationManager(_ manager: CLLocationManager, didUpdateHeading heading: CLHeading) {
-    
-            print("APP DELEGATE")
-            print(heading.magneticHeading)
-            
-//            currentHeading = heading.magneticHeading
+
             
         }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        if let vc = self.window?.rootViewController?.presentedViewController as? mapVC {
+            
+        }
+
+        
+    }
+    
+
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -85,6 +92,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation) {
         
         coordinate = newLocation.coordinate
+        lastCoordinate = oldLocation.coordinate
+        print("NEW COORDS")
+        print(coordinate)
+        print(oldLocation.coordinate)
+//        mapVC.updateDistLbl(coordinate)
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

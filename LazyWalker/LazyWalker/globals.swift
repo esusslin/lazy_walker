@@ -18,8 +18,8 @@ import GooglePlaces
 
 //// GLOBALS
 
+
 let locationManager = CLLocationManager()
-//var currentHeading: CLLocationDirection
 
 var latitude = Double()
 var longitude = Double()
@@ -58,4 +58,3 @@ var elevationRange = [Double]()
 var minElevation = Double()
 var maxElevation = Double()
 
-//var pointsAry = [CGPoint]()
