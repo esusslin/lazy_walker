@@ -4,9 +4,11 @@ The LazyWalker is a mobile application for navigating walking/running routes tha
 
 ## The Problem
 
-This application was originally suggested as a project for a hackathon at DEV Bootcamp in 2016.  Anyone who has walked around San Francisco has experience with its vast rolling hills - often times I've used GoogleMaps to inquire "how do I get to Union Square from here" or "how do I get to my friend's house from here" and almost everytime, what GoogleMaps doesn't tell you, is that although your destination might be only 0.8 miles away, what isn't clear is that this route might take you up and down several steep inclines while an alternative route - maybe 1.3 miles - will avert all of these hills entirely and is a much preferred route for the average pedestrian who is not desiring an unexpected full-blown cardio workout.
+This application was originally suggested as a project for a hackathon at DEV Bootcamp in 2016.  Anyone who has walked around San Francisco has experience with its challenging elevations.  As someone who is relatively new to the Bay Area, I have found myself using GoogleMaps mobile for basic walking directions to find that although a destination is perhaps only 1.2 miles away, the route provided will send me up and down several large inclines for quite the unexpected cardio workout.
 
-Though the application was not pursued at the time, I found myself building geoLocation-based applications later that year and decided to realize follow through with this project in 2017.
+In such an instance I want to know: what are my other options? Is there a flatter route? Even if it is a bit longer in total distance, is there a route that permits a scenic stroll rather than a full blown hike?
+
+Enter the LazyWalker mobile application.
 
 ## Stack
 
@@ -232,20 +234,8 @@ The LineChart greatly enhances the user experience by providing a visual of the 
 			            if id == "0" {
 			                firstCoords.append(point)
 			            }
-			            if id == "1" {
-			                secondCoords.append(point)
-			            }
-			            if id == "2" {
-			                thirdCoords.append(point)
-			            }
-			            
-			            if id == "3" {
-			                fourthCoords.append(point)
-			            }
-			            
-			            if id == "4" {
-			                fifthCoords.append(point)
-			            }
+			          
+                      /// ETC., FOR EACH ROUTE
 	            
 	            }
 	        }
@@ -274,35 +264,6 @@ Once the CGPoints are realized from the dataset, illustrating the distance/eleva
         customView.xMax = 0.0
         customView.yMin = 0.0
         customView.yMax = 0.0
-
-        
-        //THE CORRESPONDING COLOR IS GIVEN:
-        
-        var color = UIColor()
-        if num == 0 {
-            pointsAry = firstCoords
-            color = .green
-        }
-        
-        if num == 1 {
-            pointsAry = secondCoords
-            color = UIColor(red: 127.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
-        }
-        
-        if num == 2 {
-            pointsAry = thirdCoords
-            color = UIColor(red: 255.0/255.0, green: 255.0/255.0, blue: 0.0/255.0, alpha: 1)
-        }
-        
-        if num == 3 {
-            pointsAry = fourthCoords
-            color = UIColor(red: 255.0/255.0, green: 150.0/255.0, blue: 0.0/255.0, alpha: 1)
-        }
-        
-        if num == 4 {
-            pointsAry = fifthCoords
-            color = .red
-        }
         
         let screenSize: CGRect = UIScreen.main.bounds
         let width = self.view.frame.size.width
@@ -417,7 +378,7 @@ Like the current mobile app direction conventions, the LazyWalker allows user to
 
 ## Next
 
-In my mind, the natural evolution of this application would be in the direction of a 3D map rendering where the user can not only be provided multiple routes with the elevation data of each but can SEE the elevation values of each route in polylines rendered on a 3D / A.R. rendering.  This is now possible with the merge of Unity and Mapbox so this seems to be the natural next step for this mobile application.
+As A.R. technology evolves, the natural evolution of this application is a 3D map rendering of the same experience wherein the user can SEE the elevation values of each route in polylines rendered on a 3D / A.R. map.  This is now possible with the merge of Unity and Mapbox so this seems to be the natural next step for this mobile application.
 
 Additionally, while Graphhopper's API is very thorough and efficient, a more comprehensive dataset is achievable.  Ultimately I intend to create an API of my own with comprehensive GeoData for a single place - say San Francisco or Seattle - where the elevation challenges for pedestrians are obvious and such a mobile app can be most useful.
 
