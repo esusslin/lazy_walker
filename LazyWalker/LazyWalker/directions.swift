@@ -516,62 +516,87 @@ extension mapVC {
         UIView.animate(withDuration: 1, animations: {
             self.tableToggleButton.alpha = 1
             self.tableDarkView.alpha = 1
+            
+            self.cancelBtn.alpha = 0
+            self.centerMapBtn.alpha = 0
+            self.goBTn.alpha = 0
+            
+            // POSITIONS BUTTONS BEFORE THEY ARE REVEALED IN NEXT FUNCITON IN CHAIN
+            
+//            self.centerMapBtn.center.x = self.view.frame.size.width - 40
+//            self.centerMapBtn.center.y = self.directionSubview.center.y
+//            
+//            self.cancelBtn.center.x = self.tableToggleButton.center.x
+//            self.cancelBtn.center.y = self.directionSubview.center.y
+            
+            self.goBTn.center.x = self.view.frame.size.width - 40
+            self.goBTn.center.y = self.tableToggleButton.center.y
+            
+            
+            self.directionSubview.center.y = (self.view.frame.size.height + 100) - self.view.frame.size.height
+
+            
         }) { (true) in
-            self.showTable()
+            self.showRest()
         }
 
     }
     
-    func showTable() {
+    func showRest() {
         UIView.animate(withDuration: 1.2, animations: {
             self.tableView.alpha = 1
-        
-        }) { (true) in
-           self.showView()
-        }
-
-    }
-    
-    func showView() {
-        UIView.animate(withDuration: 1.2, animations: {
             self.directionSubview.alpha = 1
-            
-        }) { (true) in
-            self.showMapBtns()
-        }
-        
-    }
-    
-    func showMapBtns() {
-        
-        cancelBtn.alpha = 0
-        centerMapBtn.alpha = 0
-        goBTn.alpha = 0
-        
-        self.centerMapBtn.center.x = self.view.frame.size.width - 40
-        self.centerMapBtn.center.y = self.directionSubview.center.y
-        
-        self.cancelBtn.center.x = self.tableToggleButton.center.x
-        self.cancelBtn.center.y = self.directionSubview.center.y
-        
-        self.goBTn.center.x = self.view.frame.size.width - 40
-        self.goBTn.center.y = self.tableToggleButton.center.y
-        
-        
-        self.directionSubview.center.y = (self.view.frame.size.height + 100) - self.view.frame.size.height
-
-        
-        UIView.animate(withDuration: 1.2, animations: {
             self.cancelBtn.alpha = 1
             self.centerMapBtn.alpha = 1
-           self.goBTn.alpha = 1
-            
-        }) { (true) in
-            //            self.showView()
-        }
+            self.goBTn.alpha = 1
 
         
+        }) { (true) in
+//           self.showView()
+        }
+
     }
+    
+//    func showView() {
+//        UIView.animate(withDuration: 1.2, animations: {
+//            self.directionSubview.alpha = 1
+//            
+//        }) { (true) in
+//            self.showMapBtns()
+//        }
+//        
+//    }
+//    
+//    func showMapBtns() {
+//        
+//        cancelBtn.alpha = 0
+//        centerMapBtn.alpha = 0
+//        goBTn.alpha = 0
+//        
+//        self.centerMapBtn.center.x = self.view.frame.size.width - 40
+//        self.centerMapBtn.center.y = self.directionSubview.center.y
+//        
+//        self.cancelBtn.center.x = self.tableToggleButton.center.x
+//        self.cancelBtn.center.y = self.directionSubview.center.y
+//        
+//        self.goBTn.center.x = self.view.frame.size.width - 40
+//        self.goBTn.center.y = self.tableToggleButton.center.y
+//        
+//        
+//        self.directionSubview.center.y = (self.view.frame.size.height + 100) - self.view.frame.size.height
+//
+//        
+//        UIView.animate(withDuration: 1.2, animations: {
+//            self.cancelBtn.alpha = 1
+//            self.centerMapBtn.alpha = 1
+//           self.goBTn.alpha = 1
+//            
+//        }) { (true) in
+//            //            self.showView()
+//        }
+//
+//        
+//    }
 
     
     func readySubview(index: Int) {
@@ -600,6 +625,14 @@ extension mapVC {
             self.directionSubview.tag = 102
         
             self.directionSubview.alpha = 0
+        
+            if let previousLabel = self.directionSubview.viewWithTag(56) {
+               
+                previousLabel.removeFromSuperview()
+            } else {
+                print("No!")
+            }
+
 
                 let label = UILabel()
                 label.translatesAutoresizingMaskIntoConstraints = false
@@ -609,6 +642,7 @@ extension mapVC {
                 label.backgroundColor = UIColor.clear
                 label.textColor = .white
                 label.font=UIFont.systemFont(ofSize: 14)
+                label.tag = 56
                 self.directionSubview.addSubview(label)
                 
                 let horConstraint = NSLayoutConstraint(item: label, attribute: .centerX, relatedBy: .equal,

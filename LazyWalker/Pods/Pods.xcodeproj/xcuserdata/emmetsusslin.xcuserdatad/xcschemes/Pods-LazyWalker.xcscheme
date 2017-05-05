@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "88F382E353888D7A02042B562820AC7D"
+               BlueprintIdentifier = "AA1716A434F2B825963960783C0059B4"
                BuildableName = "Pods_LazyWalker.framework"
                BlueprintName = "Pods-LazyWalker"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "88F382E353888D7A02042B562820AC7D"
+            BlueprintIdentifier = "AA1716A434F2B825963960783C0059B4"
             BuildableName = "Pods_LazyWalker.framework"
             BlueprintName = "Pods-LazyWalker"
             ReferencedContainer = "container:Pods.xcodeproj">

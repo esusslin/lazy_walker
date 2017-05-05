@@ -14,7 +14,27 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MapboxCoreNavigation.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>MapboxDirections.swift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>OSRMTextInstructions.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-LazyWalker.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Polyline.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -42,7 +62,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>85CB466253A757CE00950A3B3268B3B3</key>
+		<key>0791F9EDA2D390874F3D5C15A6074A83</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3B07E97554DC4D8FD6FBFCBD5ABFAB3F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8395733CED51C1550CE69479CF2E259A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,22 +82,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>88F382E353888D7A02042B562820AC7D</key>
+		<key>8AE844C9B8AF98C36F2274CEA68831CD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A1088601131C1B625FF23F1EFB9E3CAD</key>
+		<key>9FEB2A9BBBC6CFAFC600401E869EE0FD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B4E36ED6FB1ABB171F05411AF6BF2229</key>
+		<key>AA1716A434F2B825963960783C0059B4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CD456BA16F80449B943BE88875C143B1</key>
+		<key>CA89C0A53859A8EACC539CA9CB886D57</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CE32E1BFF29BA7CF1EFC354E5C37C7DE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D06EEDA35F666DFA3849AC1996BF18EF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

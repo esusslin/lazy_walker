@@ -13,6 +13,14 @@ PODS:
     - GooglePlaces (= 2.1.1)
   - GooglePlaces (2.1.1):
     - GoogleMaps/Base (= 2.1.1)
+  - MapboxCoreNavigation (0.3.0):
+    - MapboxDirections.swift (~> 0.9.0)
+    - OSRMTextInstructions (~> 0.1.1)
+  - MapboxDirections.swift (0.9.0):
+    - Polyline (~> 4.1)
+  - OSRMTextInstructions (0.1.1):
+    - MapboxDirections.swift (~> 0.9)
+  - Polyline (4.1.1)
   - PureLayout (2.0.6)
   - Realm (2.0.4):
     - Realm/Headers (= 2.0.4)
@@ -27,6 +35,7 @@ DEPENDENCIES:
   - GoogleMaps
   - GooglePlacePicker
   - GooglePlaces
+  - MapboxCoreNavigation (~> 0.3.0)
   - PureLayout (~> 2.0.5)
   - RealmSwift (~> 2.0.2)
   - SwiftCharts (~> 0.5)
@@ -37,11 +46,15 @@ SPEC CHECKSUMS:
   GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
   GooglePlacePicker: 665f39f931f2df32f9dd3fcc45f7e8abf71e535c
   GooglePlaces: 35636d86e5020cba3856eb988c09a5491de0a65a
+  MapboxCoreNavigation: 80aa3d083695a364895d4626a87991cd3d9ca271
+  MapboxDirections.swift: 7ce85544621940cc94692e97ddbc36e48f1f6070
+  OSRMTextInstructions: 80b773a2d304032ab8a6584671000bccad16e88f
+  Polyline: 381d1e699fd12508f97cfc468478dfbab67edf1f
   PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
   Realm: 9da97f48365f8b99dd95c28d45ad8222d62e1775
   RealmSwift: 01e8db006035f16003e6307ae8eae1adccce68db
   SwiftCharts: d263289cdc7fc955fef54ae3bc6529f696e69933
 
-PODFILE CHECKSUM: baf9eab22425f71784847641218cffd485b72145
+PODFILE CHECKSUM: 31578b2df0ab317bc711525f6d7992bef8115c1b
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1

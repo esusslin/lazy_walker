@@ -91,6 +91,10 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Alamofire/Alamofire.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Charts/Charts.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MapboxCoreNavigation/MapboxCoreNavigation.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MapboxDirections.swift/MapboxDirections.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/OSRMTextInstructions/OSRMTextInstructions.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Polyline/Polyline.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Realm/Realm.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RealmSwift/RealmSwift.framework"
@@ -99,6 +103,10 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Alamofire/Alamofire.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Charts/Charts.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MapboxCoreNavigation/MapboxCoreNavigation.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/MapboxDirections.swift/MapboxDirections.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/OSRMTextInstructions/OSRMTextInstructions.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Polyline/Polyline.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Realm/Realm.framework"
   install_framework "$BUILT_PRODUCTS_DIR/RealmSwift/RealmSwift.framework"

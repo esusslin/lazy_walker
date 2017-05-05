@@ -1,6 +1,7 @@
 
 target 'LazyWalker' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+
   use_frameworks!
 
    pod 'Alamofire', '~> 4.3'
@@ -11,6 +12,8 @@ target 'LazyWalker' do
    pod 'Charts', '~> 3.0.1'
    pod 'RealmSwift', '~> 2.0.2'
 
+   pod 'MapboxCoreNavigation', '~> 0.3.0'
+   
    pod 'GooglePlaces'
    pod 'GooglePlacePicker'
    pod 'GoogleMaps'

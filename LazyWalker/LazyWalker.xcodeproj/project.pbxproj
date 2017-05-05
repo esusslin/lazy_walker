@@ -22,8 +22,8 @@
 		E275FCE81E8C1AF00051F2A4 /* directionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E275FCE71E8C1AF00051F2A4 /* directionsCell.swift */; };
 		E2838A731E4D3631006DFCEE /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; };
 		E2838A741E4D3631006DFCEE /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2F0D0BB1E4D2B1C00BB4CBE /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E28D7D661E5CCDE000EC44C9 /* pathAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */; };
 		E28D7D681E5CE05E00EC44C9 /* CustomCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */; };
+		E29041651EBA7D860034E137 /* pathAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29041641EBA7D860034E137 /* pathAnnotation.swift */; };
 		E2B367F31E6E107F0000BA5D /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B367F21E6E107F0000BA5D /* TableViewController.swift */; };
 		E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */; };
 		E2F0D08A1E4D28CF00BB4CBE /* mapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2F0D0891E4D28CF00BB4CBE /* mapVC.swift */; };
@@ -83,8 +83,8 @@
 		E275FCE31E84813E0051F2A4 /* subviews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = subviews.swift; sourceTree = "<group>"; };
 		E275FCE51E89C3360051F2A4 /* directions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = directions.swift; sourceTree = "<group>"; };
 		E275FCE71E8C1AF00051F2A4 /* directionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = directionsCell.swift; sourceTree = "<group>"; };
-		E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = pathAnnotation.swift; sourceTree = "<group>"; };
 		E28D7D671E5CE05E00EC44C9 /* CustomCalloutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCalloutView.swift; sourceTree = "<group>"; };
+		E29041641EBA7D860034E137 /* pathAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = pathAnnotation.swift; path = ../../../../.Trash/pathAnnotation.swift; sourceTree = "<group>"; };
 		E2B367F21E6E107F0000BA5D /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		E2F0D0841E4D28CF00BB4CBE /* LazyWalker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LazyWalker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2F0D0871E4D28CF00BB4CBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -188,6 +188,7 @@
 				E26409FF1E622B5700E89BAE /* animations.swift */,
 				E275FCD11E79E16A0051F2A4 /* lines.swift */,
 				E275FCE71E8C1AF00051F2A4 /* directionsCell.swift */,
+				E29041641EBA7D860034E137 /* pathAnnotation.swift */,
 				E275FCE31E84813E0051F2A4 /* subviews.swift */,
 				E275FCE11E847A1C0051F2A4 /* menu.swift */,
 				E275FCD51E7B38360051F2A4 /* picAnnotation.swift */,
@@ -195,7 +196,6 @@
 				E275FCD91E7B5A8F0051F2A4 /* LineChart.swift */,
 				E2B367F21E6E107F0000BA5D /* TableViewController.swift */,
 				E275FCDB1E7B5C6B0051F2A4 /* LineChartAxes.swift */,
-				E28D7D651E5CCDE000EC44C9 /* pathAnnotation.swift */,
 				E2F0D08B1E4D28CF00BB4CBE /* Main.storyboard */,
 				E2F0D0911E4D28CF00BB4CBE /* Assets.xcassets */,
 				E2F0D0931E4D28CF00BB4CBE /* LaunchScreen.storyboard */,
@@ -403,7 +403,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		E2F0D0BA1E4D296400BB4CBE /* ShellScript */ = {
@@ -428,13 +428,13 @@
 			files = (
 				E28D7D681E5CE05E00EC44C9 /* CustomCalloutView.swift in Sources */,
 				E275FCD21E79E16A0051F2A4 /* lines.swift in Sources */,
-				E28D7D661E5CCDE000EC44C9 /* pathAnnotation.swift in Sources */,
 				E275FCE81E8C1AF00051F2A4 /* directionsCell.swift in Sources */,
 				E275FCDA1E7B5A8F0051F2A4 /* LineChart.swift in Sources */,
 				E275FCE41E84813E0051F2A4 /* subviews.swift in Sources */,
 				E275FCD41E79F13F0051F2A4 /* globals.swift in Sources */,
 				E275FCD61E7B38360051F2A4 /* picAnnotation.swift in Sources */,
 				E2F0D08A1E4D28CF00BB4CBE /* mapVC.swift in Sources */,
+				E29041651EBA7D860034E137 /* pathAnnotation.swift in Sources */,
 				E275FCDC1E7B5C6B0051F2A4 /* LineChartAxes.swift in Sources */,
 				E2F0D0881E4D28CF00BB4CBE /* AppDelegate.swift in Sources */,
 				E275FCE21E847A1C0051F2A4 /* menu.swift in Sources */,

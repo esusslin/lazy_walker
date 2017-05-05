@@ -152,6 +152,14 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         btn3.addGestureRecognizer(tap)
         btn4.addGestureRecognizer(tap)
         btn5.addGestureRecognizer(tap)
+        
+        // BUTTON POSITIONING
+        self.centerMapBtn.center.x = self.view.frame.size.width - 40
+        self.centerMapBtn.center.y = self.directionSubview.center.y
+        
+        self.cancelBtn.center.x = self.tableToggleButton.center.x
+        self.cancelBtn.center.y = self.directionSubview.center.y
+
 
         //TABLE POSITIONING
         tableView.backgroundColor = .black
@@ -250,7 +258,6 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
         fourthCoords.removeAll()
         fifthCoords.removeAll()
         
-        
         // MAP IS CLEARED OF ANNOTATIONS:
         
         if self.mapView.annotations != nil {
@@ -258,8 +265,17 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
             self.mapView.removeAnnotations(self.mapView.annotations!)
         }
         
-        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
+//        let camera = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromDistance: 13, pitch: 0, heading: (destinationDirection))
+//        
+//        let cam = MGLMapCamera(lookingAtCenter: mapView.centerCoordinate, fromEyeCoordinate: mapView.centerCoordinate, eyeAltitude: 400)
+//        
+//        // ANIMATES THE CAMERA OVER 5 SECONDS FOR DRAMATIC AWESOMENESS
+//        mapView.setCamera(cam, withDuration: 3, animationTimingFunction: CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
 
+        
+//        mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
+        
+       
     }
     
     
@@ -273,9 +289,13 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
             self.tableView.alpha = 0
             self.toggleMenuButton.alpha = 0
             self.tableDarkView.alpha = 0
+            self.tableToggleButton.alpha = 0
+          
+            self.goBTn.alpha = 0
+            
             
         }) { (true) in
-            self.resetCamera()
+              self.mapView.setCenter(CLLocationCoordinate2D(latitude: (latitude), longitude: (longitude)), zoomLevel: 13, animated: false)
         }
         
     }
@@ -311,6 +331,7 @@ class mapVC: UIViewController, MGLMapViewDelegate, UISearchBarDelegate, UITableV
     @IBAction func cancelBtnPressed(_ sender: Any) {
     
         reset()
+        fadeOutSubviews()
     }
     
      // RESETS THE MAPVIEW TO DIRECTIONS VIEW (IN CASE OF SCROLLING OFF, ETC)
@@ -562,7 +583,7 @@ extension mapVC: GMSAutocompleteResultsViewControllerDelegate {
         print("Error: ", error.localizedDescription)
     }
     
-    // Turn the network activity indicator on and off again.
+   
     func didRequestAutocompletePredictions(forResultsController resultsController: GMSAutocompleteResultsViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
